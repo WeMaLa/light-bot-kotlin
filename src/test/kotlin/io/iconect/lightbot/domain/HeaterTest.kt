@@ -11,6 +11,7 @@ class HeaterTest {
 
         Assertions.assertThat(heater.identifier).isEqualTo("heater-identifier")
         Assertions.assertThat(heater.degree).isEqualTo(0)
+        Assertions.assertThat(heater.maxDegree).isEqualTo(60)
         Assertions.assertThat(heater.designation).isEmpty()
         Assertions.assertThat(heater.designation).isNotNull()
     }
