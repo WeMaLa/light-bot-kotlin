@@ -1,6 +1,6 @@
 package io.iconect.lightbot.domain
 
-class Window private constructor(val identifier: String, var designation: String, var opened: Boolean) {
+class Window private constructor(val identifier: String, val designation: String, var opened: Boolean) {
 
     fun open() {
         this.opened = true

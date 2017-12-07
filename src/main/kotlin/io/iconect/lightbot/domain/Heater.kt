@@ -1,11 +1,10 @@
 package io.iconect.lightbot.domain
 
-class Heater private constructor(val identifier: String, var designation: String, var degree: Short) {
+class Heater private constructor(val identifier: String, val designation: String, var degree: Short, val maxDegree: Short = 60) {
 
     fun heatTo(degree: Short) {
         this.degree = degree
     }
-
 
     class Builder(private val identifier: String) {
         private var designation: String = ""

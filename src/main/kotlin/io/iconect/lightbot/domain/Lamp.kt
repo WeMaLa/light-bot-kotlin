@@ -1,6 +1,6 @@
 package io.iconect.lightbot.domain
 
-class Lamp private constructor(val identifier: String, var designation: String, var shines: Boolean) {
+class Lamp private constructor(val identifier: String, val designation: String, var shines: Boolean) {
 
     fun switchOn() {
         this.shines = true
