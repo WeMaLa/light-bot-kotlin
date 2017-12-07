@@ -1,6 +1,6 @@
 package io.iconect.lightbot.domain
 
-class Heater private constructor(val identifier: String, val designation: String, val maxDegree: Short = 60) {
+data class Heater constructor(val identifier: String, val designation: String, val maxDegree: Short = 60) {
 
     var degree: Short = 0
         private set
