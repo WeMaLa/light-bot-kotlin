@@ -9,22 +9,22 @@ data class Room constructor(val identifier: String, val designation: String) {
     var windows: List<Window> = listOf()
         private set
 
-    fun addHeater(heater: Heater) {
-        val newHeaters = heaters.toMutableList()
-        newHeaters.add(heater);
-        heaters = newHeaters.toList();
+    private fun addHeater(heater: Heater) {
+        heaters = combineItems(heaters, heater)
     }
 
-    fun addWindows(window: Window) {
-        val newWindows = windows.toMutableList()
-        newWindows.add(window);
-        windows = newWindows.toList();
+    private fun addWindows(window: Window) {
+        windows = combineItems(windows, window)
     }
 
-    fun addWLamps(lamp: Lamp) {
-        val newWindows = lamps.toMutableList()
-        newWindows.add(lamp);
-        lamps = newWindows.toList();
+    private fun addWLamps(lamp: Lamp) {
+        lamps = combineItems(lamps, lamp)
+    }
+
+    private fun <T> combineItems(items: List<T>, item: T) : List<T> {
+        val newWindows = items.toMutableList()
+        newWindows.add(item);
+        return newWindows.toList()
     }
 
     class Builder(private val identifier: String) {
