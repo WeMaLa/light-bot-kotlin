@@ -7,19 +7,17 @@ import org.springframework.stereotype.Service
 @Service
 class CachedRoomRepository : RoomRepository {
 
+    private val rooms = mutableListOf<Room>()
+
     override fun store(room: Room) {
         rooms.add(room)
     }
 
     override fun loadAll(): List<Room> {
-        return CachedRoomRepository.rooms
+        return rooms
     }
 
     override fun clear() {
         rooms.clear()
-    }
-
-    companion object {
-        private var rooms = mutableListOf<Room>()
     }
 }
