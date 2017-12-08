@@ -25,10 +25,26 @@ class RoomInitializerTest {
     fun `check rooms are initialized`() {
         roomInitializer.initializeRooms()
 
-        assertThat(roomRepository.loadAll())
+        val rooms = roomRepository.loadAll()
+        val windows = rooms.flatMap { r -> r.windows }
+        val heaters = rooms.flatMap { r -> r.heaters }
+        val lamps = rooms.flatMap { r -> r.lamps }
+
+        assertThat(rooms)
                 .extracting("identifier", "designation")
                 .containsOnly(
                         tuple("kitchen-1", "kitchen")
                 )
+
+        assertThat(windows.first { w -> w.identifier ==  "kitchen-1-window-1"}.designation).isEqualTo("window left")
+        assertThat(windows.first { w -> w.identifier ==  "kitchen-1-window-1"}.opened).isFalse()
+        assertThat(windows.first { w -> w.identifier ==  "kitchen-1-window-2"}.designation).isEqualTo("window right")
+        assertThat(windows.first { w -> w.identifier ==  "kitchen-1-window-2"}.opened).isFalse()
+
+        assertThat(heaters.first { w -> w.identifier ==  "kitchen-1-heater-1"}.designation).isEqualTo("floor heating")
+        assertThat(heaters.first { w -> w.identifier ==  "kitchen-1-heater-1"}.degree).isEqualTo(0)
+
+        assertThat(lamps.first { w -> w.identifier ==  "kitchen-1-lamp-1"}.designation).isEqualTo("overhead lights")
+        assertThat(lamps.first { w -> w.identifier ==  "kitchen-1-lamp-1"}.shines).isFalse()
     }
 }
