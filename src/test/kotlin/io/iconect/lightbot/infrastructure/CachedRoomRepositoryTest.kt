@@ -25,7 +25,7 @@ class CachedRoomRepositoryTest {
 
     @Test
     fun `check loadAll with empty rooms`() {
-        assertThat(roomRepository.loadAll()).isEmpty()
+        assertThat(roomRepository.findAll()).isEmpty()
     }
 
     @Test
@@ -36,11 +36,29 @@ class CachedRoomRepositoryTest {
                 .lamps(listOf(Lamp.Builder("lamp-1").build(), Lamp.Builder("lamp-2").build()))
                 .build()
 
-        assertThat(roomRepository.loadAll()).isEmpty()
+        assertThat(roomRepository.findAll()).isEmpty()
 
         roomRepository.store(room)
 
-        assertThat(roomRepository.loadAll()).containsExactly(room)
+        assertThat(roomRepository.findAll()).containsExactly(room)
+    }
+
+    @Test
+    fun `check find room by identifier with identifier is empty`() {
+        assertThat(roomRepository.find("")).isNull()
+    }
+
+    @Test
+    fun `check find room by identifier`() {
+        val room1 = Room.Builder("room-identifier-1").build()
+        val room2 = Room.Builder("room-identifier-2").build()
+
+        roomRepository.store(room1)
+        roomRepository.store(room2)
+
+        assertThat(roomRepository.find("room-identifier-1")).isEqualTo(room1)
+        assertThat(roomRepository.find("room-identifier-2")).isEqualTo(room2)
+        assertThat(roomRepository.find("room-not-found")).isNull()
     }
 
 }

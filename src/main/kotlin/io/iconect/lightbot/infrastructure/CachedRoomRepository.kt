@@ -13,8 +13,12 @@ class CachedRoomRepository : RoomRepository {
         rooms.add(room)
     }
 
-    override fun loadAll(): List<Room> {
+    override fun findAll(): List<Room> {
         return rooms
+    }
+
+    override fun find(identifier: String): Room? {
+        return rooms.find { r -> r.identifier == identifier }
     }
 
     override fun clear() {

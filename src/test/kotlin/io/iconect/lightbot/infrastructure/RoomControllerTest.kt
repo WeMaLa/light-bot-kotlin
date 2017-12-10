@@ -31,8 +31,8 @@ class RoomControllerTest {
     lateinit var roomRepository: RoomRepository
 
     @Test
-    fun `check load all rooms`() {
-        Mockito.`when`(roomRepository.loadAll()).thenReturn(listOf(
+    fun `find all rooms`() {
+        Mockito.`when`(roomRepository.findAll()).thenReturn(listOf(
                 Room.Builder("room-identifier-1").designation("room-designation-1").build(),
                 Room.Builder("room-identifier-2").designation("room-designation-2").build()
         ))
@@ -47,6 +47,18 @@ class RoomControllerTest {
                         tuple("room-identifier-1", "room-designation-1"),
                         tuple("room-identifier-2", "room-designation-2")
                 )
+    }
+
+    @Test
+    fun `find room by identifier`() {
+        Mockito.`when`(roomRepository.find("room-identifier"))
+                .thenReturn(Room.Builder("room-identifier").build())
+
+        val exchange = testRestTemplate.exchange<RoomDto>("/api/room/{identifier}", HttpMethod.GET, HttpEntity.EMPTY, RoomDto::class.java, "room-identifier")
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(exchange.body).isNotNull()
+        assertThat(exchange.body?.identifier).isEqualTo("room-identifier")
     }
 
 }

@@ -25,7 +25,7 @@ class RoomInitializerTest {
     fun `check rooms are initialized`() {
         roomInitializer.initializeRooms()
 
-        val rooms = roomRepository.loadAll()
+        val rooms = roomRepository.findAll()
         val windows = rooms.flatMap { r -> r.windows }
         val heaters = rooms.flatMap { r -> r.heaters }
         val lamps = rooms.flatMap { r -> r.lamps }
