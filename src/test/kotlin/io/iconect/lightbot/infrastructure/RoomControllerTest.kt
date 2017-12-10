@@ -57,8 +57,15 @@ class RoomControllerTest {
         val exchange = testRestTemplate.exchange<RoomDto>("/api/room/{identifier}", HttpMethod.GET, HttpEntity.EMPTY, RoomDto::class.java, "room-identifier")
 
         assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(exchange.body).isNotNull()
         assertThat(exchange.body?.identifier).isEqualTo("room-identifier")
+    }
+
+    @Test
+    fun `find room by identifier with room not found`() {
+        val exchange = testRestTemplate.exchange<String>("/api/room/{identifier}", HttpMethod.GET, HttpEntity.EMPTY, String::class.java, "room-not-found")
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(exchange.body).isEqualTo("{\"message\":\"Room 'room-not-found' not found.\"}")
     }
 
 }
