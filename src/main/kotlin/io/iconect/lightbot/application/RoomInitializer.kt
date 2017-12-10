@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class RoomInitializer {
 
     @Autowired
-    lateinit var roomRepository: RoomRepository
+    lateinit private var roomRepository: RoomRepository
 
     fun initializeRooms() {
         val kitchen = Room.Builder("kitchen-1")

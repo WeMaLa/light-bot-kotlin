@@ -4,6 +4,7 @@ import io.iconect.lightbot.domain.Room
 import io.iconect.lightbot.domain.RoomRepository
 import io.iconect.lightbot.infrastructure.model.RoomDto
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.tuple
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -32,14 +33,20 @@ class RoomControllerTest {
     @Test
     fun `check load all rooms`() {
         Mockito.`when`(roomRepository.loadAll()).thenReturn(listOf(
-                Room.Builder("room-identifier-1").build(),
-                Room.Builder("room-identifier-2").build()
+                Room.Builder("room-identifier-1").designation("room-designation-1").build(),
+                Room.Builder("room-identifier-2").designation("room-designation-2").build()
         ))
 
         val exchange = testRestTemplate.exchange<List<RoomDto>>("/api/rooms", HttpMethod.GET, HttpEntity.EMPTY, object : ParameterizedTypeReference<List<RoomDto>>() {
         })
 
-        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK);
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(exchange.body)
+                .extracting("identifier", "designation")
+                .containsOnly(
+                        tuple("room-identifier-1", "room-designation-1"),
+                        tuple("room-identifier-2", "room-designation-2")
+                )
     }
 
 }

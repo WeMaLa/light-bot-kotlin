@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class RoomController {
 
     @Autowired
-    lateinit var roomRepository: RoomRepository
+    lateinit private var roomRepository: RoomRepository
 
     @RequestMapping(value = "/api/rooms", method = arrayOf(RequestMethod.GET), produces = arrayOf("application/json"))
     fun getAllRooms(): ResponseEntity<List<RoomDto>> {
