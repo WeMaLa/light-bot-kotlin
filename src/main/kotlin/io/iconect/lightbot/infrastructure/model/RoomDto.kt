@@ -1,7 +1,5 @@
 package io.iconect.lightbot.infrastructure.model
- class RoomDto {
 
-     var identifier: String? = null
-     var designation: String? = null
+import java.io.Serializable
 
- }
+data class RoomDto constructor(var identifier: String? = null, var designation: String? = null) : Serializable
