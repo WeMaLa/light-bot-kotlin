@@ -2,8 +2,10 @@ package io.iconect.lightbot.infrastructure
 
 import io.iconect.lightbot.domain.Room
 import io.iconect.lightbot.domain.RoomRepository
+import io.iconect.lightbot.infrastructure.model.DefaultSpringErrorDto
 import io.iconect.lightbot.infrastructure.model.ErrorMessageDto
 import io.iconect.lightbot.infrastructure.model.RoomDto
+import io.swagger.annotations.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
@@ -20,6 +22,11 @@ class RoomController {
     @Autowired
     lateinit private var roomRepository: RoomRepository
 
+    @ApiOperation(value = "Loads all existing rooms.")
+    @ApiResponses(value = *arrayOf(
+            ApiResponse(code = 200, message = "Success"),
+            ApiResponse(code = 405, message = "Wrong method type", response = DefaultSpringErrorDto::class),
+            ApiResponse(code = 500, message = "Internal server error", response = DefaultSpringErrorDto::class)))
     @RequestMapping(value = "/api/rooms", method = arrayOf(RequestMethod.GET), produces = arrayOf("application/json"))
     fun findAllRooms(): ResponseEntity<List<RoomDto>> {
         val rooms = roomRepository.findAll()
@@ -28,6 +35,13 @@ class RoomController {
         return ResponseEntity.ok<List<RoomDto>>(rooms)
     }
 
+    @ApiOperation(value = "Loads a specific room for a given identifier.")
+    @ApiImplicitParams(ApiImplicitParam(name = "ldapUser", value = "Optional ldap user name", dataType = "string", paramType = "query", example = "acole"))
+    @ApiResponses(value = *arrayOf(
+            ApiResponse(code = 200, message = "Success", response = RoomDto::class),
+            ApiResponse(code = 404, message = "Room for identifier not found", response = ErrorMessageDto::class),
+            ApiResponse(code = 405, message = "Wrong method type", response = DefaultSpringErrorDto::class),
+            ApiResponse(code = 500, message = "Internal server error", response = DefaultSpringErrorDto::class)))
     @RequestMapping(value = "/api/room/{identifier}", method = arrayOf(RequestMethod.GET), produces = arrayOf("application/json"))
     fun findRoom(@PathVariable identifier: String): ResponseEntity<Any> {
         val room = roomRepository.find(identifier)
