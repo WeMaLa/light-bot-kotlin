@@ -15,22 +15,48 @@ class ThermostatTest {
     @Test
     fun `adjust degree`() {
         roomRepository.store(Room.Builder("room-identifier")
+                .heaters(listOf(
+                        Heater.Builder("heater-1").build(),
+                        Heater.Builder("heater-2").build(),
+                        Heater.Builder("heater-3").build()
+                ))
+                .build())
+
+        thermostat.adjust("heater-1", 23)
+        thermostat.adjust("heater-2", 0)
+        thermostat.adjust("heater-3", 60)
+        assertThat(roomRepository.find("room-identifier")?.heaters?.find { h -> h.identifier == "heater-1" }?.degree).isEqualTo(23)
+        assertThat(roomRepository.find("room-identifier")?.heaters?.find { h -> h.identifier == "heater-2" }?.degree).isEqualTo(0)
+        assertThat(roomRepository.find("room-identifier")?.heaters?.find { h -> h.identifier == "heater-3" }?.degree).isEqualTo(60)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `adjust degree lower than zero`() {
+        roomRepository.store(Room.Builder("room-identifier")
                 .heaters(listOf(Heater.Builder("heater-1").build()))
                 .build())
 
-        assertThat(thermostat.adjust("heater-1", 23)).isTrue()
-        assertThat(roomRepository.find("room-identifier")?.heaters?.find { h -> h.identifier == "heater-1" }?.degree).isEqualTo(23)
+       thermostat.adjust("heater-1", -1)
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException::class)
+    fun `adjust degree higher than 60`() {
+        roomRepository.store(Room.Builder("room-identifier")
+                .heaters(listOf(Heater.Builder("heater-1").build()))
+                .build())
+
+        thermostat.adjust("heater-1", 61)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
     fun `adjust degree with room not found`() {
-        assertThat(thermostat.adjust("heater-1", 23)).isFalse()
+        thermostat.adjust("heater-1", 23)
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException::class)
     fun `adjust degree with heater not found`() {
         roomRepository.store(Room.Builder("room-identifier").build())
 
-        assertThat(thermostat.adjust("heater-1", 23)).isFalse()
+        thermostat.adjust("heater-1", 23)
     }
 }

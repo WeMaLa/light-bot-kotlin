@@ -8,15 +8,22 @@ import org.springframework.stereotype.Service
 @Service
 class Thermostat @Autowired constructor(private var roomRepository: RoomRepository) {
 
-    fun adjust(heaterIdentifier: String, degree: Short): Boolean {
-        val room = findRoomWithHeater(heaterIdentifier)
-
-        if (room != null) {
-            findHeaterInRoom(room, heaterIdentifier).heatTo(degree)
-            roomRepository.store(room)
-            return true
+    fun adjust(heaterIdentifier: String, degree: Short) {
+        if (degree < 0) {
+            throw IllegalArgumentException("Heater does not support frost")
         }
-        return false
+
+        val room = findRoomWithHeater(heaterIdentifier)
+                ?: throw IllegalArgumentException("Room with heater '$heaterIdentifier' not found")
+
+        val heater = findHeaterInRoom(room, heaterIdentifier)
+
+        if (degree > heater.maxDegree) {
+            throw IllegalArgumentException("Heater is limited to 60 degree")
+        }
+
+        heater.heatTo(if (degree >= 0) degree else 0)
+        roomRepository.store(room)
     }
 
     private fun findHeaterInRoom(room: Room?, heaterIdentifier: String) =
