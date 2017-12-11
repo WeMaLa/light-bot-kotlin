@@ -25,12 +25,13 @@ class ServerAuthenticationExchangeService @Autowired constructor(
             log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
 
             if (e.statusCode == HttpStatus.UNAUTHORIZED) {
-                try {
-                    log.info("Received UNAUTHORIZED while authentication. Register a new bot")
-                    serverRegistrationExchangeService.registerBot()
-                    return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
-                } catch (e: HttpClientErrorException) {
-                    log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                log.info("Received UNAUTHORIZED while authentication. Register a new bot")
+                if (serverRegistrationExchangeService.registerBot()) {
+                    try {
+                        return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
+                    } catch (e: HttpClientErrorException) {
+                        log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                    }
                 }
             }
 
