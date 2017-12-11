@@ -10,6 +10,7 @@ class CachedRoomRepository : RoomRepository {
     private val rooms = mutableListOf<Room>()
 
     override fun store(room: Room) {
+        rooms.removeIf { r -> r.identifier == room.identifier }
         rooms.add(room)
     }
 
