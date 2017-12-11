@@ -43,7 +43,7 @@ class ServerRegistrationExchangeServiceTest {
                 .andExpect(jsonPath<String>("username", equalTo<String>("unit-test-bot-username")))
                 .andRespond(withSuccess())
 
-        assertThat(serverRegistrationExchangeService.registerBot()).isEqualTo(true)
+        assertThat(serverRegistrationExchangeService.registerBot()).isTrue()
 
         server.verify()
     }
@@ -57,7 +57,7 @@ class ServerRegistrationExchangeServiceTest {
                 .andExpect(jsonPath<String>("username", equalTo<String>("unit-test-bot-username")))
                 .andRespond(withBadRequest())
 
-        assertThat(serverRegistrationExchangeService.registerBot()).isEqualTo(false)
+        assertThat(serverRegistrationExchangeService.registerBot()).isFalse()
 
         server.verify()
     }
@@ -71,7 +71,7 @@ class ServerRegistrationExchangeServiceTest {
                 .andExpect(jsonPath<String>("username", equalTo<String>("unit-test-bot-username")))
                 .andRespond(withStatus(HttpStatus.CONFLICT))
 
-        assertThat(serverRegistrationExchangeService.registerBot()).isEqualTo(false)
+        assertThat(serverRegistrationExchangeService.registerBot()).isFalse()
 
         server.verify()
     }

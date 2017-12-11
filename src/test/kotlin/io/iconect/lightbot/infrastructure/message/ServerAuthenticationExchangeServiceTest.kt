@@ -1,0 +1,52 @@
+package io.iconect.lightbot.infrastructure.message
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.assertj.core.api.Assertions
+import org.hamcrest.core.IsEqual
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.client.MockRestServiceServer
+import org.springframework.test.web.client.match.MockRestRequestMatchers
+import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
+import org.springframework.web.client.RestTemplate
+
+@RunWith(SpringRunner::class)
+@SpringBootTest
+@ActiveProfiles("unittest")
+class ServerAuthenticationExchangeServiceTest {
+
+    @Autowired
+    lateinit var serverAuthenticationExchangeService: ServerAuthenticationExchangeService
+
+    @Autowired
+    lateinit var restTemplate: RestTemplate
+
+    lateinit var server: MockRestServiceServer
+
+    @Before
+    fun setUp() {
+        server = MockRestServiceServer.bindTo(restTemplate).build()
+    }
+
+    @Test
+    fun `authenticate light bot on iconect server`() {
+        val response = ServerAuthenticationExchangeService.JwtAuthenticationResponse()
+        response.token = "unit-test-auth-token"
+        server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/auth/login"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
+                .andExpect(MockRestRequestMatchers.jsonPath<String>("identifier", IsEqual.equalTo<String>("unit@test.bot")))
+                .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
+                .andRespond(withSuccess(ObjectMapper().writeValueAsString(response), MediaType.APPLICATION_JSON))
+
+        Assertions.assertThat(serverAuthenticationExchangeService.authenticate()).isEqualTo("unit-test-auth-token")
+
+        server.verify()
+    }
+}
