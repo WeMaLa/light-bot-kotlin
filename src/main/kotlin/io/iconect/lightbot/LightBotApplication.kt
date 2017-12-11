@@ -4,7 +4,10 @@ import io.iconect.lightbot.application.RoomInitializer
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
+import org.springframework.web.client.RestTemplate
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors.regex
 import springfox.documentation.service.ApiInfo
@@ -20,6 +23,13 @@ class LightBotApplication {
     @Bean
     fun init(roomInitializer: RoomInitializer) = CommandLineRunner {
         roomInitializer.initializeRooms()
+    }
+
+    @Bean
+    fun restTemplate(): RestTemplate {
+        return RestTemplateBuilder()
+                .requestFactory(HttpComponentsClientHttpRequestFactory()) // apply HTTP PATCH support
+                .build()
     }
 
     @Bean
