@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class RoomController {
-
-    @Autowired
-    lateinit private var roomRepository: RoomRepository
+class RoomController @Autowired constructor(private var roomRepository: RoomRepository) {
 
     @ApiOperation(value = "Loads all existing rooms.")
     @ApiResponses(value = *arrayOf(
@@ -36,7 +33,7 @@ class RoomController {
     }
 
     @ApiOperation(value = "Loads a specific room for a given identifier.")
-    @ApiImplicitParams(ApiImplicitParam(name = "ldapUser", value = "Optional ldap user name", dataType = "string", paramType = "query", example = "acole"))
+    @ApiImplicitParams(ApiImplicitParam(name = "identifier", value = "Unique room identifier", required = true, dataType = "string", paramType = "query", example = "kitchen-1"))
     @ApiResponses(value = *arrayOf(
             ApiResponse(code = 200, message = "Success", response = RoomDto::class),
             ApiResponse(code = 404, message = "Room for identifier not found", response = ErrorMessageDto::class),
