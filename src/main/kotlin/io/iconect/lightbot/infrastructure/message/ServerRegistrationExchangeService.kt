@@ -17,6 +17,7 @@ class ServerRegistrationExchangeService @Autowired constructor(
     private val log = LoggerFactory.getLogger(ServerRegistrationExchangeService::class.java)
 
     fun registerBot(): Boolean {
+        log.info("Register new bot on iconect server")
         val httpEntity = HttpEntity<Any>(UserRegistrationRequest(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password, botConfiguration.bot!!.username))
 
         return try {
