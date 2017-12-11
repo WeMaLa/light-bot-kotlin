@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class RoomInitializer {
-
-    @Autowired
-    lateinit private var roomRepository: RoomRepository
+class RoomInitializer @Autowired constructor(private var roomRepository: RoomRepository) {
 
     fun initializeRooms() {
         val kitchen = Room.Builder("kitchen-1")
