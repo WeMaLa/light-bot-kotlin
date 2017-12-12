@@ -93,12 +93,6 @@ class ServerAuthenticationExchangeServiceTest {
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
                 .andRespond(withUnauthorizedRequest())
 
-        server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/auth/login"))
-                .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
-                .andExpect(MockRestRequestMatchers.jsonPath<String>("identifier", IsEqual.equalTo<String>("unit@test.bot")))
-                .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
-                .andRespond(withSuccess(ObjectMapper().writeValueAsString(response), MediaType.APPLICATION_JSON))
-
         Assertions.assertThat(serverAuthenticationExchangeService.authenticate()).isNull()
 
         server.verify()

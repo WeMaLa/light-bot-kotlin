@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 
 @Service
@@ -23,7 +23,7 @@ class ServerRegistrationExchangeService @Autowired constructor(
         return try {
             restTemplate.exchange(botConfiguration.server!!.url + "/api/user", HttpMethod.POST, httpEntity, Any::class.java)
             true
-        } catch (e: HttpClientErrorException) {
+        } catch (e: HttpStatusCodeException) {
             log.error("Register bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
             false
         }

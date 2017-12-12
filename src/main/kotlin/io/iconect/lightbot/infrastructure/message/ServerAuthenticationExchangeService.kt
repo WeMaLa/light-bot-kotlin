@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 
 @Service
@@ -21,7 +22,7 @@ class ServerAuthenticationExchangeService @Autowired constructor(
     fun authenticate(): String? {
         return try {
             return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
-        } catch (e: HttpClientErrorException) {
+        } catch (e: HttpStatusCodeException) {
             log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
 
             if (e.statusCode == HttpStatus.UNAUTHORIZED) {
