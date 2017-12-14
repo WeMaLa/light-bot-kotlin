@@ -1,5 +1,6 @@
 package io.iconect.lightbot.infrastructure
 
+import io.iconect.lightbot.TestLightBotApplication
 import io.iconect.lightbot.domain.Room
 import io.iconect.lightbot.domain.RoomRepository
 import io.iconect.lightbot.infrastructure.model.RoomDto
@@ -17,11 +18,13 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("unittest")
+@ContextConfiguration(classes = [TestLightBotApplication::class])
 class RoomControllerTest {
 
     @Autowired

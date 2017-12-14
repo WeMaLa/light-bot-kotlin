@@ -1,5 +1,6 @@
 package io.iconect.lightbot.infrastructure.message
 
+import io.iconect.lightbot.TestLightBotApplication
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -13,6 +14,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
@@ -26,6 +28,7 @@ import org.springframework.web.client.RestTemplate
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @ActiveProfiles("unittest")
+@ContextConfiguration(classes = [TestLightBotApplication::class])
 class ServerMessageExchangeServiceTest {
 
     @Autowired

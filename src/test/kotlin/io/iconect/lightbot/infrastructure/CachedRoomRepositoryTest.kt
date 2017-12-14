@@ -1,5 +1,6 @@
 package io.iconect.lightbot.infrastructure
 
+import io.iconect.lightbot.TestLightBotApplication
 import io.iconect.lightbot.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
@@ -9,11 +10,13 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @ActiveProfiles("unittest")
+@ContextConfiguration(classes = [TestLightBotApplication::class])
 class CachedRoomRepositoryTest {
 
     @Autowired
@@ -82,10 +85,10 @@ class CachedRoomRepositoryTest {
                 .windows(listOf(Window.Builder("window-1").build(), Window.Builder("window-2").build()))
                 .lamps(listOf(Lamp.Builder("lamp-1").build(), Lamp.Builder("lamp-2").build()))
                 .build()
-        updatedRoom.lamps.find { l -> l.identifier ==  "lamp-1"}?.switchOn()
-        updatedRoom.windows.find { l -> l.identifier ==  "window-2"}?.open()
-        updatedRoom.heaters.find { l -> l.identifier ==  "heater-1"}?.heatTo(23)
-        updatedRoom.heaters.find { l -> l.identifier ==  "heater-2"}?.heatTo(19)
+        updatedRoom.lamps.find { l -> l.identifier == "lamp-1" }?.switchOn()
+        updatedRoom.windows.find { l -> l.identifier == "window-2" }?.open()
+        updatedRoom.heaters.find { l -> l.identifier == "heater-1" }?.heatTo(23)
+        updatedRoom.heaters.find { l -> l.identifier == "heater-2" }?.heatTo(19)
 
         roomRepository.store(updatedRoom)
 

@@ -1,14 +1,17 @@
 package io.iconect.lightbot.infrastructure.configuration
 
+import io.iconect.lightbot.TestLightBotApplication
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
+@ContextConfiguration(classes = [TestLightBotApplication::class])
 class ConfigurationStageDefaultTest {
 
     @Autowired
@@ -20,6 +23,6 @@ class ConfigurationStageDefaultTest {
         Assertions.assertThat(configuration.bot?.username).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.password).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.notificationUrl).isEqualTo("http://localhost:8085/api/notify")
-        Assertions.assertThat(configuration.server?.url).isEqualTo("http://localhost:8080/")
+        Assertions.assertThat(configuration.server?.url).isEqualTo("http://localhost:8080/api")
     }
 }
