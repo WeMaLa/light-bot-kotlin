@@ -1,7 +1,6 @@
 package io.iconect.lightbot.infrastructure.message
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.tuple
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -71,11 +70,8 @@ class ServerMessageExchangeServiceTest {
                 .andRespond(response)
 
         assertThat(serverMessageExchangeService.retrieveMessages())
-                .extracting("identifier", "content", "status")
-                .containsExactly(
-                        tuple("AWA6_vR3A1S3ubG7cRd1", "message2", ServerMessageExchangeService.MessageStatus.RECEIVED),
-                        tuple("AWA6_o33A1S3ubG7cRdz", "message1", ServerMessageExchangeService.MessageStatus.RECEIVED)
-                )
+                .extracting("content")
+                .containsExactly("message2", "message1")
 
         server.verify()
     }
@@ -114,11 +110,8 @@ class ServerMessageExchangeServiceTest {
                 .andExpect(header("Authorization", "unit-test-auth-token"))
                 .andRespond(response)
 
-        assertThat(serverMessageExchangeService.retrieveMessages()).extracting("identifier", "content", "status")
-                .containsExactly(
-                        tuple("AWA6_vR3A1S3ubG7cRd1", "message2", ServerMessageExchangeService.MessageStatus.RECEIVED),
-                        tuple("AWA6_o33A1S3ubG7cRdz", "message1", ServerMessageExchangeService.MessageStatus.RECEIVED)
-                )
+        assertThat(serverMessageExchangeService.retrieveMessages()).extracting("content")
+                .containsExactly("message2", "message1")
 
         server.verify()
     }

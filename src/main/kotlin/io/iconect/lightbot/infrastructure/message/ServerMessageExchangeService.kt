@@ -1,6 +1,7 @@
 package io.iconect.lightbot.infrastructure.message
 
 import io.iconect.lightbot.infrastructure.configuration.Configuration
+import io.iconect.lightbot.infrastructure.message.model.ServerMessage
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpEntity
@@ -18,7 +19,7 @@ class ServerMessageExchangeService @Autowired constructor(
 
     private val log = LoggerFactory.getLogger(ServerMessageExchangeService::class.java)
 
-    fun retrieveMessages(): List<Message> {
+    fun retrieveMessages(): List<ServerMessage> {
         val token = serverAuthenticationExchangeService.authenticate()
 
         return if (token != null) {
@@ -27,7 +28,7 @@ class ServerMessageExchangeService @Autowired constructor(
 
             messages.forEach { m -> markAsRead(m.identifier, httpEntity) }
 
-            return messages
+            return messages.map { m -> ServerMessage(m.content) }
         } else {
             emptyList()
         }
@@ -65,10 +66,5 @@ class ServerMessageExchangeService @Autowired constructor(
     class Message {
         var identifier: String = ""
         var content: String = ""
-        var status: MessageStatus = MessageStatus.READ
-    }
-
-    enum class MessageStatus {
-        SEND, RECEIVED, READ
     }
 }
