@@ -67,6 +67,33 @@ class ServerMessageExchangeServiceTest {
         server.verify()
     }
 
+    @Test
+    fun `retrieve messages when authentication fails`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+
+        assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
+    }
+
+    @Test
+    fun `retrieve messages when messages are empty`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+
+        val httpHeaders = HttpHeaders()
+        httpHeaders.set("content-type", "application/json;charset=UTF-8 ")
+        httpHeaders.set("date", "Tue, 12 Dec 2017 19:59:50 GMT")
+        httpHeaders.set("date-iso8601", "2017-12-12T19:59:50.099-00:00")
+        val response = withStatus(HttpStatus.OK).body("")
+                .body(createEmptyMessagesResponse())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .headers(httpHeaders)
+        server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/messages"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andRespond(response)
+
+        assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
+    }
+
     private fun createResponse(): String {
         return "{\n" +
                 "  \"content\": [\n" +
@@ -122,6 +149,20 @@ class ServerMessageExchangeServiceTest {
                 "      }\n" +
                 "    }\n" +
                 "  ],\n" +
+                "  \"last\": true,\n" +
+                "  \"totalElements\": 3,\n" +
+                "  \"totalPages\": 1,\n" +
+                "  \"first\": true,\n" +
+                "  \"sort\": null,\n" +
+                "  \"numberOfElements\": 3,\n" +
+                "  \"size\": 0,\n" +
+                "  \"number\": 0\n" +
+                "}"
+    }
+
+    private fun createEmptyMessagesResponse(): String {
+        return "{\n" +
+                "  \"content\": [],\n" +
                 "  \"last\": true,\n" +
                 "  \"totalElements\": 3,\n" +
                 "  \"totalPages\": 1,\n" +

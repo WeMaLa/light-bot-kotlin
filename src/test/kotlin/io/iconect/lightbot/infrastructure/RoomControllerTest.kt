@@ -37,7 +37,7 @@ class RoomControllerTest {
                 Room.Builder("room-identifier-2").designation("room-designation-2").build()
         ))
 
-        val exchange = testRestTemplate.exchange<List<RoomDto>>("/api/rooms", HttpMethod.GET, HttpEntity.EMPTY, object : ParameterizedTypeReference<List<RoomDto>>() {
+        val exchange = testRestTemplate.exchange("/api/rooms", HttpMethod.GET, HttpEntity.EMPTY, object : ParameterizedTypeReference<List<RoomDto>>() {
         })
 
         assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)

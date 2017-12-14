@@ -16,11 +16,16 @@ class ServerMessageExchangeService @Autowired constructor(
 
     fun retrieveMessages(): List<Message> {
         val token = serverAuthenticationExchangeService.authenticate()
-        val httpHeaders = HttpHeaders()
-        httpHeaders.set("Authorization", token)
-        val httpEntity = HttpEntity<Any>(httpHeaders)
-        val exchange = restTemplate.exchange(botConfiguration.server!!.url + "/api/messages", HttpMethod.GET, httpEntity, MessageResponse::class.java)
-        return exchange.body?.content!!.filter { m -> m.status == MessageStatus.RECEIVED }
+
+        return if (token != null) {
+            val httpHeaders = HttpHeaders()
+            httpHeaders.set("Authorization", token)
+            val httpEntity = HttpEntity<Any>(httpHeaders)
+            val exchange = restTemplate.exchange(botConfiguration.server!!.url + "/api/messages", HttpMethod.GET, httpEntity, MessageResponse::class.java)
+            exchange.body?.content!!.filter { m -> m.status == MessageStatus.RECEIVED }
+        } else {
+            emptyList()
+        }
     }
 
     class MessageResponse {
