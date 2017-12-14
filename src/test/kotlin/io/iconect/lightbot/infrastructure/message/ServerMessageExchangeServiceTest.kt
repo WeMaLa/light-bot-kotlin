@@ -19,6 +19,7 @@ import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.match.MockRestRequestMatchers.header
 import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
+import org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest
 import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 import org.springframework.web.client.RestTemplate
 
@@ -71,6 +72,49 @@ class ServerMessageExchangeServiceTest {
 
         assertThat(serverMessageExchangeService.retrieveMessages())
                 .extracting("identifier", "content", "status")
+                .containsExactly(
+                        tuple("AWA6_vR3A1S3ubG7cRd1", "message2", ServerMessageExchangeService.MessageStatus.RECEIVED),
+                        tuple("AWA6_o33A1S3ubG7cRdz", "message1", ServerMessageExchangeService.MessageStatus.RECEIVED)
+                )
+
+        server.verify()
+    }
+
+    @Test
+    fun `retrieve messages and servers responds bad request`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+
+        server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andRespond(withBadRequest())
+
+        assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
+
+        server.verify()
+    }
+
+    @Test
+    fun `retrieve messages and mark messages responds bad request`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+
+        val response = withStatus(HttpStatus.OK).body("")
+                .body(createResponse())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andRespond(response)
+        server.expect(requestTo("http://server.unit.test/api/messages/AWA6_vR3A1S3ubG7cRd1/read"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andRespond(withBadRequest())
+        server.expect(requestTo("http://server.unit.test/api/messages/AWA6_o33A1S3ubG7cRdz/read"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andRespond(response)
+
+        assertThat(serverMessageExchangeService.retrieveMessages()).extracting("identifier", "content", "status")
                 .containsExactly(
                         tuple("AWA6_vR3A1S3ubG7cRd1", "message2", ServerMessageExchangeService.MessageStatus.RECEIVED),
                         tuple("AWA6_o33A1S3ubG7cRdz", "message1", ServerMessageExchangeService.MessageStatus.RECEIVED)
