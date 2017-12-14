@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.client.match.MockRestRequestMatchers.header
+import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 import org.springframework.web.client.RestTemplate
 
@@ -55,14 +56,25 @@ class ServerMessageExchangeServiceTest {
                 .body(createResponse())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .headers(httpHeaders)
-        server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/messages"))
+        server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andRespond(response)
+        server.expect(requestTo("http://server.unit.test/api/messages/AWA6_vR3A1S3ubG7cRd1/read"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andRespond(response)
+        server.expect(requestTo("http://server.unit.test/api/messages/AWA6_o33A1S3ubG7cRdz/read"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
                 .andExpect(header("Authorization", "unit-test-auth-token"))
                 .andRespond(response)
 
         assertThat(serverMessageExchangeService.retrieveMessages())
                 .extracting("identifier", "content", "status")
-                .containsExactly(tuple("AWA6_vR3A1S3ubG7cRd1", "message2", ServerMessageExchangeService.MessageStatus.RECEIVED))
+                .containsExactly(
+                        tuple("AWA6_vR3A1S3ubG7cRd1", "message2", ServerMessageExchangeService.MessageStatus.RECEIVED),
+                        tuple("AWA6_o33A1S3ubG7cRdz", "message1", ServerMessageExchangeService.MessageStatus.RECEIVED)
+                )
 
         server.verify()
     }
@@ -86,7 +98,7 @@ class ServerMessageExchangeServiceTest {
                 .body(createEmptyMessagesResponse())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .headers(httpHeaders)
-        server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/messages"))
+        server.expect(requestTo("http://server.unit.test/api/messages"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
                 .andExpect(header("Authorization", "unit-test-auth-token"))
                 .andRespond(response)
@@ -97,23 +109,6 @@ class ServerMessageExchangeServiceTest {
     private fun createResponse(): String {
         return "{\n" +
                 "  \"content\": [\n" +
-                "    {\n" +
-                "      \"identifier\": \"AWA7AQKAA1S3ubG7cRd3\",\n" +
-                "      \"content\": \"message3\",\n" +
-                "      \"createDate\": \"2017-12-09 11:20:10\",\n" +
-                "      \"status\": \"READ\",\n" +
-                "      \"_links\": {\n" +
-                "        \"self\": {\n" +
-                "          \"href\": \"/api/message/AWA7AQKAA1S3ubG7cRd3\"\n" +
-                "        },\n" +
-                "        \"channel\": {\n" +
-                "          \"href\": \"/api/channel/AWA6_ozSA1S3ubG7cRdx\"\n" +
-                "        },\n" +
-                "        \"sender\": {\n" +
-                "          \"href\": \"/api/contact/mail@larmic.de\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    },\n" +
                 "    {\n" +
                 "      \"identifier\": \"AWA6_vR3A1S3ubG7cRd1\",\n" +
                 "      \"content\": \"message2\",\n" +
@@ -135,7 +130,7 @@ class ServerMessageExchangeServiceTest {
                 "      \"identifier\": \"AWA6_o33A1S3ubG7cRdz\",\n" +
                 "      \"content\": \"message1\",\n" +
                 "      \"createDate\": \"2017-12-09 11:17:29\",\n" +
-                "      \"status\": \"SEND\",\n" +
+                "      \"status\": \"RECEIVED\",\n" +
                 "      \"_links\": {\n" +
                 "        \"self\": {\n" +
                 "          \"href\": \"/api/message/AWA6_o33A1S3ubG7cRdz\"\n" +

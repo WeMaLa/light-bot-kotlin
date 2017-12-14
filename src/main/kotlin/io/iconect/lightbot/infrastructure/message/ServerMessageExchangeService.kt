@@ -18,14 +18,31 @@ class ServerMessageExchangeService @Autowired constructor(
         val token = serverAuthenticationExchangeService.authenticate()
 
         return if (token != null) {
-            val httpHeaders = HttpHeaders()
-            httpHeaders.set("Authorization", token)
-            val httpEntity = HttpEntity<Any>(httpHeaders)
-            val exchange = restTemplate.exchange(botConfiguration.server!!.url + "/api/messages", HttpMethod.GET, httpEntity, MessageResponse::class.java)
-            exchange.body?.content!!.filter { m -> m.status == MessageStatus.RECEIVED }
+            val httpEntity = createHttpEntity(token)
+            val messages = loadUnreadMessages(httpEntity)
+
+            messages.forEach { m -> markAsRead(m.identifier, httpEntity) }
+
+            return messages
         } else {
             emptyList()
         }
+    }
+
+    private fun markAsRead(messageIdentifier: String, httpEntity: HttpEntity<Any>) {
+        val url = botConfiguration.server!!.url + "/api/messages/$messageIdentifier/read"
+        restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, String::class.java)
+    }
+
+    private fun loadUnreadMessages(httpEntity: HttpEntity<Any>): List<Message> {
+        val url = botConfiguration.server!!.url + "/api/messages?status=SEND&status=RECEIVED"
+        return restTemplate.exchange(url, HttpMethod.GET, httpEntity, MessageResponse::class.java).body?.content!!.asList()
+    }
+
+    private fun createHttpEntity(token: String?): HttpEntity<Any> {
+        val httpHeaders = HttpHeaders()
+        httpHeaders.set("Authorization", token)
+        return HttpEntity(httpHeaders)
     }
 
     class MessageResponse {
