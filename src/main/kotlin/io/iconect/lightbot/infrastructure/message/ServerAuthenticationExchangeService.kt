@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpStatusCodeException
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 
 @Service
@@ -22,19 +23,27 @@ class ServerAuthenticationExchangeService @Autowired constructor(
     fun authenticate(): String? {
         return try {
             return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
-        } catch (e: HttpStatusCodeException) {
-            log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+        } catch (e: Exception) {
+            if (e is HttpStatusCodeException) {
+                log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
 
-            if (e.statusCode == HttpStatus.UNAUTHORIZED) {
-                log.info("Received UNAUTHORIZED while authentication. Register a new bot")
-                if (serverRegistrationExchangeService.registerBot()) {
-                    try {
-                        return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
-                    } catch (e: HttpClientErrorException) {
-                        log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                if (e.statusCode == HttpStatus.UNAUTHORIZED) {
+                    log.info("Received UNAUTHORIZED while authentication. Register a new bot")
+                    if (serverRegistrationExchangeService.registerBot()) {
+                        try {
+                            return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
+                        } catch (e: HttpClientErrorException) {
+                            log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                        }
                     }
                 }
+            } else {
+                log.error("Authenticaton bot on iconect server failed with message '${e.message}'")
             }
+
+            null
+        } catch (e: ResourceAccessException) {
+            log.error("Authenticaton bot on iconect server failed with message '${e.message}'")
 
             null
         }

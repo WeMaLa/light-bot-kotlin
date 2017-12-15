@@ -8,7 +8,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 
 @Service
@@ -36,10 +36,14 @@ class ServerMessageExchangeService @Autowired constructor(
 
     private fun markAsRead(messageIdentifier: String, httpEntity: HttpEntity<Any>) {
         try {
-            val url = botConfiguration.server!!.url + "/api/messages/$messageIdentifier/read"
+            val url = botConfiguration.server!!.url + "/api/message/$messageIdentifier/read"
             restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, String::class.java)
-        } catch (e: HttpClientErrorException) {
-            log.error("Mark message '$messageIdentifier' as read on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+        } catch (e: Exception) {
+            if (e is HttpStatusCodeException) {
+                log.error("Mark message '$messageIdentifier' as read on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+            } else {
+                log.error("Mark message '$messageIdentifier' as read on iconect server failed with message '${e.message}'")
+            }
         }
     }
 
@@ -47,8 +51,12 @@ class ServerMessageExchangeService @Autowired constructor(
         return try {
             val url = botConfiguration.server!!.url + "/api/messages?status=SEND&status=RECEIVED"
             restTemplate.exchange(url, HttpMethod.GET, httpEntity, MessageResponse::class.java).body?.content!!.asList()
-        } catch (e: HttpClientErrorException) {
-            log.error("Retrieve message from iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+        } catch (e: Exception) {
+            if (e is HttpStatusCodeException) {
+                log.error("Retrieve message from iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+            } else {
+                log.error("Retrieve message from iconect server failed with message '${e.message}'")
+            }
             emptyList()
         }
     }

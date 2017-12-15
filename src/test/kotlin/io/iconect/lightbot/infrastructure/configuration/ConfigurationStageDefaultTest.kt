@@ -23,6 +23,6 @@ class ConfigurationStageDefaultTest {
         Assertions.assertThat(configuration.bot?.username).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.password).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.notificationUrl).isEqualTo("http://localhost:8085/api/notify")
-        Assertions.assertThat(configuration.server?.url).isEqualTo("http://localhost:8080/api")
+        Assertions.assertThat(configuration.server?.url).isEqualTo("http://localhost:8080")
     }
 }

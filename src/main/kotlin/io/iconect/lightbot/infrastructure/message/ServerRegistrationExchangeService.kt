@@ -23,8 +23,12 @@ class ServerRegistrationExchangeService @Autowired constructor(
         return try {
             restTemplate.exchange(botConfiguration.server!!.url + "/api/user", HttpMethod.POST, httpEntity, Any::class.java)
             true
-        } catch (e: HttpStatusCodeException) {
-            log.error("Register bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+        } catch (e: Exception) {
+            if (e is HttpStatusCodeException) {
+                log.error("Register bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+            } else {
+                log.error("Register bot on iconect server failed with message '${e.message}'")
+            }
             false
         }
     }
