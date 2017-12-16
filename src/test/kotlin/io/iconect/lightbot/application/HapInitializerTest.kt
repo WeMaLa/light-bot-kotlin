@@ -2,6 +2,7 @@ package io.iconect.lightbot.application
 
 import io.iconect.lightbot.domain.hap.service.Thermostat
 import io.iconect.lightbot.domain.hap.service.characteristic.CurrentTemperature
+import io.iconect.lightbot.domain.hap.service.characteristic.Name
 import io.iconect.lightbot.domain.hap.service.characteristic.TargetTemperature
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -26,5 +27,9 @@ class HapInitializerTest {
         val currentTemperature = thermostat.characteristics.first { c -> c is CurrentTemperature } as CurrentTemperature
         assertThat(currentTemperature.instanceId).isEqualTo(22)
         assertThat(currentTemperature.value).isEqualTo("0.0")
+
+        val name = thermostat.characteristics.first { c -> c is Name } as Name
+        assertThat(name.instanceId).isEqualTo(23)
+        assertThat(name.value).isNull()
     }
 }

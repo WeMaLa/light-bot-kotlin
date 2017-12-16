@@ -7,7 +7,7 @@ class HapInitializer {
 
     companion object {
         fun initialize(): Accessory {
-            val thermostat = Thermostat(2, 21, 22)
+            val thermostat = Thermostat(2, 21, 22, 23)
             return Accessory(1, listOf(thermostat))
         }
     }
