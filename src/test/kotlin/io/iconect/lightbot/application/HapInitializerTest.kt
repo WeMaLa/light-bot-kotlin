@@ -30,6 +30,6 @@ class HapInitializerTest {
 
         val name = thermostat.characteristics.first { c -> c is Name } as Name
         assertThat(name.instanceId).isEqualTo(23)
-        assertThat(name.value).isNull()
+        assertThat(name.value).isEqualTo("Kitchen thermostat heater")
     }
 }
