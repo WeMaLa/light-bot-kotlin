@@ -6,7 +6,7 @@ interface Characteristic {
     val type: String
     val instanceId: Int
     val value: String?
-    val perms: List<Permission>
+    val permissions: List<Permission>
     val description: String?
     val format: Format
     val unit: Unit?

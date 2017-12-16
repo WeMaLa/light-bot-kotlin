@@ -7,7 +7,7 @@ data class Name(override val instanceId: Int) : Characteristic {
     override var value: String? = null
     override val type = "public.hap.characteristic.temperature.name"
     override val description: String? = null
-    override val perms = listOf(Permission.PAIRED_READ)
+    override val permissions = listOf(Permission.PAIRED_READ)
     override val format = Format.STRING
     override val unit: Unit? = null
     override val minimumValue: Double? = null

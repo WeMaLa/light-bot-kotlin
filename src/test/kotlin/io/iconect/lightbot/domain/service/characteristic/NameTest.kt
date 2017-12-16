@@ -1,8 +1,5 @@
 package io.iconect.lightbot.domain.service.characteristic
 
-import io.iconect.lightbot.domain.service.characteristic.Format
-import io.iconect.lightbot.domain.service.characteristic.Name
-import io.iconect.lightbot.domain.service.characteristic.Permission
 import org.assertj.core.api.Assertions
 import org.junit.Test
 
@@ -17,7 +14,7 @@ class NameTest {
         Assertions.assertThat(name.type).isEqualTo("public.hap.characteristic.temperature.name")
         Assertions.assertThat(name.description).isNull()
         Assertions.assertThat(name.value).isNull()
-        Assertions.assertThat(name.perms).containsOnly(Permission.PAIRED_READ)
+        Assertions.assertThat(name.permissions).containsOnly(Permission.PAIRED_READ)
         Assertions.assertThat(name.format).isEqualTo(Format.STRING)
         Assertions.assertThat(name.unit).isNull()
         Assertions.assertThat(name.minimumValue).isNull()

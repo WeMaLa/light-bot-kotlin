@@ -8,7 +8,7 @@ data class CurrentTemperature(override val instanceId: Int) : Characteristic {
         private set
     override val type = "public.hap.characteristic.temperature.current"
     override val description: String? = null
-    override val perms = listOf(Permission.PAIRED_READ, Permission.NOTIFY)
+    override val permissions = listOf(Permission.PAIRED_READ, Permission.NOTIFY)
     override val format = Format.FLOAT
     override val unit: Unit? = Unit.CELSIUS
     override val minimumValue: Double = 0.0

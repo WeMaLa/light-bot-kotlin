@@ -8,7 +8,7 @@ data class TargetTemperature(override val instanceId: Int) : Characteristic {
         private set
     override val type = "public.hap.characteristic.temperature.target"
     override val description: String? = null
-    override val perms = listOf(Permission.PAIRED_READ, Permission.PAIRED_WRITE, Permission.NOTIFY)
+    override val permissions = listOf(Permission.PAIRED_READ, Permission.PAIRED_WRITE, Permission.NOTIFY)
     override val format = Format.FLOAT
     override val unit: Unit? = Unit.CELSIUS
     override val minimumValue: Double = 10.0

@@ -1,9 +1,5 @@
 package io.iconect.lightbot.domain.service.characteristic
 
-import io.iconect.lightbot.domain.service.characteristic.Format
-import io.iconect.lightbot.domain.service.characteristic.Permission
-import io.iconect.lightbot.domain.service.characteristic.TargetTemperature
-import io.iconect.lightbot.domain.service.characteristic.Unit
 import org.assertj.core.api.Assertions
 import org.junit.Test
 
@@ -18,7 +14,7 @@ class TargetTemperatureTest {
         Assertions.assertThat(targetTemperature.type).isEqualTo("public.hap.characteristic.temperature.target")
         Assertions.assertThat(targetTemperature.description).isNull()
         Assertions.assertThat(targetTemperature.value).isEqualTo("10.0")
-        Assertions.assertThat(targetTemperature.perms).containsOnly(Permission.PAIRED_READ, Permission.PAIRED_WRITE, Permission.NOTIFY)
+        Assertions.assertThat(targetTemperature.permissions).containsOnly(Permission.PAIRED_READ, Permission.PAIRED_WRITE, Permission.NOTIFY)
         Assertions.assertThat(targetTemperature.format).isEqualTo(Format.FLOAT)
         Assertions.assertThat(targetTemperature.unit).isEqualTo(Unit.CELSIUS)
         Assertions.assertThat(targetTemperature.minimumValue).isEqualTo(10.0)

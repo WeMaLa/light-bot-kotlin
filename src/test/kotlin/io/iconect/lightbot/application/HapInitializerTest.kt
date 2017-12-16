@@ -1,17 +1,41 @@
 package io.iconect.lightbot.application
 
+import io.iconect.lightbot.TestLightBotApplication
+import io.iconect.lightbot.domain.AccessoryRepository
 import io.iconect.lightbot.domain.service.Thermostat
 import io.iconect.lightbot.domain.service.characteristic.CurrentTemperature
 import io.iconect.lightbot.domain.service.characteristic.Name
 import io.iconect.lightbot.domain.service.characteristic.TargetTemperature
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit4.SpringRunner
 
+@RunWith(SpringRunner::class)
+@SpringBootTest
+@ActiveProfiles("unittest")
+@ContextConfiguration(classes = [TestLightBotApplication::class])
 class HapInitializerTest {
+
+    @Autowired
+    private lateinit var accessoryRepository: AccessoryRepository
+
+    @Autowired
+    private lateinit var hapInitializer: HapInitializer
 
     @Test
     fun `verify initialization`() {
-        val accessory = HapInitializer.initialize()
+        hapInitializer.initialize()
+
+        val accessories = accessoryRepository.findAll()
+
+        assertThat(accessories.size).isEqualTo(1)
+
+        val accessory = accessories[0]
 
         assertThat(accessory).isNotNull()
         assertThat(accessory.instanceId).isEqualTo(1)
