@@ -28,7 +28,7 @@ class ServerMessageExchangeService @Autowired constructor(
 
             messages.forEach { m -> markAsRead(m.identifier, httpEntity) }
 
-            return messages.map { m -> ServerMessage(m.content) }
+            return messages.map { m -> ServerMessage(m.content, m._links.channel.href.replace("/api/channel/", "")) }
         } else {
             emptyList()
         }
@@ -74,5 +74,14 @@ class ServerMessageExchangeService @Autowired constructor(
     class Message {
         var identifier: String = ""
         var content: String = ""
+        var _links: Links = Links()
+
+        class Links {
+            var channel : Channel = Channel()
+
+            class Channel {
+                var href : String = ""
+            }
+        }
     }
 }

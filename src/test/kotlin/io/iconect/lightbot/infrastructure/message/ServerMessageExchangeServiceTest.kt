@@ -2,6 +2,7 @@ package io.iconect.lightbot.infrastructure.message
 
 import io.iconect.lightbot.TestLightBotApplication
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.tuple
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -73,8 +74,10 @@ class ServerMessageExchangeServiceTest {
                 .andRespond(response)
 
         assertThat(serverMessageExchangeService.retrieveMessages())
-                .extracting("content")
-                .containsExactly("message2", "message1")
+                .extracting("content", "channel")
+                .containsExactly(
+                       tuple( "message2", "AWA6_ozSA1S3ubG7cRdx"),
+                       tuple( "message1", "AWA6_ozSA1S3ubG7cRdx"))
 
         server.verify()
     }
@@ -113,8 +116,11 @@ class ServerMessageExchangeServiceTest {
                 .andExpect(header("Authorization", "unit-test-auth-token"))
                 .andRespond(response)
 
-        assertThat(serverMessageExchangeService.retrieveMessages()).extracting("content")
-                .containsExactly("message2", "message1")
+        assertThat(serverMessageExchangeService.retrieveMessages())
+                .extracting("content", "channel")
+                .containsExactly(
+                        tuple( "message2", "AWA6_ozSA1S3ubG7cRdx"),
+                        tuple( "message1", "AWA6_ozSA1S3ubG7cRdx"))
 
         server.verify()
     }
