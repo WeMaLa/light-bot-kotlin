@@ -3,11 +3,7 @@ package io.iconect.lightbot.infrastructure
 import io.iconect.lightbot.TestLightBotApplication
 import io.iconect.lightbot.domain.Accessory
 import io.iconect.lightbot.domain.AccessoryRepository
-import io.iconect.lightbot.domain.Room
-import io.iconect.lightbot.domain.RoomRepository
-import io.iconect.lightbot.infrastructure.model.AccessoryDto
-import io.iconect.lightbot.infrastructure.model.RoomDto
-import org.assertj.core.api.Assertions
+import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -43,11 +38,10 @@ class AccessoryControllerTest {
                 Accessory(2, emptyList())
         ))
 
-        val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, object : ParameterizedTypeReference<List<AccessoryDto>>() {
-        })
+        val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, AccessoriesDto::class.java)
 
         assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(exchange.body)
+        assertThat(exchange.body!!.accessories)
                 .extracting("aid")
                 .containsOnly(1, 2)
     }

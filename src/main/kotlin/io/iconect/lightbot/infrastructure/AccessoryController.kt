@@ -1,6 +1,8 @@
 package io.iconect.lightbot.infrastructure
 
+import io.iconect.lightbot.domain.Accessory
 import io.iconect.lightbot.domain.AccessoryRepository
+import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import io.iconect.lightbot.infrastructure.model.AccessoryDto
 import io.iconect.lightbot.infrastructure.model.DefaultSpringErrorDto
 import io.swagger.annotations.Api
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@Api(value="accessories", description="Operations pertaining to products in Online Store")
+@Api(value = "accessories", description = "Operations pertaining to products in Online Store")
 class AccessoryController @Autowired constructor(private val accessoryRepository: AccessoryRepository) {
 
     @ApiOperation(value = "Loads all existing rooms.")
@@ -23,8 +25,13 @@ class AccessoryController @Autowired constructor(private val accessoryRepository
         (ApiResponse(code = 405, message = "Wrong method type", response = DefaultSpringErrorDto::class)),
         (ApiResponse(code = 500, message = "Internal server error", response = DefaultSpringErrorDto::class))])
     @RequestMapping(value = ["/api/accessories"], method = [(RequestMethod.GET)], produces = ["application/hap+json"])
-    fun findAllRooms(): ResponseEntity<List<AccessoryDto>> {
-        return ResponseEntity.ok<List<AccessoryDto>>(accessoryRepository.findAll().map { a -> AccessoryDto(a.instanceId) })
+    fun findAllRooms(): ResponseEntity<AccessoriesDto> {
+        val accessories = accessoryRepository.findAll().map { a -> mapToDto(a) }
+        return ResponseEntity.ok<AccessoriesDto>(AccessoriesDto(accessories))
+    }
+
+    private fun mapToDto(accessory: Accessory): AccessoryDto {
+        return AccessoryDto(accessory.instanceId)
     }
 
 }
