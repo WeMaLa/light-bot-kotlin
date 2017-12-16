@@ -12,7 +12,7 @@ data class Thermostat(override val instanceId: Int,
 
     val uuid = "0000004A-0000-1000-8000-0026BB765291"
     override val type = "public.hap.service.thermostat"
-    override val characteristics = listOf(TargetTemperature(targetTemperatureInstanceId, description = targetTemperatureDescription), CurrentTemperature(currentTemperatureInstanceId, description = currentTemperatureDescription)) // TODO
+    override val characteristics = listOf(TargetTemperature(targetTemperatureInstanceId, targetTemperatureDescription), CurrentTemperature(currentTemperatureInstanceId, currentTemperatureDescription))
     override val hidden = false
     override val primaryService = true
     override val linkedServices = emptyList<Int>()

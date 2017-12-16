@@ -5,14 +5,14 @@ interface Characteristic {
 
     val type: String
     val instanceId: Int
-    var value: String
+    val value: String
     val perms: List<Permission>
     val description: String?
     val format: Format
     val unit: Unit?
-    val minimumValue: Float?
-    val maximumValue: Float?
-    val stepValue: Float?
+    val minimumValue: Double?
+    val maximumValue: Double?
+    val stepValue: Double?
     val maxLength: Int?
     val maxDataLength: Int?
 
