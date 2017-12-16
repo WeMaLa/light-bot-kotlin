@@ -24,14 +24,6 @@ class CurrentTemperatureTest {
     }
 
     @Test
-    fun `verify custom values`() {
-        val currentTemperature = CurrentTemperature(2, "custom test description")
-
-        Assertions.assertThat(currentTemperature.instanceId).isEqualTo(2)
-        Assertions.assertThat(currentTemperature.description).isEqualTo("custom test description")
-    }
-
-    @Test
     fun `adjust value`() {
         val currentTemperature = CurrentTemperature(3)
         currentTemperature.adjustValue(23.0)

@@ -1,12 +1,13 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 148
-data class CurrentTemperature(override val instanceId: Int, override var description: String? = null) : Characteristic {
+data class CurrentTemperature(override val instanceId: Int) : Characteristic {
 
     val uuid = "00000011-0000-1000-8000-0026BB765291"
     override var value: String = "0.0"
         private set
     override val type = "public.hap.characteristic.temperature.current"
+    override val description: String? = null
     override val perms = listOf(Permission.PAIRED_READ, Permission.NOTIFY)
     override val format = Format.FLOAT
     override val unit: Unit? = Unit.CELSIUS

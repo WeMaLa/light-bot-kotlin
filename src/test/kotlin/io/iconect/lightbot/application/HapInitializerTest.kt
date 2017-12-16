@@ -28,12 +28,10 @@ class HapInitializerTest {
 
         val targetTemperature = thermostat.characteristics.first { c -> c is TargetTemperature } as TargetTemperature
         assertThat(targetTemperature.instanceId).isEqualTo(21)
-        assertThat(targetTemperature.description).isEqualTo("Kitchen heater")
         assertThat(targetTemperature.value).isEqualTo("10.0")
 
         val currentTemperature = thermostat.characteristics.first { c -> c is CurrentTemperature } as CurrentTemperature
         assertThat(currentTemperature.instanceId).isEqualTo(22)
-        assertThat(currentTemperature.description).isEqualTo("Kitchen heater")
         assertThat(currentTemperature.value).isEqualTo("0.0")
     }
 }
