@@ -14,7 +14,7 @@ data class TargetTemperature(override val instanceId: Int) : Characteristic {
     override val minimumValue: Double = 10.0
     override val maximumValue: Double = 38.0
     override val stepValue: Double? = null
-    override val maxLength: Int? = null
+    override val maximumLength: Int? = null
     override val maxDataLength: Int? = null
 
     fun adjustValue(degree: Double) {

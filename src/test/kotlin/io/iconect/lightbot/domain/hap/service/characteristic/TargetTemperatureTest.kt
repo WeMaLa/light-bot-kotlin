@@ -11,6 +11,7 @@ class TargetTemperatureTest {
 
         Assertions.assertThat(targetTemperature.instanceId).isEqualTo(1)
         Assertions.assertThat(targetTemperature.uuid).isEqualTo("00000035-0000-1000-8000-0026BB765291")
+        Assertions.assertThat(targetTemperature.type).isEqualTo("public.hap.characteristic.temperature.target")
         Assertions.assertThat(targetTemperature.description).isNull()
         Assertions.assertThat(targetTemperature.value).isEqualTo("10.0")
         Assertions.assertThat(targetTemperature.perms).containsOnly(Permission.PAIRED_READ, Permission.PAIRED_WRITE, Permission.NOTIFY)
@@ -19,7 +20,7 @@ class TargetTemperatureTest {
         Assertions.assertThat(targetTemperature.minimumValue).isEqualTo(10.0)
         Assertions.assertThat(targetTemperature.maximumValue).isEqualTo(38.0)
         Assertions.assertThat(targetTemperature.stepValue).isNull()
-        Assertions.assertThat(targetTemperature.maxLength).isNull()
+        Assertions.assertThat(targetTemperature.maximumLength).isNull()
         Assertions.assertThat(targetTemperature.maxDataLength).isNull()
     }
 

@@ -14,7 +14,7 @@ data class CurrentTemperature(override val instanceId: Int) : Characteristic {
     override val minimumValue: Double = 0.0
     override val maximumValue: Double = 100.0
     override val stepValue: Double = 0.1
-    override val maxLength: Int? = null
+    override val maximumLength: Int? = null
     override val maxDataLength: Int? = null
 
     fun adjustValue(degree: Double) {

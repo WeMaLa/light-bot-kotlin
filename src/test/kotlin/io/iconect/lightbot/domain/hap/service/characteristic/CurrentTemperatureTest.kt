@@ -11,6 +11,7 @@ class CurrentTemperatureTest {
 
         Assertions.assertThat(currentTemperature.instanceId).isEqualTo(1)
         Assertions.assertThat(currentTemperature.uuid).isEqualTo("00000011-0000-1000-8000-0026BB765291")
+        Assertions.assertThat(currentTemperature.type).isEqualTo("public.hap.characteristic.temperature.current")
         Assertions.assertThat(currentTemperature.description).isNull()
         Assertions.assertThat(currentTemperature.value).isEqualTo("0.0")
         Assertions.assertThat(currentTemperature.perms).containsOnly(Permission.PAIRED_READ, Permission.NOTIFY)
@@ -19,7 +20,7 @@ class CurrentTemperatureTest {
         Assertions.assertThat(currentTemperature.minimumValue).isEqualTo(0.0)
         Assertions.assertThat(currentTemperature.maximumValue).isEqualTo(100.0)
         Assertions.assertThat(currentTemperature.stepValue).isEqualTo(0.1)
-        Assertions.assertThat(currentTemperature.maxLength).isNull()
+        Assertions.assertThat(currentTemperature.maximumLength).isNull()
         Assertions.assertThat(currentTemperature.maxDataLength).isNull()
     }
 

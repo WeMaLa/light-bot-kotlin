@@ -5,7 +5,7 @@ interface Characteristic {
 
     val type: String
     val instanceId: Int
-    val value: String
+    val value: String?
     val perms: List<Permission>
     val description: String?
     val format: Format
@@ -13,7 +13,7 @@ interface Characteristic {
     val minimumValue: Double?
     val maximumValue: Double?
     val stepValue: Double?
-    val maxLength: Int?
+    val maximumLength: Int?
     val maxDataLength: Int?
 
 }
