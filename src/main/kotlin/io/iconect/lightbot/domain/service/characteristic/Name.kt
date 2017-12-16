@@ -1,4 +1,4 @@
-package io.iconect.lightbot.domain.hap.service.characteristic
+package io.iconect.lightbot.domain.service.characteristic
 
 // page 157
 data class Name(override val instanceId: Int) : Characteristic {

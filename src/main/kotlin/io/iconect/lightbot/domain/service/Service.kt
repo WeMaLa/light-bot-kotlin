@@ -1,6 +1,6 @@
-package io.iconect.lightbot.domain.hap.service
+package io.iconect.lightbot.domain.service
 
-import io.iconect.lightbot.domain.hap.service.characteristic.Characteristic
+import io.iconect.lightbot.domain.service.characteristic.Characteristic
 
 // page 64
 interface Service {

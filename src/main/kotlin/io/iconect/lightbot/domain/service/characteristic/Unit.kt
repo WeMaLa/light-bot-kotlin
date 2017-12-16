@@ -1,4 +1,4 @@
-package io.iconect.lightbot.domain.hap.service.characteristic
+package io.iconect.lightbot.domain.service.characteristic
 
 enum class Unit(val json: String, val description: String) {
 

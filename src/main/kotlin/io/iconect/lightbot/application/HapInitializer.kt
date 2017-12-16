@@ -1,8 +1,8 @@
 package io.iconect.lightbot.application
 
-import io.iconect.lightbot.domain.hap.Accessory
-import io.iconect.lightbot.domain.hap.service.Thermostat
-import io.iconect.lightbot.domain.hap.service.characteristic.Name
+import io.iconect.lightbot.domain.Accessory
+import io.iconect.lightbot.domain.service.Thermostat
+import io.iconect.lightbot.domain.service.characteristic.Name
 
 class HapInitializer {
 

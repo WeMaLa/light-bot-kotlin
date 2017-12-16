@@ -1,4 +1,4 @@
-package io.iconect.lightbot.domain.hap.service.characteristic
+package io.iconect.lightbot.domain.service.characteristic
 
 // page 162
 data class TargetTemperature(override val instanceId: Int) : Characteristic {

@@ -1,8 +1,8 @@
-package io.iconect.lightbot.domain.hap.service
+package io.iconect.lightbot.domain.service
 
-import io.iconect.lightbot.domain.hap.service.characteristic.CurrentTemperature
-import io.iconect.lightbot.domain.hap.service.characteristic.Name
-import io.iconect.lightbot.domain.hap.service.characteristic.TargetTemperature
+import io.iconect.lightbot.domain.service.characteristic.CurrentTemperature
+import io.iconect.lightbot.domain.service.characteristic.Name
+import io.iconect.lightbot.domain.service.characteristic.TargetTemperature
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
