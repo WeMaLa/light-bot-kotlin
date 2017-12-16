@@ -1,6 +1,6 @@
 package io.iconect.lightbot
 
-import io.iconect.lightbot.application.RoomInitializer
+import io.iconect.lightbot.application.HapInitializer
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -23,8 +23,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 class LightBotApplication {
 
     @Bean
-    fun init(roomInitializer: RoomInitializer) = CommandLineRunner {
-        roomInitializer.initializeRooms()
+    fun init(hapInitializer: HapInitializer) = CommandLineRunner {
+        hapInitializer.initialize()
     }
 
     @Bean
