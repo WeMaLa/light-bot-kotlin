@@ -11,7 +11,7 @@ class ScheduleMessages @Autowired constructor(private var serverMessageExchangeS
     private val log = LoggerFactory.getLogger(ScheduleMessages::class.java)
 
     @Scheduled(fixedRate = 3000)
-    fun reportCurrentTime() {
+    fun handleUnreadMessages() {
         log.info("Start retrieving latest messages")
         val retrieveMessages = serverMessageExchangeService.retrieveMessages()
         log.info("${retrieveMessages.size} messages retrieved")
