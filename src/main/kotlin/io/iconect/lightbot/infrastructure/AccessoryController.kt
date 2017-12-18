@@ -1,12 +1,9 @@
 package io.iconect.lightbot.infrastructure
 
-import io.iconect.lightbot.domain.Accessory
 import io.iconect.lightbot.domain.AccessoryRepository
-import io.iconect.lightbot.domain.service.Service
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import io.iconect.lightbot.infrastructure.model.AccessoryDto
 import io.iconect.lightbot.infrastructure.model.DefaultSpringErrorDto
-import io.iconect.lightbot.infrastructure.model.ServiceDto
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
@@ -28,17 +25,8 @@ class AccessoryController @Autowired constructor(private val accessoryRepository
         (ApiResponse(code = 500, message = "Internal server error", response = DefaultSpringErrorDto::class))])
     @RequestMapping(value = ["/api/accessories"], method = [(RequestMethod.GET)], produces = ["application/hap+json"])
     fun findAllRooms(): ResponseEntity<AccessoriesDto> {
-        val accessories = accessoryRepository.findAll().map { a -> mapToDto(a) }
+        val accessories = accessoryRepository.findAll().map { a -> AccessoryDto.from(a) }
         return ResponseEntity.ok<AccessoriesDto>(AccessoriesDto(accessories))
-    }
-
-    private fun mapToDto(accessory: Accessory): AccessoryDto {
-        return AccessoryDto(accessory.instanceId, accessory.services.map { s -> maoToDto(s) })
-    }
-
-    private fun maoToDto(service: Service): ServiceDto {
-        val type = service.uuid.split("-")[0].trimStart('0')
-        return ServiceDto(service.instanceId, type)
     }
 
 }
