@@ -3,8 +3,12 @@ package io.iconect.lightbot.infrastructure
 import io.iconect.lightbot.TestLightBotApplication
 import io.iconect.lightbot.domain.Accessory
 import io.iconect.lightbot.domain.AccessoryRepository
+import io.iconect.lightbot.domain.service.Thermostat
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
+import org.apache.coyote.http11.Constants.a
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.tuple
+import org.assertj.core.groups.Tuple
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -34,16 +38,28 @@ class AccessoryControllerTest {
     @Test
     fun `find all accessories`() {
         Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(
-                Accessory(1, emptyList()),
+                Accessory(1, listOf(Thermostat(11, 12, 13, 14))),
                 Accessory(2, emptyList())
         ))
 
         val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, AccessoriesDto::class.java)
 
+        val accessories = exchange.body!!
+
         assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(exchange.body!!.accessories)
-                .extracting("aid")
-                .containsOnly(1, 2)
+        assertThat(accessories.accessories)
+                .extracting("aid", "services.size")
+                .containsOnly(
+                        tuple(1, 1),
+                        tuple(2, 0))
+
+        val services = accessories.accessories.flatMap { a -> a.services }
+
+        assertThat(services)
+                .extracting("type", "iid")
+                .containsExactly(
+                        tuple("4A", 11)
+                )
     }
 
 }

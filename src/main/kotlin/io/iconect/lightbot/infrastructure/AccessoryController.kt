@@ -2,9 +2,11 @@ package io.iconect.lightbot.infrastructure
 
 import io.iconect.lightbot.domain.Accessory
 import io.iconect.lightbot.domain.AccessoryRepository
+import io.iconect.lightbot.domain.service.Service
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import io.iconect.lightbot.infrastructure.model.AccessoryDto
 import io.iconect.lightbot.infrastructure.model.DefaultSpringErrorDto
+import io.iconect.lightbot.infrastructure.model.ServiceDto
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
@@ -31,7 +33,12 @@ class AccessoryController @Autowired constructor(private val accessoryRepository
     }
 
     private fun mapToDto(accessory: Accessory): AccessoryDto {
-        return AccessoryDto(accessory.instanceId)
+        return AccessoryDto(accessory.instanceId, accessory.services.map { s -> maoToDto(s) })
+    }
+
+    private fun maoToDto(service: Service): ServiceDto {
+        val type = service.uuid.split("-")[0].trimStart('0')
+        return ServiceDto(service.instanceId, type)
     }
 
 }

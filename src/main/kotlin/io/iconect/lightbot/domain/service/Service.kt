@@ -5,6 +5,7 @@ import io.iconect.lightbot.domain.service.characteristic.Characteristic
 // page 64
 interface Service {
 
+    val uuid: String
     val type: String
     val instanceId: Int
     val characteristics: List<Characteristic>
