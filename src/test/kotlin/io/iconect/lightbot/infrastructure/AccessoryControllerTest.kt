@@ -37,10 +37,7 @@ class AccessoryControllerTest {
 
     @Test
     fun `find all accessories`() {
-        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(
-                Accessory(1, listOf(Thermostat(11, 12, 13, 14))),
-                Accessory(2, emptyList())
-        ))
+        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(Accessory(1, emptyList())))
 
         val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, AccessoriesDto::class.java)
 
@@ -49,17 +46,7 @@ class AccessoryControllerTest {
         assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(accessories.accessories)
                 .extracting("aid", "services.size")
-                .containsOnly(
-                        tuple(1, 1),
-                        tuple(2, 0))
-
-        val services = accessories.accessories.flatMap { a -> a.services }
-
-        assertThat(services)
-                .extracting("type", "iid")
-                .containsExactly(
-                        tuple("4A", 11)
-                )
+                .containsOnly(tuple(1, 0))
     }
 
 }
