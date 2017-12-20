@@ -17,14 +17,3 @@ class ScheduleMessages @Autowired constructor(private var serverMessageExchangeS
         log.info("${retrieveMessages.size} messages retrieved")
     }
 }
-/*
-{
-    "characteristics" : [
-    {
-        "aid" : 2, //
-        "iid" : 8,
-        "value" : true
-    }
-    ]
-}
-*/
