@@ -1,7 +1,7 @@
 package io.iconect.lightbot.infrastructure.model
 
 import io.iconect.lightbot.domain.service.Thermostat
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class ServiceDtoTest {
@@ -12,8 +12,10 @@ class ServiceDtoTest {
 
         val serviceDto = ServiceDto.from(thermostat)
 
-        Assertions.assertThat(serviceDto.iid).isEqualTo(11)
-        Assertions.assertThat(serviceDto.type).isEqualTo("4A")
+        assertThat(serviceDto.iid).isEqualTo(11)
+        assertThat(serviceDto.iid).isEqualTo(11)
+        assertThat(serviceDto.characteristics).extracting("iid").containsExactly(12, 13, 14)
+
     }
 
 }

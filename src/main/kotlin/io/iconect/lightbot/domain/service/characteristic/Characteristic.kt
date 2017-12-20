@@ -3,6 +3,7 @@ package io.iconect.lightbot.domain.service.characteristic
 // page 67
 interface Characteristic {
 
+    val uuid: String
     val type: String
     val instanceId: Int
     val value: String?

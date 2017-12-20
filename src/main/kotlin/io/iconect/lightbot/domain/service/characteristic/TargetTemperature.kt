@@ -3,7 +3,7 @@ package io.iconect.lightbot.domain.service.characteristic
 // page 162
 data class TargetTemperature(override val instanceId: Int) : Characteristic {
 
-    val uuid = "00000035-0000-1000-8000-0026BB765291"
+    override val uuid = "00000035-0000-1000-8000-0026BB765291"
     override var value: String = "10.0"
         private set
     override val type = "public.hap.characteristic.temperature.target"

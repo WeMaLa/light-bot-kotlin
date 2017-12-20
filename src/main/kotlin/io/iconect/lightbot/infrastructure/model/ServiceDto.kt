@@ -2,11 +2,11 @@ package io.iconect.lightbot.infrastructure.model
 
 import io.iconect.lightbot.domain.service.Service
 
-data class ServiceDto(val iid: Int, val type: String) {
+data class ServiceDto(val iid: Int, val type: String, val characteristics: List<CharacteristicDto>) {
 
     companion object {
         fun from(service: Service): ServiceDto {
-            return ServiceDto(service.instanceId, UuidToTypeMapper.map(service.uuid))
+            return ServiceDto(service.instanceId, UuidToTypeMapper.map(service.uuid), service.characteristics.map { CharacteristicDto.from(it) })
         }
     }
 

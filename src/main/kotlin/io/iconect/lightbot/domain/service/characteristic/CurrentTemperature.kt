@@ -3,7 +3,7 @@ package io.iconect.lightbot.domain.service.characteristic
 // page 148
 data class CurrentTemperature(override val instanceId: Int) : Characteristic {
 
-    val uuid = "00000011-0000-1000-8000-0026BB765291"
+    override val uuid = "00000011-0000-1000-8000-0026BB765291"
     override var value: String = "0.0"
         private set
     override val type = "public.hap.characteristic.temperature.current"
