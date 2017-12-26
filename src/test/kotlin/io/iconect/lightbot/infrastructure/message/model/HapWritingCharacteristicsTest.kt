@@ -1,8 +1,8 @@
 package io.iconect.lightbot.infrastructure.message.model
 
+import io.iconect.lightbot.infrastructure.message.model.exception.JsonConvertException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
-import org.junit.Ignore
 import org.junit.Test
 
 class HapWritingCharacteristicsTest {
@@ -53,8 +53,7 @@ class HapWritingCharacteristicsTest {
                 )
     }
 
-    @Test
-    @Ignore
+    @Test(expected = JsonConvertException::class)
     fun `from with json string could not be unmarshaled`() {
         val incomplete = "{" +
                 "\"characteristics\" : [\n" +
@@ -65,5 +64,15 @@ class HapWritingCharacteristicsTest {
                 "]}"
 
         HapWritingCharacteristics.from(incomplete)
+    }
+
+    @Test(expected = JsonConvertException::class)
+    fun `from with empty json string`() {
+        HapWritingCharacteristics.from("")
+    }
+
+    @Test(expected = JsonConvertException::class)
+    fun `from with json string of spaces`() {
+        HapWritingCharacteristics.from("   ")
     }
 }
