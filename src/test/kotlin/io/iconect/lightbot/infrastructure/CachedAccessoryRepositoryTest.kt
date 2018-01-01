@@ -21,40 +21,40 @@ import org.springframework.test.context.junit4.SpringRunner
 class CachedAccessoryRepositoryTest {
 
     @Autowired
-    lateinit var accessoryRepository: AccessoryRepository
+    lateinit var repository: AccessoryRepository
 
     @Before
     fun setUp() {
-        accessoryRepository.clear()
+        repository.clear()
     }
 
     @Test
     fun `find all accessories but repository is empty`() {
-        Assertions.assertThat(accessoryRepository.findAll()).isEmpty()
+        Assertions.assertThat(repository.findAll()).isEmpty()
     }
 
     @Test
     fun `store accessory`() {
         val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
 
-        Assertions.assertThat(accessoryRepository.findAll()).isEmpty()
+        Assertions.assertThat(repository.findAll()).isEmpty()
 
-        accessoryRepository.store(accessory)
+        repository.store(accessory)
 
-        Assertions.assertThat(accessoryRepository.findAll()).containsExactly(accessory)
+        Assertions.assertThat(repository.findAll()).containsExactly(accessory)
     }
 
     @Test
     fun `update stored room`() {
         val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
 
-        accessoryRepository.store(accessory)
-        Assertions.assertThat(accessoryRepository.findAll()).containsExactly(accessory)
+        repository.store(accessory)
+        Assertions.assertThat(repository.findAll()).containsExactly(accessory)
 
         val updatedAccessory = Accessory(1, emptyList())
 
-        accessoryRepository.store(updatedAccessory)
-        Assertions.assertThat(accessoryRepository.findAll()).containsExactly(updatedAccessory)
+        repository.store(updatedAccessory)
+        Assertions.assertThat(repository.findAll()).containsExactly(updatedAccessory)
     }
 
 }
