@@ -1,6 +1,7 @@
 package io.iconect.lightbot.infrastructure.message
 
-import io.iconect.lightbot.TestLightBotApplication
+import io.iconect.lightbot.domain.VHabStatus
+import io.iconect.lightbot.domain.VHabStatusRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers.*
@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @ActiveProfiles("unittest")
-@ContextConfiguration(classes = [TestLightBotApplication::class])
 class ServerRegistrationExchangeServiceTest {
 
     @Autowired
@@ -30,11 +29,15 @@ class ServerRegistrationExchangeServiceTest {
     @Autowired
     lateinit var restTemplate: RestTemplate
 
+    @Autowired
+    lateinit var vHabStatusRepository: VHabStatusRepository
+
     lateinit var server: MockRestServiceServer
 
     @Before
     fun setUp() {
         server = MockRestServiceServer.bindTo(restTemplate).build()
+        vHabStatusRepository.clear()
     }
 
     @Test
@@ -47,6 +50,7 @@ class ServerRegistrationExchangeServiceTest {
                 .andRespond(withSuccess())
 
         assertThat(serverRegistrationExchangeService.registerBot()).isTrue()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.STARTING)
 
         server.verify()
     }
@@ -61,6 +65,7 @@ class ServerRegistrationExchangeServiceTest {
                 .andRespond(withBadRequest())
 
         assertThat(serverRegistrationExchangeService.registerBot()).isFalse()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.REGISTRATION_FAILED)
 
         server.verify()
     }
@@ -75,6 +80,7 @@ class ServerRegistrationExchangeServiceTest {
                 .andRespond(withStatus(HttpStatus.CONFLICT))
 
         assertThat(serverRegistrationExchangeService.registerBot()).isFalse()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.REGISTRATION_FAILED)
 
         server.verify()
     }

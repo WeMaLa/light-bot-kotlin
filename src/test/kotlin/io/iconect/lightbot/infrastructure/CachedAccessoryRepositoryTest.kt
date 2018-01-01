@@ -1,6 +1,5 @@
 package io.iconect.lightbot.infrastructure
 
-import io.iconect.lightbot.TestLightBotApplication
 import io.iconect.lightbot.domain.Accessory
 import io.iconect.lightbot.domain.AccessoryRepository
 import io.iconect.lightbot.domain.service.Thermostat
@@ -11,13 +10,11 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @ActiveProfiles("unittest")
-@ContextConfiguration(classes = [TestLightBotApplication::class])
 class CachedAccessoryRepositoryTest {
 
     @Autowired

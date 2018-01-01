@@ -1,8 +1,10 @@
 package io.iconect.lightbot.infrastructure.message
 
+import io.iconect.lightbot.domain.VHabStatus
 import io.iconect.lightbot.infrastructure.configuration.Configuration
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -15,6 +17,7 @@ import org.springframework.web.client.RestTemplate
 @Service
 class ServerAuthenticationExchangeService @Autowired constructor(
         private var botConfiguration: Configuration,
+        private var applicationEventPublisher: ApplicationEventPublisher,
         private var restTemplate: RestTemplate,
         private var serverRegistrationExchangeService: ServerRegistrationExchangeService) {
 
@@ -41,10 +44,12 @@ class ServerAuthenticationExchangeService @Autowired constructor(
                 log.error("Authenticaton bot on iconect server failed with message '${e.message}'")
             }
 
+            applicationEventPublisher.publishEvent(VHabStatus.AUTHENTICATION_FAILED)
             null
         } catch (e: ResourceAccessException) {
             log.error("Authenticaton bot on iconect server failed with message '${e.message}'")
 
+            applicationEventPublisher.publishEvent(VHabStatus.AUTHENTICATION_FAILED)
             null
         }
     }

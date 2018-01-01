@@ -1,8 +1,9 @@
 package io.iconect.lightbot.infrastructure.message
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.iconect.lightbot.TestLightBotApplication
-import org.assertj.core.api.Assertions
+import io.iconect.lightbot.domain.VHabStatus
+import io.iconect.lightbot.domain.VHabStatusRepository
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.core.IsEqual
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +17,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
@@ -26,7 +26,6 @@ import org.springframework.web.client.RestTemplate
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @ActiveProfiles("unittest")
-@ContextConfiguration(classes = [TestLightBotApplication::class])
 class ServerAuthenticationExchangeServiceTest {
 
     @Autowired
@@ -34,6 +33,9 @@ class ServerAuthenticationExchangeServiceTest {
 
     @Autowired
     lateinit var restTemplate: RestTemplate
+
+    @Autowired
+    lateinit var vHabStatusRepository: VHabStatusRepository
 
     @MockBean
     lateinit var serverRegistrationExchangeService: ServerRegistrationExchangeService
@@ -43,6 +45,7 @@ class ServerAuthenticationExchangeServiceTest {
     @Before
     fun setUp() {
         server = MockRestServiceServer.bindTo(restTemplate).build()
+        vHabStatusRepository.clear()
     }
 
     @Test
@@ -55,13 +58,14 @@ class ServerAuthenticationExchangeServiceTest {
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
                 .andRespond(withSuccess(ObjectMapper().writeValueAsString(response), MediaType.APPLICATION_JSON))
 
-        Assertions.assertThat(serverAuthenticationExchangeService.authenticate()).isEqualTo("unit-test-auth-token")
+        assertThat(serverAuthenticationExchangeService.authenticate()).isEqualTo("unit-test-auth-token")
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.STARTING)
 
         server.verify()
     }
 
     @Test
-    fun `authenticate light bot on iconect server and servers responds unauthorized`() {
+    fun `authenticate light bot on iconect server and servers first time responds unauthorized`() {
         val response = ServerAuthenticationExchangeService.JwtAuthenticationResponse()
         response.token = "unit-test-auth-token"
         `when`(serverRegistrationExchangeService.registerBot()).thenReturn(true)
@@ -78,7 +82,9 @@ class ServerAuthenticationExchangeServiceTest {
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
                 .andRespond(withSuccess(ObjectMapper().writeValueAsString(response), MediaType.APPLICATION_JSON))
 
-        Assertions.assertThat(serverAuthenticationExchangeService.authenticate()).isEqualTo("unit-test-auth-token")
+        assertThat(serverAuthenticationExchangeService.authenticate()).isEqualTo("unit-test-auth-token")
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.STARTING)
+
 
         server.verify()
         verify(serverRegistrationExchangeService).registerBot()
@@ -96,7 +102,8 @@ class ServerAuthenticationExchangeServiceTest {
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
                 .andRespond(withUnauthorizedRequest())
 
-        Assertions.assertThat(serverAuthenticationExchangeService.authenticate()).isNull()
+        assertThat(serverAuthenticationExchangeService.authenticate()).isNull()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.AUTHENTICATION_FAILED)
 
         server.verify()
         verify(serverRegistrationExchangeService).registerBot()
@@ -110,7 +117,8 @@ class ServerAuthenticationExchangeServiceTest {
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
                 .andRespond(withBadRequest())
 
-        Assertions.assertThat(serverAuthenticationExchangeService.authenticate()).isNull()
+        assertThat(serverAuthenticationExchangeService.authenticate()).isNull()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.AUTHENTICATION_FAILED)
 
         server.verify()
     }
@@ -123,7 +131,8 @@ class ServerAuthenticationExchangeServiceTest {
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("password", IsEqual.equalTo<String>("unit-test-bot-password")))
                 .andRespond(withStatus(HttpStatus.CONFLICT))
 
-        Assertions.assertThat(serverAuthenticationExchangeService.authenticate()).isNull()
+        assertThat(serverAuthenticationExchangeService.authenticate()).isNull()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.AUTHENTICATION_FAILED)
 
         server.verify()
     }

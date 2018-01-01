@@ -2,6 +2,7 @@ package io.iconect.lightbot.infrastructure
 
 import io.iconect.lightbot.domain.VHabStatus
 import io.iconect.lightbot.domain.VHabStatusRepository
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -13,6 +14,7 @@ class CachedVHabStatusRepository : VHabStatusRepository {
         return vHabStatus
     }
 
+    @EventListener
     override fun updateStatus(status: VHabStatus) {
         vHabStatus = status
     }

@@ -1,6 +1,7 @@
 package io.iconect.lightbot.infrastructure.message
 
-import io.iconect.lightbot.TestLightBotApplication
+import io.iconect.lightbot.domain.VHabStatus
+import io.iconect.lightbot.domain.VHabStatusRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
 import org.junit.Before
@@ -15,7 +16,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
@@ -29,7 +29,6 @@ import org.springframework.web.client.RestTemplate
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @ActiveProfiles("unittest")
-@ContextConfiguration(classes = [TestLightBotApplication::class])
 class ServerMessageExchangeServiceTest {
 
     @Autowired
@@ -39,6 +38,9 @@ class ServerMessageExchangeServiceTest {
     lateinit var serverAuthenticationExchangeService: ServerAuthenticationExchangeService
 
     @Autowired
+    lateinit var vHabStatusRepository: VHabStatusRepository
+
+    @Autowired
     lateinit var restTemplate: RestTemplate
 
     lateinit var server: MockRestServiceServer
@@ -46,6 +48,7 @@ class ServerMessageExchangeServiceTest {
     @Before
     fun setUp() {
         server = MockRestServiceServer.bindTo(restTemplate).build()
+        vHabStatusRepository.clear()
     }
 
     @Test
@@ -78,6 +81,7 @@ class ServerMessageExchangeServiceTest {
                 .containsExactly(
                        tuple( "message2", "AWA6_ozSA1S3ubG7cRdx"),
                        tuple( "message1", "AWA6_ozSA1S3ubG7cRdx"))
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.OK)
 
         server.verify()
     }
@@ -92,6 +96,7 @@ class ServerMessageExchangeServiceTest {
                 .andRespond(withBadRequest())
 
         assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.RECEIVE_MESSAGES_FAILED)
 
         server.verify()
     }
@@ -110,17 +115,18 @@ class ServerMessageExchangeServiceTest {
         server.expect(requestTo("http://server.unit.test/api/message/AWA6_vR3A1S3ubG7cRd1/read"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
                 .andExpect(header("Authorization", "unit-test-auth-token"))
-                .andRespond(withBadRequest())
+                .andRespond(response)
         server.expect(requestTo("http://server.unit.test/api/message/AWA6_o33A1S3ubG7cRdz/read"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
                 .andExpect(header("Authorization", "unit-test-auth-token"))
-                .andRespond(response)
+                .andRespond(withBadRequest())
 
         assertThat(serverMessageExchangeService.retrieveMessages())
                 .extracting("content", "channel")
                 .containsExactly(
                         tuple( "message2", "AWA6_ozSA1S3ubG7cRdx"),
                         tuple( "message1", "AWA6_ozSA1S3ubG7cRdx"))
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.MARK_MESSAGES_FAILED)
 
         server.verify()
     }
@@ -134,7 +140,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `retrieve messages when messages are empty`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         val httpHeaders = HttpHeaders()
         httpHeaders.set("content-type", "application/json;charset=UTF-8 ")
@@ -144,12 +150,13 @@ class ServerMessageExchangeServiceTest {
                 .body(createEmptyMessagesResponse())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .headers(httpHeaders)
-        server.expect(requestTo("http://server.unit.test/api/messages"))
+        server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
                 .andExpect(header("Authorization", "unit-test-auth-token"))
                 .andRespond(response)
 
         assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
+        assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.OK)
     }
 
     private fun createResponse(): String {

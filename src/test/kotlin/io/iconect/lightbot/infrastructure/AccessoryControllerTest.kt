@@ -1,14 +1,11 @@
 package io.iconect.lightbot.infrastructure
 
-import io.iconect.lightbot.TestLightBotApplication
 import io.iconect.lightbot.domain.Accessory
 import io.iconect.lightbot.domain.AccessoryRepository
 import io.iconect.lightbot.domain.service.Thermostat
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
-import org.apache.coyote.http11.Constants.a
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
-import org.assertj.core.groups.Tuple
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -20,13 +17,11 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("unittest")
-@ContextConfiguration(classes = [TestLightBotApplication::class])
 class AccessoryControllerTest {
 
     @Autowired
