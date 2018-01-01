@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.iconect</groupId>
-    <artifactId>light-bot-kotlin</artifactId>
+    <artifactId>vhab-kotlin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>light-bot</name>
-    <description>Demo project for Spring Boot</description>
+    <name>vHAB</name>
+    <description>iConect Virtual Home Automation Bot</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
