@@ -1,7 +1,7 @@
 package io.iconect.lightbot.infrastructure
 
-import io.iconect.lightbot.domain.Accessory
-import io.iconect.lightbot.domain.AccessoryRepository
+import io.iconect.lightbot.domain.hap.Accessory
+import io.iconect.lightbot.domain.hap.AccessoryRepository
 import org.springframework.stereotype.Repository
 
 @Repository

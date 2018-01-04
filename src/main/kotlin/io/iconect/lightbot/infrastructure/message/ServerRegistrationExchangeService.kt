@@ -1,6 +1,6 @@
 package io.iconect.lightbot.infrastructure.message
 
-import io.iconect.lightbot.domain.VHabStatus
+import io.iconect.lightbot.domain.hap.VHabStatus
 import io.iconect.lightbot.infrastructure.configuration.Configuration
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

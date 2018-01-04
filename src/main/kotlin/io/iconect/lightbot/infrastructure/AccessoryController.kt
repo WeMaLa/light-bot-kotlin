@@ -1,6 +1,6 @@
 package io.iconect.lightbot.infrastructure
 
-import io.iconect.lightbot.domain.AccessoryRepository
+import io.iconect.lightbot.domain.hap.AccessoryRepository
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import io.iconect.lightbot.infrastructure.model.AccessoryDto
 import io.iconect.lightbot.infrastructure.model.DefaultSpringErrorDto

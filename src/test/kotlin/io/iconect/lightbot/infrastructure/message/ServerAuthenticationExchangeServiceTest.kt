@@ -1,8 +1,8 @@
 package io.iconect.lightbot.infrastructure.message
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.iconect.lightbot.domain.VHabStatus
-import io.iconect.lightbot.domain.VHabStatusRepository
+import io.iconect.lightbot.domain.hap.VHabStatus
+import io.iconect.lightbot.domain.hap.VHabStatusRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.core.IsEqual
 import org.junit.Before

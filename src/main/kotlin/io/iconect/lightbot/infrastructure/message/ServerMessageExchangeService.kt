@@ -1,8 +1,9 @@
 package io.iconect.lightbot.infrastructure.message
 
-import io.iconect.lightbot.domain.VHabStatus
+import io.iconect.lightbot.domain.hap.VHabStatus
+import io.iconect.lightbot.domain.message.ServerMessage
+import io.iconect.lightbot.domain.message.ServerMessageRepository
 import io.iconect.lightbot.infrastructure.configuration.Configuration
-import io.iconect.lightbot.infrastructure.message.model.ServerMessage
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEventPublisher
@@ -18,11 +19,11 @@ class ServerMessageExchangeService @Autowired constructor(
         private var botConfiguration: Configuration,
         private var restTemplate: RestTemplate,
         private var applicationEventPublisher: ApplicationEventPublisher,
-        private var serverAuthenticationExchangeService: ServerAuthenticationExchangeService) {
+        private var serverAuthenticationExchangeService: ServerAuthenticationExchangeService) : ServerMessageRepository {
 
     private val log = LoggerFactory.getLogger(ServerMessageExchangeService::class.java)
 
-    fun retrieveMessages(): List<ServerMessage> {
+    override fun retrieveMessages(): List<ServerMessage> {
         val token = serverAuthenticationExchangeService.authenticate()
 
         return if (token != null) {

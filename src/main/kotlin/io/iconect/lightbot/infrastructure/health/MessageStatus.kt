@@ -1,6 +1,6 @@
 package io.iconect.lightbot.infrastructure.health
 
-import io.iconect.lightbot.domain.VHabStatusRepository
+import io.iconect.lightbot.domain.hap.VHabStatusRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.health.AbstractHealthIndicator
 import org.springframework.boot.actuate.health.Health

@@ -1,8 +1,8 @@
-package io.iconect.lightbot.domain.service
+package io.iconect.lightbot.domain.hap.service
 
-import io.iconect.lightbot.domain.service.characteristic.CurrentTemperature
-import io.iconect.lightbot.domain.service.characteristic.Name
-import io.iconect.lightbot.domain.service.characteristic.TargetTemperature
+import io.iconect.lightbot.domain.hap.service.characteristic.CurrentTemperature
+import io.iconect.lightbot.domain.hap.service.characteristic.Name
+import io.iconect.lightbot.domain.hap.service.characteristic.TargetTemperature
 
 // service page 220
 data class Thermostat(override val instanceId: Int,

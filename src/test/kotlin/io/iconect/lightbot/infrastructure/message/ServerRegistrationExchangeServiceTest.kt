@@ -1,7 +1,7 @@
 package io.iconect.lightbot.infrastructure.message
 
-import io.iconect.lightbot.domain.VHabStatus
-import io.iconect.lightbot.domain.VHabStatusRepository
+import io.iconect.lightbot.domain.hap.VHabStatus
+import io.iconect.lightbot.domain.hap.VHabStatusRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before

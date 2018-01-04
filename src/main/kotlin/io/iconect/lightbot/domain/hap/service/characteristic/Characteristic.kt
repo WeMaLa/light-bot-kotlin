@@ -1,4 +1,4 @@
-package io.iconect.lightbot.domain.service.characteristic
+package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 67
 interface Characteristic {

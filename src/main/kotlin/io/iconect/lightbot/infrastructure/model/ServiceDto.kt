@@ -1,7 +1,7 @@
 package io.iconect.lightbot.infrastructure.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import io.iconect.lightbot.domain.service.Service
+import io.iconect.lightbot.domain.hap.service.Service
 import io.swagger.annotations.ApiModelProperty
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

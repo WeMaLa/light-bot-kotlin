@@ -1,8 +1,8 @@
 package io.iconect.lightbot.infrastructure.model
 
-import io.iconect.lightbot.domain.service.characteristic.Format
-import io.iconect.lightbot.domain.service.characteristic.Name
-import io.iconect.lightbot.domain.service.characteristic.Permission
+import io.iconect.lightbot.domain.hap.service.characteristic.Format
+import io.iconect.lightbot.domain.hap.service.characteristic.Name
+import io.iconect.lightbot.domain.hap.service.characteristic.Permission
 import org.assertj.core.api.Assertions
 import org.junit.Test
 

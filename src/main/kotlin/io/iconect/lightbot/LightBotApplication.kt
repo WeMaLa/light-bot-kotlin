@@ -1,6 +1,6 @@
 package io.iconect.lightbot
 
-import io.iconect.lightbot.application.HapInitializer
+import io.iconect.lightbot.application.hap.HapInitializer
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

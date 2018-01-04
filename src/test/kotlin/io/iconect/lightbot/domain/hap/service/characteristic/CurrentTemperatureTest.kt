@@ -1,4 +1,4 @@
-package io.iconect.lightbot.domain.service.characteristic
+package io.iconect.lightbot.domain.hap.service.characteristic
 
 import org.assertj.core.api.Assertions
 import org.junit.Test

@@ -59,7 +59,7 @@ class HapWritingCharacteristicsTest {
                 "\"characteristics\" : [\n" +
                 "   {\n" +
                 "       \"aid\" : 2,\n" +
-                "       \"iid\" : 8,\n" +
+                "       \"iid\" : 8\n" +
                 "   } " +
                 "]}"
 

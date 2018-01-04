@@ -1,4 +1,4 @@
-package io.iconect.lightbot.domain
+package io.iconect.lightbot.domain.hap
 
 interface AccessoryRepository {
 

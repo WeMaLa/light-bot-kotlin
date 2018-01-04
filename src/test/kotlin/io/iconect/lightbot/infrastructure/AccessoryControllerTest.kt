@@ -1,8 +1,8 @@
 package io.iconect.lightbot.infrastructure
 
-import io.iconect.lightbot.domain.Accessory
-import io.iconect.lightbot.domain.AccessoryRepository
-import io.iconect.lightbot.domain.service.Thermostat
+import io.iconect.lightbot.domain.hap.Accessory
+import io.iconect.lightbot.domain.hap.AccessoryRepository
+import io.iconect.lightbot.domain.hap.service.Thermostat
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple

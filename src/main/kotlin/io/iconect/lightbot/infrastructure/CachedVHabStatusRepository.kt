@@ -1,7 +1,7 @@
 package io.iconect.lightbot.infrastructure
 
-import io.iconect.lightbot.domain.VHabStatus
-import io.iconect.lightbot.domain.VHabStatusRepository
+import io.iconect.lightbot.domain.hap.VHabStatus
+import io.iconect.lightbot.domain.hap.VHabStatusRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessagingTemplate
