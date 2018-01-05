@@ -37,7 +37,8 @@ class HapWritingCharacteristicsMessageCommandTest {
         val answer = command.executeMessage(content)
 
         assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1,\"iid\":121,\"value\":\"21.0\"},{\"aid\":2,\"iid\":221,\"value\":\"19.5\"}]}")
-        // TODO assert repository
+        assertThat(accessoryRepository.findByInstanceId(1)!!.findCharacteristic(121)!!.value).isEqualTo("21.0")
+        assertThat(accessoryRepository.findByInstanceId(2)!!.findCharacteristic(221)!!.value).isEqualTo("19.5")
     }
 
     @Test
@@ -47,7 +48,8 @@ class HapWritingCharacteristicsMessageCommandTest {
         val answer = command.executeMessage(content)
 
         assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1,\"iid\":121,\"status\":0},{\"aid\":2000,\"iid\":221,\"status\":-70409}]}")
-        // TODO assert repository
+        assertThat(accessoryRepository.findByInstanceId(1)!!.findCharacteristic(121)!!.value).isEqualTo("21.0")
+        assertThat(accessoryRepository.findByInstanceId(2)!!.findCharacteristic(221)!!.value).isEqualTo("10.0")
     }
 
     @Test

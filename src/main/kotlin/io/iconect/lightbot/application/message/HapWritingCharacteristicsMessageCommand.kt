@@ -1,9 +1,7 @@
 package io.iconect.lightbot.application.message
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.iconect.lightbot.domain.hap.Accessory
 import io.iconect.lightbot.domain.hap.AccessoryRepository
-import io.iconect.lightbot.domain.hap.service.characteristic.Characteristic
 import io.iconect.lightbot.domain.hap.service.characteristic.Permission
 import io.iconect.lightbot.domain.hap.service.characteristic.WritableCharacteristic
 import io.iconect.lightbot.domain.message.content.HapWritingCharacteristicsMessageContent
@@ -21,13 +19,13 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
         // find characteristics not existing
         hapWritingCharacteristicErrors.addAll(content.content.characteristics
                 .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
-                .filter { filterCharacteristic(accessoryRepository.findByInstanceId(it.aid)!!, it.iid) == null }
+                .filter { accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid) == null }
                 .map { HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70409.code) })
 
         // find characteristics not writable
         hapWritingCharacteristicErrors.addAll(content.content.characteristics
                 .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
-                .filter { !filterCharacteristic(accessoryRepository.findByInstanceId(it.aid)!!, it.iid)!!.permissions.contains(Permission.PAIRED_WRITE) }
+                .filter { !accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid)!!.permissions.contains(Permission.PAIRED_WRITE) }
                 .map { HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code) })
 
         val hapWritingSuccesses = mutableListOf<HapWritingCharacteristicSuccess>()
@@ -36,19 +34,18 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
         content.content.characteristics
                 .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
                 .forEach {
-                    val accessory = accessoryRepository.findByInstanceId(it.aid)!!
-                    val characteristic = filterCharacteristic(accessory, it.iid)
+                    val characteristic = accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid)
                     if (characteristic is WritableCharacteristic) {
                         try {
                             characteristic.adjustValue(it.value)
                             hapWritingSuccesses.add(HapWritingCharacteristicSuccess(it.aid, it.iid, it.value))
-                            // TODO update repository?
                         } catch (e: IllegalArgumentException) {
                             // TODO test me and check status code (i.e. minimum and maximum value)
                             hapWritingCharacteristicErrors.add(HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code))
                         }
                     } else {
                         // TODO test me and check status code
+                        // TODO should not happen -> server error?
                         hapWritingCharacteristicErrors.add(HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code))
                     }
                 }
@@ -62,12 +59,6 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
             val mapper = jacksonObjectMapper()
             mapper.writeValueAsString(HapWritingCharacteristicSuccesses(hapWritingSuccesses))
         }
-    }
-
-    private fun filterCharacteristic(accessory: Accessory, iid: Int): Characteristic? {
-        return accessory.services
-                .flatMap { it.characteristics }
-                .find { it.instanceId == iid }
     }
 
     data class HapWritingCharacteristicErrors(val characteristics: List<HapWritingCharacteristicError>)
