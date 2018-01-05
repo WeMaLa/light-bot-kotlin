@@ -1,4 +1,4 @@
-package io.iconect.lightbot.application.message
+package io.iconect.lightbot.application.message.command
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.iconect.lightbot.domain.hap.AccessoryRepository

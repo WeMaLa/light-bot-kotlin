@@ -1,4 +1,4 @@
-package io.iconect.lightbot.application.message
+package io.iconect.lightbot.application.message.command
 
 import io.iconect.lightbot.domain.message.content.UnknownMessageContent
 

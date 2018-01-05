@@ -1,5 +1,6 @@
-package io.iconect.lightbot.application.message
+package io.iconect.lightbot.application.message.command
 
+import io.iconect.lightbot.application.message.command.UnknownMessageCommand
 import io.iconect.lightbot.domain.message.content.UnknownMessageContent
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
