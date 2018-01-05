@@ -1,4 +1,4 @@
-package io.iconect.lightbot.infrastructure.message.model
+package io.iconect.lightbot.domain.message.content
 
 import io.iconect.lightbot.infrastructure.message.model.exception.JsonConvertException
 import org.assertj.core.api.Assertions.assertThat
@@ -18,7 +18,7 @@ class HapWritingCharacteristicsTest {
                 "   } " +
                 "]}"
 
-        val hapWritingCharacteristics = HapWritingCharacteristics.from(singleWriteCharacteristics)
+        val hapWritingCharacteristics = HapWritingCharacteristicsMessageContent.HapWritingCharacteristics.from(singleWriteCharacteristics)
 
         assertThat(hapWritingCharacteristics.characteristics.size).isEqualTo(1)
         assertThat(hapWritingCharacteristics.characteristics[0].aid).isEqualTo(2)
@@ -42,7 +42,7 @@ class HapWritingCharacteristicsTest {
                 "   } " +
                 "]}"
 
-        val hapWritingCharacteristics = HapWritingCharacteristics.from(singleWriteCharacteristics)
+        val hapWritingCharacteristics = HapWritingCharacteristicsMessageContent.HapWritingCharacteristics.from(singleWriteCharacteristics)
 
         assertThat(hapWritingCharacteristics.characteristics.size).isEqualTo(2)
         assertThat(hapWritingCharacteristics.characteristics)
@@ -63,16 +63,16 @@ class HapWritingCharacteristicsTest {
                 "   } " +
                 "]}"
 
-        HapWritingCharacteristics.from(incomplete)
+        HapWritingCharacteristicsMessageContent.HapWritingCharacteristics.from(incomplete)
     }
 
     @Test(expected = JsonConvertException::class)
     fun `from with empty json string`() {
-        HapWritingCharacteristics.from("")
+        HapWritingCharacteristicsMessageContent.HapWritingCharacteristics.from("")
     }
 
     @Test(expected = JsonConvertException::class)
     fun `from with json string of spaces`() {
-        HapWritingCharacteristics.from("   ")
+        HapWritingCharacteristicsMessageContent.HapWritingCharacteristics.from("   ")
     }
 }
