@@ -35,22 +35,6 @@ class HapWritingCharacteristicsMessageCommandTest {
     }
 
     @Test
-    fun `execute single write message and accessory not found`() {
-        val content = buildSingleWriteCharacteristicsMessageContent(1000, 21, "19.0")
-
-        val answer = command.executeMessage(content)
-        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409}]}")
-    }
-
-    @Test
-    fun `execute single write message with accessory found but characteristic not found`() {
-        val content = buildSingleWriteCharacteristicsMessageContent(1, 2100, "19.0")
-
-        val answer = command.executeMessage(content)
-        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1,\"iid\":2100,\"status\":-70409}]}")
-    }
-
-    @Test
     fun `execute multi write message and all accessories not found`() {
         val content = buildMultiWriteCharacteristicsMessageContent(1000, 21, "19.0", 1001, 21, "19.0")
 
@@ -66,20 +50,15 @@ class HapWritingCharacteristicsMessageCommandTest {
         assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409},{\"aid\":1,\"iid\":2100,\"status\":-70409}]}")
     }
 
+    @Test
+    fun `execute multi write message and one accessories not found and one characteristic is not writable`() {
+        val content = buildMultiWriteCharacteristicsMessageContent(1000, 21, "19.0", 1, 22, "19.0")
+
+        val answer = command.executeMessage(content)
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409},{\"aid\":1,\"iid\":22,\"status\":-70404}]}")
+    }
+
     companion object {
-
-        fun buildSingleWriteCharacteristicsMessageContent(aid: Int, iid: Int, value: String): HapWritingCharacteristicsMessageContent {
-            val writeCharacteristics = "{" +
-                    "\"characteristics\" : [\n" +
-                    "   {\n" +
-                    "       \"aid\" : $aid,\n" +
-                    "       \"iid\" : $iid,\n" +
-                    "       \"value\" : $value\n" +
-                    "   } " +
-                    "]}"
-
-            return buildWritingCharacteristicsMessageContent(writeCharacteristics)
-        }
 
         fun buildMultiWriteCharacteristicsMessageContent(aid1: Int, iid1: Int, value1: String, aid2: Int, iid2: Int, value2: String): HapWritingCharacteristicsMessageContent {
             val writeCharacteristics = "{" +
