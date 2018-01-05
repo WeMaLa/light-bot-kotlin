@@ -3,7 +3,7 @@ package io.iconect.lightbot.infrastructure
 import io.iconect.lightbot.domain.hap.Accessory
 import io.iconect.lightbot.domain.hap.AccessoryRepository
 import io.iconect.lightbot.domain.hap.service.Thermostat
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,18 +27,18 @@ class CachedAccessoryRepositoryTest {
 
     @Test
     fun `find all accessories but repository is empty`() {
-        Assertions.assertThat(repository.findAll()).isEmpty()
+        assertThat(repository.findAll()).isEmpty()
     }
 
     @Test
     fun `store accessory`() {
         val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
 
-        Assertions.assertThat(repository.findAll()).isEmpty()
+        assertThat(repository.findAll()).isEmpty()
 
         repository.store(accessory)
 
-        Assertions.assertThat(repository.findAll()).containsExactly(accessory)
+        assertThat(repository.findAll()).containsExactly(accessory)
     }
 
     @Test
@@ -46,12 +46,23 @@ class CachedAccessoryRepositoryTest {
         val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
 
         repository.store(accessory)
-        Assertions.assertThat(repository.findAll()).containsExactly(accessory)
+        assertThat(repository.findAll()).containsExactly(accessory)
 
         val updatedAccessory = Accessory(1, emptyList())
 
         repository.store(updatedAccessory)
-        Assertions.assertThat(repository.findAll()).containsExactly(updatedAccessory)
+        assertThat(repository.findAll()).containsExactly(updatedAccessory)
+    }
+    
+    @Test
+    fun `find by instance id (aid)`() {
+        val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
+
+        repository.store(accessory)
+        assertThat(repository.findAll()).containsExactly(accessory)
+
+        assertThat(repository.findByInstanceId(1)).isEqualTo(accessory)
+        assertThat(repository.findByInstanceId(2)).isNull()
     }
 
 }

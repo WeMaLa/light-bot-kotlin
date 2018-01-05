@@ -18,6 +18,10 @@ class CachedAccessoryRepository : AccessoryRepository {
         return accessories
     }
 
+    override fun findByInstanceId(aid: Int): Accessory? {
+        return accessories.find { it.instanceId == aid }
+    }
+
     override fun clear() {
         accessories.clear()
     }

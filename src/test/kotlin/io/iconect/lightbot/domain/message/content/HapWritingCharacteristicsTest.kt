@@ -1,6 +1,6 @@
 package io.iconect.lightbot.domain.message.content
 
-import io.iconect.lightbot.infrastructure.message.model.exception.JsonConvertException
+import io.iconect.lightbot.domain.message.content.exception.JsonConvertException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
 import org.junit.Test

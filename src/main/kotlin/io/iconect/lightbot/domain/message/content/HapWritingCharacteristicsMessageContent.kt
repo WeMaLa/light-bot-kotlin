@@ -2,8 +2,8 @@ package io.iconect.lightbot.domain.message.content
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import io.iconect.lightbot.domain.message.content.exception.JsonConvertException
 import io.iconect.lightbot.infrastructure.message.model.HapStatusCode
-import io.iconect.lightbot.infrastructure.message.model.exception.JsonConvertException
 
 class HapWritingCharacteristicsMessageContent(override val message: String, override val content: HapWritingCharacteristics) : MessageContent<HapWritingCharacteristicsMessageContent.HapWritingCharacteristics> {
 
