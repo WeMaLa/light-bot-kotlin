@@ -43,11 +43,27 @@ class HapWritingCharacteristicsMessageCommandTest {
     }
 
     @Test
+    fun `execute single write message with accessory found but characteristic not found`() {
+        val content = buildSingleWriteCharacteristicsMessageContent(1, 2100, "19.0")
+
+        val answer = command.executeMessage(content)
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1,\"iid\":2100,\"status\":-70409}]}")
+    }
+
+    @Test
     fun `execute multi write message and all accessories not found`() {
         val content = buildMultiWriteCharacteristicsMessageContent(1000, 21, "19.0", 1001, 21, "19.0")
 
         val answer = command.executeMessage(content)
         assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409},{\"aid\":1001,\"iid\":21,\"status\":-70409}]}")
+    }
+
+    @Test
+    fun `execute multi write message and one accessories not found and one characteristic not found`() {
+        val content = buildMultiWriteCharacteristicsMessageContent(1, 2100, "19.0", 1000, 21, "19.0")
+
+        val answer = command.executeMessage(content)
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409},{\"aid\":1,\"iid\":2100,\"status\":-70409}]}")
     }
 
     companion object {
