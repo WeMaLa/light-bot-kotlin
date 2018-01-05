@@ -5,6 +5,7 @@ import io.iconect.lightbot.domain.hap.Accessory
 import io.iconect.lightbot.domain.hap.AccessoryRepository
 import io.iconect.lightbot.domain.hap.service.characteristic.Characteristic
 import io.iconect.lightbot.domain.hap.service.characteristic.Permission
+import io.iconect.lightbot.domain.hap.service.characteristic.WritableCharacteristic
 import io.iconect.lightbot.domain.message.content.HapWritingCharacteristicsMessageContent
 import io.iconect.lightbot.infrastructure.message.model.HapStatusCode
 
@@ -29,14 +30,36 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
                 .filter { !filterCharacteristic(accessoryRepository.findByInstanceId(it.aid)!!, it.iid)!!.permissions.contains(Permission.PAIRED_WRITE) }
                 .map { HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code) })
 
-        // TODO write characteristics
+        val hapWritingSuccesses = mutableListOf<HapWritingCharacteristicSuccess>()
+
+        // write existing and writable characteristics
+        content.content.characteristics
+                .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
+                .forEach {
+                    val accessory = accessoryRepository.findByInstanceId(it.aid)!!
+                    val characteristic = filterCharacteristic(accessory, it.iid)
+                    if (characteristic is WritableCharacteristic) {
+                        try {
+                            characteristic.adjustValue(it.value)
+                            hapWritingSuccesses.add(HapWritingCharacteristicSuccess(it.aid, it.iid, it.value))
+                            // TODO update repository?
+                        } catch (e: IllegalArgumentException) {
+                            // TODO test me and check status code (i.e. minimum and maximum value)
+                            hapWritingCharacteristicErrors.add(HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code))
+                        }
+                    } else {
+                        // TODO test me and check status code
+                        hapWritingCharacteristicErrors.add(HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code))
+                    }
+                }
 
         if (hapWritingCharacteristicErrors.isNotEmpty()) {
             val mapper = jacksonObjectMapper()
             return mapper.writeValueAsString(HapWritingCharacteristicErrors(hapWritingCharacteristicErrors))
+        } else {
+            val mapper = jacksonObjectMapper()
+            return mapper.writeValueAsString(HapWritingCharacteristicSuccesses(hapWritingSuccesses))
         }
-
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun filterCharacteristic(accessory: Accessory, iid: Int): Characteristic? {
@@ -46,6 +69,8 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
     }
 
     data class HapWritingCharacteristicErrors(val characteristics: List<HapWritingCharacteristicError>)
-
     data class HapWritingCharacteristicError(val aid: Int, val iid: Int, val status: Int)
+
+    data class HapWritingCharacteristicSuccesses(val characteristics: List<HapWritingCharacteristicSuccess>)
+    data class HapWritingCharacteristicSuccess(val aid: Int, val iid: Int, val value: String)
 }

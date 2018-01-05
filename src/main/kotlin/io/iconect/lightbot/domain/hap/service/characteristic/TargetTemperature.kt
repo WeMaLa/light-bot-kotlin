@@ -1,10 +1,10 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 162
-data class TargetTemperature(override val instanceId: Int) : Characteristic {
+data class TargetTemperature(override val instanceId: Int) : WritableCharacteristic {
 
     override val uuid = "00000035-0000-1000-8000-0026BB765291"
-    override var value: String = "10.0"
+    override var value: String = "10.0" // TODO use a generic in interface?
         private set
     override val type = "public.hap.characteristic.temperature.target"
     override val description: String? = null
@@ -17,10 +17,15 @@ data class TargetTemperature(override val instanceId: Int) : Characteristic {
     override val maximumLength: Int? = null
     override val maxDataLength: Int? = null
 
-    fun adjustValue(degree: Double) {
-        if (degree < minimumValue || degree > maximumValue) {
-            throw IllegalArgumentException("Celcius value $degree must be in range between $minimumValue and $maximumValue")
+    override fun adjustValue(value: String) {
+        try {
+            val degree = value.toDouble()
+            if (degree < minimumValue || degree > maximumValue) {
+                throw IllegalArgumentException("Celcius value $value must be in range between $minimumValue and $maximumValue")
+            }
+            this.value = value
+        } catch (e: NumberFormatException) {
+            throw IllegalArgumentException("Celcius value $value must be of type $format")
         }
-        value = degree.toString()
     }
 }

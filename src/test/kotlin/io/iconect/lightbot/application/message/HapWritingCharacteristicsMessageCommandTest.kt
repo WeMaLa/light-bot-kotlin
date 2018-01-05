@@ -16,47 +16,55 @@ class HapWritingCharacteristicsMessageCommandTest {
 
     private lateinit var accessoryRepository: AccessoryRepository
 
-    private lateinit var existingAccessory: Accessory
-
     @Before
     fun setUp() {
         accessoryRepository = CachedAccessoryRepository()
         command = HapWritingCharacteristicsMessageCommand(accessoryRepository)
 
-        val kitchenThermostat = Thermostat(2, 21, 22, 23)
+        val kitchenThermostat = Thermostat(12, 121, 122, 123)
         (kitchenThermostat.characteristics.first { c -> c is Name } as Name).updateName("Kitchen thermostat heater")
-        existingAccessory = Accessory(1, listOf(kitchenThermostat))
-        accessoryRepository.store(existingAccessory)
+        accessoryRepository.store(Accessory(1, listOf(kitchenThermostat)))
+
+        val restRoomThermostat = Thermostat(22, 221, 222, 223)
+        (restRoomThermostat.characteristics.first { c -> c is Name } as Name).updateName("Restroom thermostat heater")
+        accessoryRepository.store(Accessory(2, listOf(restRoomThermostat)))
     }
 
     @Test
-    fun `execute message`() {
-        // TODO implement me
+    fun `execute message and all write operations are successful`() {
+        val content = buildMultiWriteCharacteristicsMessageContent(1, 121, "21.0", 2, 221, "19.5")
+
+        val answer = command.executeMessage(content)
+
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1,\"iid\":121,\"value\":\"21.0\"},{\"aid\":2,\"iid\":221,\"value\":\"19.5\"}]}")
+        // TODO assert repository
     }
 
     @Test
     fun `execute multi write message and all accessories not found`() {
-        val content = buildMultiWriteCharacteristicsMessageContent(1000, 21, "19.0", 1001, 21, "19.0")
+        val content = buildMultiWriteCharacteristicsMessageContent(1000, 121, "19.0", 1001, 121, "19.0")
 
         val answer = command.executeMessage(content)
-        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409},{\"aid\":1001,\"iid\":21,\"status\":-70409}]}")
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":121,\"status\":-70409},{\"aid\":1001,\"iid\":121,\"status\":-70409}]}")
     }
 
     @Test
     fun `execute multi write message and one accessories not found and one characteristic not found`() {
-        val content = buildMultiWriteCharacteristicsMessageContent(1, 2100, "19.0", 1000, 21, "19.0")
+        val content = buildMultiWriteCharacteristicsMessageContent(1, 2100, "19.0", 1000, 121, "19.0")
 
         val answer = command.executeMessage(content)
-        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409},{\"aid\":1,\"iid\":2100,\"status\":-70409}]}")
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":121,\"status\":-70409},{\"aid\":1,\"iid\":2100,\"status\":-70409}]}")
     }
 
     @Test
     fun `execute multi write message and one accessories not found and one characteristic is not writable`() {
-        val content = buildMultiWriteCharacteristicsMessageContent(1000, 21, "19.0", 1, 22, "19.0")
+        val content = buildMultiWriteCharacteristicsMessageContent(1000, 121, "19.0", 1, 122, "19.0")
 
         val answer = command.executeMessage(content)
-        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":21,\"status\":-70409},{\"aid\":1,\"iid\":22,\"status\":-70404}]}")
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":121,\"status\":-70409},{\"aid\":1,\"iid\":122,\"status\":-70404}]}")
     }
+
+    // TODO test a mix of success and failed
 
     companion object {
 

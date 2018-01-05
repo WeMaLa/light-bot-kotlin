@@ -27,27 +27,33 @@ class TargetTemperatureTest {
     @Test
     fun `adjust value`() {
         val targetTemperature = TargetTemperature(3)
-        targetTemperature.adjustValue(23.0)
+        targetTemperature.adjustValue("23.0")
 
         Assertions.assertThat(targetTemperature.instanceId).isEqualTo(3)
         Assertions.assertThat(targetTemperature.value).isEqualTo("23.0")
 
-        targetTemperature.adjustValue(10.0)
+        targetTemperature.adjustValue("10.0")
         Assertions.assertThat(targetTemperature.value).isEqualTo("10.0")
 
-        targetTemperature.adjustValue(38.0)
+        targetTemperature.adjustValue("38.0")
         Assertions.assertThat(targetTemperature.value).isEqualTo("38.0")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
         val targetTemperature = TargetTemperature(3)
-        targetTemperature.adjustValue(9.9)
+        targetTemperature.adjustValue("9.9")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
         val targetTemperature = TargetTemperature(3)
-        targetTemperature.adjustValue(38.1)
+        targetTemperature.adjustValue("38.1")
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `adjust value is no double value`() {
+        val targetTemperature = TargetTemperature(3)
+        targetTemperature.adjustValue("no-double")
     }
 }

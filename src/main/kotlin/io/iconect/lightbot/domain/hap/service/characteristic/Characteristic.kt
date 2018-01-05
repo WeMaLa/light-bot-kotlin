@@ -18,3 +18,7 @@ interface Characteristic {
     val maxDataLength: Int?
 
 }
+
+interface WritableCharacteristic : Characteristic {
+    fun adjustValue(value: String)
+}
