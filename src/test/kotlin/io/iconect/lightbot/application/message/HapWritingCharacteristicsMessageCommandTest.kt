@@ -41,6 +41,16 @@ class HapWritingCharacteristicsMessageCommandTest {
     }
 
     @Test
+    fun `execute message and one accessory is not found but the other is successful`() {
+        val content = buildMultiWriteCharacteristicsMessageContent(1, 121, "21.0", 2000, 221, "19.5")
+
+        val answer = command.executeMessage(content)
+
+        assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1,\"iid\":121,\"status\":0},{\"aid\":2000,\"iid\":221,\"status\":-70409}]}")
+        // TODO assert repository
+    }
+
+    @Test
     fun `execute multi write message and all accessories not found`() {
         val content = buildMultiWriteCharacteristicsMessageContent(1000, 121, "19.0", 1001, 121, "19.0")
 
@@ -63,8 +73,6 @@ class HapWritingCharacteristicsMessageCommandTest {
         val answer = command.executeMessage(content)
         assertThat(answer).isEqualTo("{\"characteristics\":[{\"aid\":1000,\"iid\":121,\"status\":-70409},{\"aid\":1,\"iid\":122,\"status\":-70404}]}")
     }
-
-    // TODO test a mix of success and failed
 
     companion object {
 

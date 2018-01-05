@@ -53,12 +53,14 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
                     }
                 }
 
-        if (hapWritingCharacteristicErrors.isNotEmpty()) {
+        return if (hapWritingCharacteristicErrors.isNotEmpty()) {
             val mapper = jacksonObjectMapper()
-            return mapper.writeValueAsString(HapWritingCharacteristicErrors(hapWritingCharacteristicErrors))
+            val errors = hapWritingSuccesses.map { HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C0.code) }.toMutableList()
+            errors.addAll(hapWritingCharacteristicErrors)
+            mapper.writeValueAsString(HapWritingCharacteristicErrors(errors))
         } else {
             val mapper = jacksonObjectMapper()
-            return mapper.writeValueAsString(HapWritingCharacteristicSuccesses(hapWritingSuccesses))
+            mapper.writeValueAsString(HapWritingCharacteristicSuccesses(hapWritingSuccesses))
         }
     }
 
