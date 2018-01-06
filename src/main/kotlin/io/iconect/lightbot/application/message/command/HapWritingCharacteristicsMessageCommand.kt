@@ -1,13 +1,17 @@
 package io.iconect.lightbot.application.message.command
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.iconect.lightbot.application.message.ServerMessagesScheduler
 import io.iconect.lightbot.domain.hap.AccessoryRepository
 import io.iconect.lightbot.domain.hap.service.characteristic.Permission
 import io.iconect.lightbot.domain.hap.service.characteristic.WritableCharacteristic
 import io.iconect.lightbot.domain.message.content.HapWritingCharacteristicsMessageContent
 import io.iconect.lightbot.infrastructure.message.model.HapStatusCode
+import org.slf4j.LoggerFactory
 
 class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: AccessoryRepository) : MessageCommand<HapWritingCharacteristicsMessageContent> {
+
+    private val log = LoggerFactory.getLogger(ServerMessagesScheduler::class.java)
 
     override fun executeMessage(content: HapWritingCharacteristicsMessageContent): String {
         // find accessories not existing
@@ -37,6 +41,7 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
                     val characteristic = accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid)
                     if (characteristic is WritableCharacteristic) {
                         try {
+                            log.info("Switching characteristic '${it.iid}' value from '${characteristic.value}' to '${it.value}'")
                             characteristic.adjustValue(it.value)
                             hapWritingSuccesses.add(HapWritingCharacteristicSuccess(it.aid, it.iid, it.value))
                         } catch (e: IllegalArgumentException) {

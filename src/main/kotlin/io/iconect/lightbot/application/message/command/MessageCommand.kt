@@ -1,8 +1,6 @@
 package io.iconect.lightbot.application.message.command
 
-import io.iconect.lightbot.domain.message.content.MessageContent
-
-interface MessageCommand<in T: MessageContent<Any>> {
+interface MessageCommand<in T: Any> {
 
     /**
      * Executes message content.

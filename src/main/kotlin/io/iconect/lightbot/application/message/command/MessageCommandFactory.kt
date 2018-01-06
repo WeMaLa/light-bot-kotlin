@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component
 @Component
 class MessageCommandFactory @Autowired constructor(private var accessoryRepository: AccessoryRepository) {
 
-    fun createMessageCommand(messageContent: MessageContent<Any>): MessageCommand<*> {
+    fun createMessageCommand(messageContent: MessageContent<Any>): MessageCommand<Any> {
         if (messageContent is HapWritingCharacteristicsMessageContent) {
-            return HapWritingCharacteristicsMessageCommand(accessoryRepository)
+            return HapWritingCharacteristicsMessageCommand(accessoryRepository) as MessageCommand<Any>
         }
 
-        return UnknownMessageCommand()
+        return UnknownMessageCommand() as MessageCommand<Any>
     }
 
 }
