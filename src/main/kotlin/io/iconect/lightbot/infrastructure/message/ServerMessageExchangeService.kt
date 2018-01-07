@@ -38,6 +38,28 @@ class ServerMessageExchangeService @Autowired constructor(
         }
     }
 
+    override fun sendMessage(channelIdentifier: String, message: String) {
+        val token = serverAuthenticationExchangeService.authenticate()
+
+        if (channelIdentifier.isBlank()) {
+            log.warn("Could not send message '$message' to channel because channel identifier is blank")
+        } else if (message.isBlank()) {
+            log.warn("Could not send blank message to channel '$channelIdentifier")
+        } else {
+            if (token != null) {
+                val url = botConfiguration.server!!.url + "/api/message"
+                val httpEntity = createHttpEntity(token, "{\"channelIdentifier\":\"$channelIdentifier\",\"content\":\"$message\"}")
+                try {
+                    restTemplate.exchange(url, HttpMethod.POST, httpEntity, Void::class.java)
+                } catch (e: Exception) {
+                    log.error("Could not send message '$message' to channel '$channelIdentifier' because of an exception", e)
+                }
+            } else {
+                log.error("Could not send message '$message' to channel '$channelIdentifier' because authentication failed")
+            }
+        }
+    }
+
     private fun markAsRead(messageIdentifier: String, httpEntity: HttpEntity<Any>) {
         try {
             val url = botConfiguration.server!!.url + "/api/message/$messageIdentifier/read"
@@ -70,10 +92,10 @@ class ServerMessageExchangeService @Autowired constructor(
         }
     }
 
-    private fun createHttpEntity(token: String?): HttpEntity<Any> {
+    private fun createHttpEntity(token: String?, body: Any? = null): HttpEntity<Any> {
         val httpHeaders = HttpHeaders()
         httpHeaders.set("Authorization", token)
-        return HttpEntity(httpHeaders)
+        return if (body != null) HttpEntity(body, httpHeaders) else HttpEntity(httpHeaders)
     }
 
     class MessageResponse {
@@ -86,10 +108,10 @@ class ServerMessageExchangeService @Autowired constructor(
         var _links: Links = Links()
 
         class Links {
-            var channel : Channel = Channel()
+            var channel: Channel = Channel()
 
             class Channel {
-                var href : String = ""
+                var href: String = ""
             }
         }
     }

@@ -4,4 +4,6 @@ interface ServerMessageRepository {
 
     fun retrieveMessages(): List<ServerMessage>
 
+    fun sendMessage(channelIdentifier: String, message: String)
+
 }

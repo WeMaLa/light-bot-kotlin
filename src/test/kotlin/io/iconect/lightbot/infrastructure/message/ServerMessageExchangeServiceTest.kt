@@ -4,6 +4,7 @@ import io.iconect.lightbot.domain.hap.VHabStatus
 import io.iconect.lightbot.domain.hap.VHabStatusRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
+import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,8 +20,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.test.web.client.match.MockRestRequestMatchers
-import org.springframework.test.web.client.match.MockRestRequestMatchers.header
-import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
+import org.springframework.test.web.client.match.MockRestRequestMatchers.*
 import org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest
 import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 import org.springframework.web.client.RestTemplate
@@ -157,6 +157,52 @@ class ServerMessageExchangeServiceTest {
 
         assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
         assertThat(vHabStatusRepository.getStatus()).isEqualTo(VHabStatus.OK)
+    }
+
+    @Test
+    fun `send message`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+
+        val messageContent = "unit-test-message-content"
+        val channelIdentifier = "unit-test-channel-identifier"
+
+        server.expect(requestTo("http://server.unit.test/api/message"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
+                .andExpect(header("Authorization", "unit-test-auth-token"))
+                .andExpect(jsonPath("content", `is`(messageContent)))
+                .andExpect(jsonPath("channelIdentifier", `is`(channelIdentifier)))
+                .andRespond(withStatus(HttpStatus.OK))
+
+        serverMessageExchangeService.sendMessage(channelIdentifier, messageContent)
+
+        server.verify()
+    }
+
+    @Test
+    fun `send message when authentication fails`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+
+        serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "unit-test-message-content")
+
+        server.verify() // no server call
+    }
+
+    @Test
+    fun `send message with channel identifier is empty`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+
+        serverMessageExchangeService.sendMessage("", "unit-test-message-content")
+
+        server.verify() // no server call
+    }
+
+    @Test
+    fun `send message with message content is empty`() {
+        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+
+        serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "")
+
+        server.verify() // no server call
     }
 
     private fun createResponse(): String {
