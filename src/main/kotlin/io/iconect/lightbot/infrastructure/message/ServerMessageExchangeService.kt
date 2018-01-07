@@ -48,7 +48,7 @@ class ServerMessageExchangeService @Autowired constructor(
         } else {
             if (token != null) {
                 val url = botConfiguration.server!!.url + "/api/message"
-                val httpEntity = createHttpEntity(token, "{\"channelIdentifier\":\"$channelIdentifier\",\"content\":\"$message\"}")
+                val httpEntity = createHttpEntity(token,  SendMessageRequestBody(message, channelIdentifier))
                 try {
                     restTemplate.exchange(url, HttpMethod.POST, httpEntity, Void::class.java)
                 } catch (e: Exception) {
@@ -115,4 +115,6 @@ class ServerMessageExchangeService @Autowired constructor(
             }
         }
     }
+
+    data class SendMessageRequestBody(val content: String, val channelIdentifier: String)
 }

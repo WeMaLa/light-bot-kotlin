@@ -30,6 +30,8 @@ class ServerMessagesSchedulerTest {
                         ServerMessage("room:kitchen-1:heater:degree:10", "test-channel-1")
                 ))
 
+        // implement me!!!
+
         serverMessagesScheduler.handleUnreadMessages()
     }
 }

@@ -19,13 +19,12 @@ class ServerMessagesScheduler @Autowired constructor(
         log.info("Start retrieving latest messages")
         val retrieveMessages = serverMessageRepository.retrieveMessages()
         retrieveMessages
-                .map { it.read() }
                 .forEach {
-                    val messageCommand = messageCommandFactory.createMessageCommand(it)
-                    val messageAnswer = messageCommand.executeMessage(it)
-                    log.info("Execute message '${it.message}' answers '$messageAnswer'")
-                    // TODO test me
-                    // TODO return answer to channel
+                    val messageContent = it.read()
+                    val messageCommand = messageCommandFactory.createMessageCommand(messageContent)
+                    val messageAnswer = messageCommand.executeMessage(messageContent)
+                    log.info("Execute message '${messageContent.message}' answers '$messageAnswer'")
+                    serverMessageRepository.sendMessage(it.channel, messageAnswer)
                 }
         log.info("${retrieveMessages.size} messages retrieved")
     }
