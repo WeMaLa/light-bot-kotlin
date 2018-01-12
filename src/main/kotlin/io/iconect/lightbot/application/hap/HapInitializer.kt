@@ -2,6 +2,7 @@ package io.iconect.lightbot.application.hap
 
 import io.iconect.lightbot.domain.hap.Accessory
 import io.iconect.lightbot.domain.hap.AccessoryRepository
+import io.iconect.lightbot.domain.hap.service.Lightbulb
 import io.iconect.lightbot.domain.hap.service.Thermostat
 import io.iconect.lightbot.domain.hap.service.Window
 import io.iconect.lightbot.domain.hap.service.characteristic.Name
@@ -19,5 +20,9 @@ class HapInitializer @Autowired constructor(private val accessoryRepository: Acc
         val kitchenWindow = Window(11100, 11101, 11102, 11103)
         (kitchenWindow.characteristics.first { c -> c is Name } as Name).updateName("Kitchen window")
         accessoryRepository.store(Accessory(11000, listOf(kitchenWindow)))
+
+        val kitchenLightBulb = Lightbulb(12100, 12101, 12102)
+        (kitchenLightBulb.characteristics.first { c -> c is Name } as Name).updateName("Kitchen light bulb")
+        accessoryRepository.store(Accessory(12000, listOf(kitchenLightBulb)))
     }
 }

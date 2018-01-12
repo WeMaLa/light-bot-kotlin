@@ -1,6 +1,7 @@
 package io.iconect.lightbot.application.hap
 
 import io.iconect.lightbot.domain.hap.AccessoryRepository
+import io.iconect.lightbot.domain.hap.service.Lightbulb
 import io.iconect.lightbot.domain.hap.service.Thermostat
 import io.iconect.lightbot.domain.hap.service.Window
 import io.iconect.lightbot.domain.hap.service.characteristic.*
@@ -73,5 +74,27 @@ class HapInitializerTest {
         val name = window.characteristics.first { c -> c is Name } as Name
         assertThat(name.instanceId).isEqualTo(11103)
         assertThat(name.value).isEqualTo("Kitchen window")
+    }
+
+    @Test
+    fun `verify kitchen light bulb initialization`() {
+        hapInitializer.initialize()
+
+        val accessory = accessoryRepository.findByInstanceId(12000)!!
+
+        assertThat(accessory).isNotNull()
+        assertThat(accessory.instanceId).isEqualTo(12000)
+        assertThat(accessory.services.filter { s -> s is Lightbulb }.size).isEqualTo(1)
+
+        val lightbulb = accessory.services.first { s -> s is Lightbulb } as Lightbulb
+        assertThat(lightbulb.instanceId).isEqualTo(12100)
+
+        val currentPosition = lightbulb.characteristics.first { c -> c is On } as On
+        assertThat(currentPosition.instanceId).isEqualTo(12101)
+        assertThat(currentPosition.value).isEqualTo("off")
+
+        val name = lightbulb.characteristics.first { c -> c is Name } as Name
+        assertThat(name.instanceId).isEqualTo(12102)
+        assertThat(name.value).isEqualTo("Kitchen light bulb")
     }
 }
