@@ -35,3 +35,8 @@ docker run -p 8085:8085 -t larmic/iconect-light-bot-kotlin
 ```
 
 and open ```http://localhost:8085```
+
+## Demo request
+
+send ``{ "characteristics" : [ { "aid" : 1, "iid" : 21, "value" : 23.3 } ]}``
+to iconect bot ``light-bot@iconect.io``

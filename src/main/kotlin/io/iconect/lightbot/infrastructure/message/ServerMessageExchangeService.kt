@@ -2,6 +2,7 @@ package io.iconect.lightbot.infrastructure.message
 
 import io.iconect.lightbot.domain.hap.VHabStatus
 import io.iconect.lightbot.domain.message.ServerMessage
+import io.iconect.lightbot.domain.message.ServerMessageFactory
 import io.iconect.lightbot.domain.message.ServerMessageRepository
 import io.iconect.lightbot.infrastructure.configuration.Configuration
 import org.slf4j.LoggerFactory
@@ -19,7 +20,8 @@ class ServerMessageExchangeService @Autowired constructor(
         private var botConfiguration: Configuration,
         private var restTemplate: RestTemplate,
         private var applicationEventPublisher: ApplicationEventPublisher,
-        private var serverAuthenticationExchangeService: ServerAuthenticationExchangeService) : ServerMessageRepository {
+        private var serverAuthenticationExchangeService: ServerAuthenticationExchangeService,
+        private var serverMessageFactory: ServerMessageFactory) : ServerMessageRepository {
 
     private val log = LoggerFactory.getLogger(ServerMessageExchangeService::class.java)
 
@@ -32,7 +34,7 @@ class ServerMessageExchangeService @Autowired constructor(
 
             messages.forEach { m -> markAsRead(m.identifier, httpEntity) }
 
-            return messages.map { m -> ServerMessage(m.content, m._links.channel.href.replace("/api/channel/", "")) }
+            return messages.map { m -> serverMessageFactory.createServerMessage(m.content, m._links.channel.href.replace("/api/channel/", "")) }
         } else {
             emptyList()
         }
@@ -48,7 +50,7 @@ class ServerMessageExchangeService @Autowired constructor(
         } else {
             if (token != null) {
                 val url = botConfiguration.server!!.url + "/api/message"
-                val httpEntity = createHttpEntity(token,  SendMessageRequestBody(message, channelIdentifier))
+                val httpEntity = createHttpEntity(token, SendMessageRequestBody(message, channelIdentifier))
                 try {
                     restTemplate.exchange(url, HttpMethod.POST, httpEntity, Void::class.java)
                 } catch (e: Exception) {

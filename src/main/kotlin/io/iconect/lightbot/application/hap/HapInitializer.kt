@@ -15,5 +15,4 @@ class HapInitializer @Autowired constructor(private val accessoryRepository: Acc
         (kitchenThermostat.characteristics.first { c -> c is Name } as Name).updateName("Kitchen thermostat heater")
         accessoryRepository.store(Accessory(1, listOf(kitchenThermostat)))
     }
-
 }

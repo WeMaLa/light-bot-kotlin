@@ -1,21 +1,34 @@
 package io.iconect.lightbot.domain.message
 
-import io.iconect.lightbot.domain.message.content.HapWritingCharacteristicsMessageContent
-import io.iconect.lightbot.domain.message.content.MessageContent
-import io.iconect.lightbot.domain.message.content.UnknownMessageContent
-import io.iconect.lightbot.domain.message.content.exception.JsonConvertException
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import io.iconect.lightbot.infrastructure.message.model.HapStatusCode
 
-data class ServerMessage constructor(val content: String, val channel: String) {
+data class ServerMessage internal constructor(
+        val raw: String,
+        val channel: String,
+        val type: ServerMessageType = ServerMessageType.UNKNOWN,
+        val content: Any = Unit) {
 
-    fun read() : MessageContent<Any> {
-        try {
-            val hapWritingCharacteristics = HapWritingCharacteristicsMessageContent.HapWritingCharacteristics.from(content)
-            return HapWritingCharacteristicsMessageContent(content, hapWritingCharacteristics)
-        } catch (e: JsonConvertException) {
-            // do nothing. Message is not hap writing characteristics
+    data class HapWritingCharacteristics(val characteristics: List<HapWritingCharacteristic>) {
+
+        data class HapWritingCharacteristic(val aid: Int, val iid: Int, val value: String)
+
+        companion object {
+
+            @Throws(JsonConvertException::class)
+            fun from(json: String) : HapWritingCharacteristics {
+                try {
+                    val mapper = jacksonObjectMapper()
+                    return mapper.readValue(json)
+                } catch (e: Exception) {
+                    throw JsonConvertException("Could not convert '$json' to HapWritingCharacteristics. Status code is '${HapStatusCode.C70410}'")
+                }
+            }
         }
 
-        return UnknownMessageContent(content)
     }
+
+    class JsonConvertException(text: String) : RuntimeException(text)
 
 }

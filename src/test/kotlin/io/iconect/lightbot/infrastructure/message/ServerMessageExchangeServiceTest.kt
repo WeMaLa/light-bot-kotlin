@@ -77,7 +77,7 @@ class ServerMessageExchangeServiceTest {
                 .andRespond(response)
 
         assertThat(serverMessageExchangeService.retrieveMessages())
-                .extracting("content", "channel")
+                .extracting("raw", "channel")
                 .containsExactly(
                        tuple( "message2", "AWA6_ozSA1S3ubG7cRdx"),
                        tuple( "message1", "AWA6_ozSA1S3ubG7cRdx"))
@@ -122,7 +122,7 @@ class ServerMessageExchangeServiceTest {
                 .andRespond(withBadRequest())
 
         assertThat(serverMessageExchangeService.retrieveMessages())
-                .extracting("content", "channel")
+                .extracting("raw", "channel")
                 .containsExactly(
                         tuple( "message2", "AWA6_ozSA1S3ubG7cRdx"),
                         tuple( "message1", "AWA6_ozSA1S3ubG7cRdx"))

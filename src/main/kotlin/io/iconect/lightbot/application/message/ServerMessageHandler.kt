@@ -1,33 +1,57 @@
-package io.iconect.lightbot.application.message.command
+package io.iconect.lightbot.application.message
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.iconect.lightbot.application.message.ServerMessagesScheduler
 import io.iconect.lightbot.domain.hap.AccessoryRepository
 import io.iconect.lightbot.domain.hap.service.characteristic.Permission
 import io.iconect.lightbot.domain.hap.service.characteristic.WritableCharacteristic
-import io.iconect.lightbot.domain.message.content.HapWritingCharacteristicsMessageContent
+import io.iconect.lightbot.domain.message.ServerMessage
+import io.iconect.lightbot.domain.message.ServerMessageRepository
+import io.iconect.lightbot.domain.message.ServerMessageType
 import io.iconect.lightbot.infrastructure.message.model.HapStatusCode
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
-class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: AccessoryRepository) : MessageCommand<HapWritingCharacteristicsMessageContent> {
+@Component
+class ServerMessageHandler @Autowired constructor(
+        private var serverMessageRepository: ServerMessageRepository,
+        private val accessoryRepository: AccessoryRepository){
 
-    private val log = LoggerFactory.getLogger(ServerMessagesScheduler::class.java)
+    private val log = LoggerFactory.getLogger(ServerMessageHandler::class.java)
 
-    override fun executeMessage(content: HapWritingCharacteristicsMessageContent): String {
+    fun handleMessage(serverMessage: ServerMessage) {
+        log.info("Start handling message '${serverMessage.raw}'")
+        val messageAnswer = executeMessage(serverMessage)
+        log.info("Execute message '${serverMessage.raw}' answers '$messageAnswer'")
+        serverMessageRepository.sendMessage(serverMessage.channel, messageAnswer)
+        log.info("Message '${serverMessage.raw}' handled")
+    }
+
+    private fun executeMessage(serverMessage: ServerMessage): String {
+        if (serverMessage.type == ServerMessageType.HAP_WRITING_CHARACTERISTICS) {
+            return executeHapWritingCharacteristicsMessage(serverMessage)
+        }
+
+        return "I do not understand the command '${serverMessage.raw}'"
+    }
+
+    private fun executeHapWritingCharacteristicsMessage(serverMessage: ServerMessage): String {
+        val characteristics = (serverMessage.content as ServerMessage.HapWritingCharacteristics).characteristics
+
         // find accessories not existing
-        val hapWritingCharacteristicErrors = content.content.characteristics
+        val hapWritingCharacteristicErrors = characteristics
                 .filter { accessoryRepository.findByInstanceId(it.aid) == null }
                 .map { HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70409.code) }
                 .toMutableList()
 
         // find characteristics not existing
-        hapWritingCharacteristicErrors.addAll(content.content.characteristics
+        hapWritingCharacteristicErrors.addAll(characteristics
                 .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
                 .filter { accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid) == null }
                 .map { HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70409.code) })
 
         // find characteristics not writable
-        hapWritingCharacteristicErrors.addAll(content.content.characteristics
+        hapWritingCharacteristicErrors.addAll(characteristics
                 .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
                 .filter { !accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid)!!.permissions.contains(Permission.PAIRED_WRITE) }
                 .map { HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code) })
@@ -35,7 +59,7 @@ class HapWritingCharacteristicsMessageCommand(private val accessoryRepository: A
         val hapWritingSuccesses = mutableListOf<HapWritingCharacteristicSuccess>()
 
         // write existing and writable characteristics
-        content.content.characteristics
+        characteristics
                 .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
                 .forEach {
                     val characteristic = accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid)
