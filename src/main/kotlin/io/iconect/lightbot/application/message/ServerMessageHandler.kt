@@ -62,12 +62,14 @@ class ServerMessageHandler @Autowired constructor(
         characteristics
                 .filter { c -> hapWritingCharacteristicErrors.find { it.aid == c.aid } == null }
                 .forEach {
-                    val characteristic = accessoryRepository.findByInstanceId(it.aid)!!.findCharacteristic(it.iid)
+                    val accessory = accessoryRepository.findByInstanceId(it.aid)!!
+                    val characteristic = accessory.findCharacteristic(it.iid)
                     if (characteristic is WritableCharacteristic) {
                         try {
                             log.info("Switching characteristic '${it.iid}' value from '${characteristic.value}' to '${it.value}'")
                             characteristic.adjustValue(it.value)
                             hapWritingSuccesses.add(HapWritingCharacteristicSuccess(it.aid, it.iid, it.value))
+                            accessoryRepository.store(accessory)
                         } catch (e: IllegalArgumentException) {
                             // TODO test me and check status code (i.e. minimum and maximum value)
                             hapWritingCharacteristicErrors.add(HapWritingCharacteristicError(it.aid, it.iid, HapStatusCode.C70404.code))
