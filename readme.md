@@ -38,5 +38,5 @@ and open ```http://localhost:8085```
 
 ## Demo request
 
-send ``{ "characteristics" : [ { "aid" : 1, "iid" : 21, "value" : 23.3 } ]}``
+send ``{ "characteristics" : [ { "aid" : 10000, "iid" : 10101, "value" : 23.3 } ]}``
 to iconect bot ``light-bot@iconect.io``
