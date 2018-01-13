@@ -7,9 +7,10 @@ class TargetPositionTest {
 
     @Test
     fun `verify predefined values`() {
-        val targetPosition = TargetPosition(1)
+        val targetPosition = TargetPosition(1, 2)
 
         assertThat(targetPosition.instanceId).isEqualTo(1)
+        assertThat(targetPosition.accessoryInstanceId).isEqualTo(2)
         assertThat(targetPosition.uuid).isEqualTo("0000007C-0000-1000-8000-0026BB765291")
         assertThat(targetPosition.type).isEqualTo("public.hap.characteristic.position.target")
         assertThat(targetPosition.description).isNull()
@@ -26,7 +27,7 @@ class TargetPositionTest {
 
     @Test
     fun `adjust value`() {
-        val targetPosition = TargetPosition(3)
+        val targetPosition = TargetPosition(3, 1)
         targetPosition.adjustValue("23")
 
         assertThat(targetPosition.instanceId).isEqualTo(3)
@@ -41,19 +42,19 @@ class TargetPositionTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
-        val targetPosition = TargetPosition(3)
+        val targetPosition = TargetPosition(3, 1)
         targetPosition.adjustValue("-1")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
-        val targetPosition = TargetPosition(3)
+        val targetPosition = TargetPosition(3, 1)
         targetPosition.adjustValue("101")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value is no int value`() {
-        val targetPosition = TargetPosition(3)
+        val targetPosition = TargetPosition(3, 1)
         targetPosition.adjustValue("no-double")
     }
 }

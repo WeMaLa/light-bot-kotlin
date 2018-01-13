@@ -39,14 +39,17 @@ class HapInitializerTest {
 
         val targetTemperature = thermostat.characteristics.first { c -> c is TargetTemperature } as TargetTemperature
         assertThat(targetTemperature.instanceId).isEqualTo(10101)
+        assertThat(targetTemperature.accessoryInstanceId).isEqualTo(10000)
         assertThat(targetTemperature.value).isEqualTo("10.0")
 
         val currentTemperature = thermostat.characteristics.first { c -> c is CurrentTemperature } as CurrentTemperature
         assertThat(currentTemperature.instanceId).isEqualTo(10102)
+        assertThat(currentTemperature.accessoryInstanceId).isEqualTo(10000)
         assertThat(currentTemperature.value).isEqualTo("0.0")
 
         val name = thermostat.characteristics.first { c -> c is Name } as Name
         assertThat(name.instanceId).isEqualTo(10103)
+        assertThat(name.accessoryInstanceId).isEqualTo(10000)
         assertThat(name.value).isEqualTo("Kitchen thermostat heater")
     }
 
@@ -65,14 +68,17 @@ class HapInitializerTest {
 
         val targetPosition = window.characteristics.first { c -> c is TargetPosition } as TargetPosition
         assertThat(targetPosition.instanceId).isEqualTo(11101)
+        assertThat(targetPosition.accessoryInstanceId).isEqualTo(11000)
         assertThat(targetPosition.value).isEqualTo("0")
 
         val currentPosition = window.characteristics.first { c -> c is CurrentPosition } as CurrentPosition
         assertThat(currentPosition.instanceId).isEqualTo(11102)
+        assertThat(currentPosition.accessoryInstanceId).isEqualTo(11000)
         assertThat(currentPosition.value).isEqualTo("0")
 
         val name = window.characteristics.first { c -> c is Name } as Name
         assertThat(name.instanceId).isEqualTo(11103)
+        assertThat(name.accessoryInstanceId).isEqualTo(11000)
         assertThat(name.value).isEqualTo("Kitchen window")
     }
 
@@ -88,13 +94,16 @@ class HapInitializerTest {
 
         val lightbulb = accessory.services.first { s -> s is Lightbulb } as Lightbulb
         assertThat(lightbulb.instanceId).isEqualTo(12100)
+        assertThat(lightbulb.accessoryInstanceId).isEqualTo(12000)
 
         val currentPosition = lightbulb.characteristics.first { c -> c is On } as On
         assertThat(currentPosition.instanceId).isEqualTo(12101)
+        assertThat(currentPosition.accessoryInstanceId).isEqualTo(12000)
         assertThat(currentPosition.value).isEqualTo("off")
 
         val name = lightbulb.characteristics.first { c -> c is Name } as Name
         assertThat(name.instanceId).isEqualTo(12102)
+        assertThat(name.accessoryInstanceId).isEqualTo(12000)
         assertThat(name.value).isEqualTo("Kitchen light bulb")
     }
 }

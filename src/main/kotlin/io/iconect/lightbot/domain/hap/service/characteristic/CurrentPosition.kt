@@ -1,7 +1,7 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 170
-data class CurrentPosition(override val instanceId: Int) : Characteristic {
+data class CurrentPosition(override val instanceId: Int, override val accessoryInstanceId: Int) : Characteristic {
 
     override val uuid = "0000006D-0000-1000-8000-0026BB765291"
     override var value: String = "0"

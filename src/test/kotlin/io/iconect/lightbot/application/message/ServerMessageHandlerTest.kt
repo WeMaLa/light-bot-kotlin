@@ -36,11 +36,11 @@ class ServerMessageHandlerTest {
 
     @Before
     fun setUp() {
-        val kitchenThermostat = Thermostat(12, 121, 122, 123)
+        val kitchenThermostat = Thermostat(12, 120,121, 122, 123)
         (kitchenThermostat.characteristics.first { c -> c is Name } as Name).updateName("Kitchen thermostat heater")
         accessoryRepository.store(Accessory(1, listOf(kitchenThermostat)))
 
-        val restRoomThermostat = Thermostat(22, 221, 222, 223)
+        val restRoomThermostat = Thermostat(22, 220,221, 222, 223)
         (restRoomThermostat.characteristics.first { c -> c is Name } as Name).updateName("Restroom thermostat heater")
         accessoryRepository.store(Accessory(2, listOf(restRoomThermostat)))
     }

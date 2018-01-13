@@ -1,7 +1,7 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 170
-data class On(override val instanceId: Int) : WritableCharacteristic {
+data class On(override val instanceId: Int, override val accessoryInstanceId: Int) : WritableCharacteristic {
 
     override val uuid = "00000025-0000-1000-8000-0026BB765291"
     override var value: String = "off"

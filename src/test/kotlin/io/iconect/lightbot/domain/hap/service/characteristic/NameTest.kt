@@ -7,9 +7,10 @@ class NameTest {
 
     @Test
     fun `verify predefined values`() {
-        val name = Name(1)
+        val name = Name(1, 2)
 
         Assertions.assertThat(name.instanceId).isEqualTo(1)
+        Assertions.assertThat(name.accessoryInstanceId).isEqualTo(2)
         Assertions.assertThat(name.uuid).isEqualTo("00000023-0000-1000-8000-0026BB765291")
         Assertions.assertThat(name.type).isEqualTo("public.hap.characteristic.temperature.name")
         Assertions.assertThat(name.description).isNull()
@@ -26,7 +27,7 @@ class NameTest {
 
     @Test
     fun `adjust value`() {
-        val name = Name(3)
+        val name = Name(3, 1)
         name.updateName("")
 
         Assertions.assertThat(name.instanceId).isEqualTo(3)
@@ -41,7 +42,7 @@ class NameTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `update name with too many characters`() {
-        val name = Name(4)
+        val name = Name(4, 1)
         name.updateName("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz1111111111112")
     }
 

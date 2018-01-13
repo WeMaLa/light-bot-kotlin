@@ -7,9 +7,10 @@ class OnTest {
 
     @Test
     fun `verify predefined values`() {
-        val on = On(1)
+        val on = On(1, 2)
 
         assertThat(on.instanceId).isEqualTo(1)
+        assertThat(on.accessoryInstanceId).isEqualTo(2)
         assertThat(on.uuid).isEqualTo("00000025-0000-1000-8000-0026BB765291")
         assertThat(on.type).isEqualTo("public.hap.characteristic.on")
         assertThat(on.description).isNull()
@@ -26,7 +27,7 @@ class OnTest {
 
     @Test
     fun `adjust value`() {
-        val on = On(3)
+        val on = On(3, 1)
         on.adjustValue("on")
 
         assertThat(on.instanceId).isEqualTo(3)
@@ -38,7 +39,7 @@ class OnTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value is no on or off value`() {
-        val on = On(3)
+        val on = On(3, 1)
         on.adjustValue("no-double")
     }
     

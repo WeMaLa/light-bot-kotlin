@@ -32,7 +32,7 @@ class CachedAccessoryRepositoryTest {
 
     @Test
     fun `store accessory`() {
-        val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
+        val accessory = Accessory(1, listOf(Thermostat(2, 1, 21, 22, 23)))
 
         assertThat(repository.findAll()).isEmpty()
 
@@ -43,7 +43,7 @@ class CachedAccessoryRepositoryTest {
 
     @Test
     fun `update stored room`() {
-        val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
+        val accessory = Accessory(1, listOf(Thermostat(2, 1, 21, 22, 23)))
 
         repository.store(accessory)
         assertThat(repository.findAll()).containsExactly(accessory)
@@ -53,10 +53,10 @@ class CachedAccessoryRepositoryTest {
         repository.store(updatedAccessory)
         assertThat(repository.findAll()).containsExactly(updatedAccessory)
     }
-    
+
     @Test
     fun `find by instance id (aid)`() {
-        val accessory = Accessory(1, listOf(Thermostat(2, 21, 22, 23)))
+        val accessory = Accessory(1, listOf(Thermostat(2, 1, 21, 22, 23)))
 
         repository.store(accessory)
         assertThat(repository.findAll()).containsExactly(accessory)

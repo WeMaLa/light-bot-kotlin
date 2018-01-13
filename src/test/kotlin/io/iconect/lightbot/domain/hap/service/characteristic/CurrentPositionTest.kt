@@ -7,9 +7,10 @@ class CurrentPositionTest {
 
     @Test
     fun `verify predefined values`() {
-        val currentPosition = CurrentPosition(1)
+        val currentPosition = CurrentPosition(1, 2)
 
         assertThat(currentPosition.instanceId).isEqualTo(1)
+        assertThat(currentPosition.accessoryInstanceId).isEqualTo(2)
         assertThat(currentPosition.uuid).isEqualTo("0000006D-0000-1000-8000-0026BB765291")
         assertThat(currentPosition.type).isEqualTo("public.hap.characteristic.position.current")
         assertThat(currentPosition.description).isNull()
@@ -26,7 +27,7 @@ class CurrentPositionTest {
 
     @Test
     fun `adjust value`() {
-        val currentPosition = CurrentPosition(3)
+        val currentPosition = CurrentPosition(3, 1)
         currentPosition.adjustValue(23)
 
         assertThat(currentPosition.instanceId).isEqualTo(3)
@@ -41,13 +42,13 @@ class CurrentPositionTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
-        val targetTemperature = CurrentPosition(3)
+        val targetTemperature = CurrentPosition(3, 1)
         targetTemperature.adjustValue(-1)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
-        val targetTemperature = CurrentPosition(3)
+        val targetTemperature = CurrentPosition(3, 1)
         targetTemperature.adjustValue(101)
     }
 }

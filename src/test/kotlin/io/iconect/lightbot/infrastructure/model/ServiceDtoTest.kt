@@ -8,11 +8,10 @@ class ServiceDtoTest {
 
     @Test
     fun `map domain model to dto`() {
-        val thermostat = Thermostat(11, 12, 13, 14)
+        val thermostat = Thermostat(11, 1, 12, 13, 14)
 
         val serviceDto = ServiceDto.from(thermostat)
 
-        assertThat(serviceDto.iid).isEqualTo(11)
         assertThat(serviceDto.iid).isEqualTo(11)
         assertThat(serviceDto.characteristics).extracting("iid").containsExactly(12, 13, 14)
 

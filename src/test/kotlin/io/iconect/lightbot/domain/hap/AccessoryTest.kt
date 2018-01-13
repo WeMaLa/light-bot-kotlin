@@ -1,7 +1,6 @@
 package io.iconect.lightbot.domain.hap
 
 import io.iconect.lightbot.domain.hap.service.Thermostat
-import io.iconect.lightbot.domain.hap.service.characteristic.Name
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -9,8 +8,7 @@ class AccessoryTest {
 
     @Test
     fun `find characteristic by iid`() {
-        val kitchenThermostat = Thermostat(2, 21, 22, 23)
-        (kitchenThermostat.characteristics.first { c -> c is Name } as Name).updateName("Kitchen thermostat heater")
+        val kitchenThermostat = Thermostat(2, 1, 21, 22, 23)
         val accessory = Accessory(1, listOf(kitchenThermostat))
 
         assertThat(accessory.findCharacteristic(21)).isNotNull()

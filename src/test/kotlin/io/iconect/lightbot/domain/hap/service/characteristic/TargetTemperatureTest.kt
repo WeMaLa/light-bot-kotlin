@@ -7,9 +7,10 @@ class TargetTemperatureTest {
 
     @Test
     fun `verify predefined values`() {
-        val targetTemperature = TargetTemperature(1)
+        val targetTemperature = TargetTemperature(1, 2)
 
         Assertions.assertThat(targetTemperature.instanceId).isEqualTo(1)
+        Assertions.assertThat(targetTemperature.accessoryInstanceId).isEqualTo(2)
         Assertions.assertThat(targetTemperature.uuid).isEqualTo("00000035-0000-1000-8000-0026BB765291")
         Assertions.assertThat(targetTemperature.type).isEqualTo("public.hap.characteristic.temperature.target")
         Assertions.assertThat(targetTemperature.description).isNull()
@@ -26,7 +27,7 @@ class TargetTemperatureTest {
 
     @Test
     fun `adjust value`() {
-        val targetTemperature = TargetTemperature(3)
+        val targetTemperature = TargetTemperature(3, 1)
         targetTemperature.adjustValue("23.0")
 
         Assertions.assertThat(targetTemperature.instanceId).isEqualTo(3)
@@ -41,19 +42,19 @@ class TargetTemperatureTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
-        val targetTemperature = TargetTemperature(3)
+        val targetTemperature = TargetTemperature(3, 1)
         targetTemperature.adjustValue("9.9")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
-        val targetTemperature = TargetTemperature(3)
+        val targetTemperature = TargetTemperature(3, 1)
         targetTemperature.adjustValue("38.1")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value is no double value`() {
-        val targetTemperature = TargetTemperature(3)
+        val targetTemperature = TargetTemperature(3, 1)
         targetTemperature.adjustValue("no-double")
     }
 }

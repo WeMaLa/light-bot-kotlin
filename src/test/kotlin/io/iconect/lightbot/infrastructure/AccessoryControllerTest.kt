@@ -46,7 +46,7 @@ class AccessoryControllerTest {
 
     @Test
     fun `find all accessories and map to string`() {
-        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(Accessory(1, listOf(Thermostat(1, 2, 3, 4)))))
+        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(Accessory(1, listOf(Thermostat(1, 1, 2, 3, 4)))))
 
         val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, String::class.java)
 

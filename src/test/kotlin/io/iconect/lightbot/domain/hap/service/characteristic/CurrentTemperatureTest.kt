@@ -7,9 +7,10 @@ class CurrentTemperatureTest {
 
     @Test
     fun `verify predefined values`() {
-        val currentTemperature = CurrentTemperature(1)
+        val currentTemperature = CurrentTemperature(1, 2)
 
         assertThat(currentTemperature.instanceId).isEqualTo(1)
+        assertThat(currentTemperature.accessoryInstanceId).isEqualTo(2)
         assertThat(currentTemperature.uuid).isEqualTo("00000011-0000-1000-8000-0026BB765291")
         assertThat(currentTemperature.type).isEqualTo("public.hap.characteristic.temperature.current")
         assertThat(currentTemperature.description).isNull()
@@ -26,7 +27,7 @@ class CurrentTemperatureTest {
 
     @Test
     fun `adjust value`() {
-        val currentTemperature = CurrentTemperature(3)
+        val currentTemperature = CurrentTemperature(3, 1)
         currentTemperature.adjustValue(23.0)
 
         assertThat(currentTemperature.instanceId).isEqualTo(3)
@@ -41,13 +42,13 @@ class CurrentTemperatureTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
-        val targetTemperature = CurrentTemperature(3)
+        val targetTemperature = CurrentTemperature(3, 1)
         targetTemperature.adjustValue(-0.1)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
-        val targetTemperature = CurrentTemperature(3)
+        val targetTemperature = CurrentTemperature(3, 1)
         targetTemperature.adjustValue(100.1)
     }
 }

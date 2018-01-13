@@ -10,9 +10,10 @@ class WindowTest {
 
     @Test
     fun `verify predefined values`() {
-        val window = Window(1, 2, 3, 4)
+        val window = Window(1, 2, 3, 4, 5)
 
         assertThat(window.instanceId).isEqualTo(1)
+        assertThat(window.accessoryInstanceId).isEqualTo(2)
         assertThat(window.uuid).isEqualTo("0000008B-0000-1000-8000-0026BB765291")
         assertThat(window.type).isEqualTo("public.hap.service.window")
         assertThat(window.hidden).isFalse()
@@ -23,13 +24,13 @@ class WindowTest {
         assertThat(window.characteristics.filter { c -> c is Name }.size).isEqualTo(1)
 
         val targetTemperature = window.characteristics.first { c -> c is TargetPosition } as TargetPosition
-        assertThat(targetTemperature.instanceId).isEqualTo(2)
+        assertThat(targetTemperature.instanceId).isEqualTo(3)
 
         val currentTemperature = window.characteristics.first { c -> c is CurrentPosition } as CurrentPosition
-        assertThat(currentTemperature.instanceId).isEqualTo(3)
+        assertThat(currentTemperature.instanceId).isEqualTo(4)
 
         val name = window.characteristics.first { c -> c is Name } as Name
-        assertThat(name.instanceId).isEqualTo(4)
+        assertThat(name.instanceId).isEqualTo(5)
     }
 
 }
