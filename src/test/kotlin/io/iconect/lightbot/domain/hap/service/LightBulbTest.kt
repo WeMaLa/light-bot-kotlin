@@ -5,11 +5,11 @@ import io.iconect.lightbot.domain.hap.service.characteristic.On
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class LightbulbTest {
+class LightBulbTest {
 
     @Test
     fun `verify predefined values`() {
-        val lightbulb = Lightbulb(1, 2, 3, 4)
+        val lightbulb = LightBulb(1, 2, 3, 4)
 
         assertThat(lightbulb.instanceId).isEqualTo(1)
         assertThat(lightbulb.accessoryInstanceId).isEqualTo(2)

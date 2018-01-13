@@ -4,7 +4,7 @@ import io.iconect.lightbot.domain.hap.service.characteristic.Name
 import io.iconect.lightbot.domain.hap.service.characteristic.On
 
 // service page 218
-data class Lightbulb(override val instanceId: Int,
+data class LightBulb(override val instanceId: Int,
                      override val accessoryInstanceId: Int,
                      private val onInstanceId: Int,
                      private val nameInstanceId: Int) : Service {

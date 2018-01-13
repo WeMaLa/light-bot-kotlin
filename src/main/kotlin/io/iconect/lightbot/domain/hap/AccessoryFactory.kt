@@ -1,6 +1,6 @@
 package io.iconect.lightbot.domain.hap
 
-import io.iconect.lightbot.domain.hap.service.Lightbulb
+import io.iconect.lightbot.domain.hap.service.LightBulb
 import io.iconect.lightbot.domain.hap.service.Thermostat
 import io.iconect.lightbot.domain.hap.service.Window
 import io.iconect.lightbot.domain.hap.service.characteristic.Name
@@ -14,7 +14,7 @@ class AccessoryFactory {
                                  onInstanceId: Int,
                                  nameInstanceId: Int,
                                  name: String): Accessory {
-        val lightBulb = Lightbulb(instanceId, accessoryInstanceId, onInstanceId, nameInstanceId)
+        val lightBulb = LightBulb(instanceId, accessoryInstanceId, onInstanceId, nameInstanceId)
         (lightBulb.characteristics.first { c -> c is Name } as Name).updateName(name)
         return Accessory(accessoryInstanceId, listOf(lightBulb))
     }

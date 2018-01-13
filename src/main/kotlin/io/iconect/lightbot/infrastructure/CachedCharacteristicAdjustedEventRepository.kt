@@ -10,13 +10,13 @@ class CachedCharacteristicAdjustedEventRepository : CharacteristicAdjustedEventR
     private val events = mutableListOf<CharacteristicAdjustedEvent>()
 
     override fun popNextEvent(): CharacteristicAdjustedEvent? {
-        if (events.size > 0) {
+        return if (events.size > 0) {
             val event = events[0]
             events.removeAt(0)
-            return event
+            event
+        } else {
+            null
         }
-
-        return null
     }
 
     override fun pushEvent(event: CharacteristicAdjustedEvent) {
