@@ -10,7 +10,7 @@ class CharacteristicDtoTest {
 
     @Test
     fun `map domain model to dto`() {
-        val name = Name(37, 1)
+        val name = Name(37, 1, { _, _, _ -> })
         name.updateName("unit-test-value-name")
 
         val nameDto = CharacteristicDto.from(name)

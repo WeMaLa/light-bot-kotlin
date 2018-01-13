@@ -10,7 +10,7 @@ class AccessoryDtoTest {
 
     @Test
     fun `map domain model to dto`() {
-        val thermostat = Thermostat(11, 1,12, 13, 14)
+        val thermostat = Thermostat(11, 1,12, 13, 14, { _, _, _ -> })
         val accessory = Accessory(1, listOf(thermostat))
 
         val accessoryDto = AccessoryDto.from(accessory)

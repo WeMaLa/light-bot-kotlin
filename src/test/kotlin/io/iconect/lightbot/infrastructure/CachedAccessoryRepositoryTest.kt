@@ -1,8 +1,8 @@
 package io.iconect.lightbot.infrastructure
 
 import io.iconect.lightbot.domain.hap.Accessory
+import io.iconect.lightbot.domain.hap.AccessoryFactory
 import io.iconect.lightbot.domain.hap.AccessoryRepository
-import io.iconect.lightbot.domain.hap.service.Thermostat
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -20,6 +20,9 @@ class CachedAccessoryRepositoryTest {
     @Autowired
     lateinit var repository: AccessoryRepository
 
+    @Autowired
+    private lateinit var accessoryFactory: AccessoryFactory
+
     @Before
     fun setUp() {
         repository.clear()
@@ -32,7 +35,7 @@ class CachedAccessoryRepositoryTest {
 
     @Test
     fun `store accessory`() {
-        val accessory = Accessory(1, listOf(Thermostat(2, 1, 21, 22, 23)))
+        val accessory = accessoryFactory.createThermostatAccessory(1, 2, 21, 22, 23, "dummy")
 
         assertThat(repository.findAll()).isEmpty()
 
@@ -43,7 +46,7 @@ class CachedAccessoryRepositoryTest {
 
     @Test
     fun `update stored room`() {
-        val accessory = Accessory(1, listOf(Thermostat(2, 1, 21, 22, 23)))
+        val accessory = accessoryFactory.createThermostatAccessory(1, 2, 21, 22, 23, "dummy")
 
         repository.store(accessory)
         assertThat(repository.findAll()).containsExactly(accessory)
@@ -56,7 +59,7 @@ class CachedAccessoryRepositoryTest {
 
     @Test
     fun `find by instance id (aid)`() {
-        val accessory = Accessory(1, listOf(Thermostat(2, 1, 21, 22, 23)))
+        val accessory = accessoryFactory.createThermostatAccessory(1, 2, 21, 22, 23, "dummy")
 
         repository.store(accessory)
         assertThat(repository.findAll()).containsExactly(accessory)

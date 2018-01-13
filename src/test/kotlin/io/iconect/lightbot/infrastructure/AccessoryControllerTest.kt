@@ -1,8 +1,8 @@
 package io.iconect.lightbot.infrastructure
 
 import io.iconect.lightbot.domain.hap.Accessory
+import io.iconect.lightbot.domain.hap.AccessoryFactory
 import io.iconect.lightbot.domain.hap.AccessoryRepository
-import io.iconect.lightbot.domain.hap.service.Thermostat
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
@@ -25,10 +25,13 @@ import org.springframework.test.context.junit4.SpringRunner
 class AccessoryControllerTest {
 
     @Autowired
-    lateinit var testRestTemplate: TestRestTemplate
+    private lateinit var testRestTemplate: TestRestTemplate
+
+    @Autowired
+    private lateinit var accessoryFactory: AccessoryFactory
 
     @MockBean
-    lateinit var accessoryRepository: AccessoryRepository
+    private lateinit var accessoryRepository: AccessoryRepository
 
     @Test
     fun `find all accessories and map to dto`() {
@@ -46,7 +49,8 @@ class AccessoryControllerTest {
 
     @Test
     fun `find all accessories and map to string`() {
-        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(Accessory(1, listOf(Thermostat(1, 1, 2, 3, 4)))))
+        val accessory = accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy")
+        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(accessory))
 
         val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, String::class.java)
 
@@ -60,7 +64,7 @@ class AccessoryControllerTest {
                 "{\"iid\":1,\"type\":\"4A\",\"characteristics\":[" +
                 "{\"iid\":2,\"type\":\"35\",\"value\":\"10.0\",\"format\":\"float\",\"perms\":[\"pr\",\"pw\",\"Notify\"]}," +
                 "{\"iid\":3,\"type\":\"11\",\"value\":\"0.0\",\"format\":\"float\",\"perms\":[\"pr\",\"Notify\"]}," +
-                "{\"iid\":4,\"type\":\"23\",\"format\":\"string\",\"perms\":[\"pr\"]}" +
+                "{\"iid\":4,\"type\":\"23\",\"value\":\"dummy\",\"format\":\"string\",\"perms\":[\"pr\"]}" +
                 "]}" +
                 "]}" +
                 "]" +

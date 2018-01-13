@@ -1,7 +1,9 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 170
-data class TargetPosition(override val instanceId: Int, override val accessoryInstanceId: Int) : WritableCharacteristic {
+data class TargetPosition(override val instanceId: Int,
+                          override val accessoryInstanceId: Int,
+                          private val eventPublisher: (accessoryInstanceId: Int, characteristicInstanceId: Int, value: String) -> kotlin.Unit) : WritableCharacteristic {
 
     override val uuid = "0000007C-0000-1000-8000-0026BB765291"
     override var value: String = "0"
@@ -23,6 +25,11 @@ data class TargetPosition(override val instanceId: Int, override val accessoryIn
             if (percentage < minimumValue || percentage > maximumValue) {
                 throw IllegalArgumentException("Percentage value $value must be in range between $minimumValue and $maximumValue")
             }
+
+            if (this.value != value) {
+                eventPublisher(accessoryInstanceId, instanceId, value)
+            }
+
             this.value = value
         } catch (e: NumberFormatException) {
             throw IllegalArgumentException("Percentage value $value must be of type $format")

@@ -1,5 +1,6 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -7,7 +8,7 @@ class CurrentPositionTest {
 
     @Test
     fun `verify predefined values`() {
-        val currentPosition = CurrentPosition(1, 2)
+        val currentPosition = CurrentPosition(1, 2, { _, _, _ -> })
 
         assertThat(currentPosition.instanceId).isEqualTo(1)
         assertThat(currentPosition.accessoryInstanceId).isEqualTo(2)
@@ -27,7 +28,7 @@ class CurrentPositionTest {
 
     @Test
     fun `adjust value`() {
-        val currentPosition = CurrentPosition(3, 1)
+        val currentPosition = CurrentPosition(3, 1, { _, _, _ -> })
         currentPosition.adjustValue(23)
 
         assertThat(currentPosition.instanceId).isEqualTo(3)
@@ -40,15 +41,53 @@ class CurrentPositionTest {
         assertThat(currentPosition.value).isEqualTo("100")
     }
 
+    @Test
+    fun `adjust value and check event is thrown`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val currentPosition = CurrentPosition(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+        currentPosition.adjustValue(50)
+        Assertions.assertThat(eventAccessoryId).isEqualTo(1)
+        Assertions.assertThat(eventCharacteristicsId).isEqualTo(3)
+        Assertions.assertThat(eventValue).isEqualTo("50")
+    }
+
+    @Test
+    fun `verify event is not thrown when status not has been changed`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val currentPosition = CurrentPosition(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+        currentPosition.adjustValue(0)
+        Assertions.assertThat(eventAccessoryId).isNull()
+        Assertions.assertThat(eventCharacteristicsId).isNull()
+        Assertions.assertThat(eventValue).isNull()
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
-        val targetTemperature = CurrentPosition(3, 1)
+        val targetTemperature = CurrentPosition(3, 1, { _, _, _ -> })
         targetTemperature.adjustValue(-1)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
-        val targetTemperature = CurrentPosition(3, 1)
+        val targetTemperature = CurrentPosition(3, 1, { _, _, _ -> })
         targetTemperature.adjustValue(101)
     }
 }

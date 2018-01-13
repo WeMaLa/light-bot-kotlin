@@ -7,7 +7,7 @@ class TargetTemperatureTest {
 
     @Test
     fun `verify predefined values`() {
-        val targetTemperature = TargetTemperature(1, 2)
+        val targetTemperature = TargetTemperature(1, 2, { _, _, _ -> })
 
         Assertions.assertThat(targetTemperature.instanceId).isEqualTo(1)
         Assertions.assertThat(targetTemperature.accessoryInstanceId).isEqualTo(2)
@@ -27,7 +27,7 @@ class TargetTemperatureTest {
 
     @Test
     fun `adjust value`() {
-        val targetTemperature = TargetTemperature(3, 1)
+        val targetTemperature = TargetTemperature(3, 1, { _, _, _ -> })
         targetTemperature.adjustValue("23.0")
 
         Assertions.assertThat(targetTemperature.instanceId).isEqualTo(3)
@@ -40,21 +40,59 @@ class TargetTemperatureTest {
         Assertions.assertThat(targetTemperature.value).isEqualTo("38.0")
     }
 
+    @Test
+    fun `adjust value and check event is thrown`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val targetTemperature = TargetTemperature(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+        targetTemperature.adjustValue("23.3")
+        Assertions.assertThat(eventAccessoryId).isEqualTo(1)
+        Assertions.assertThat(eventCharacteristicsId).isEqualTo(3)
+        Assertions.assertThat(eventValue).isEqualTo("23.3")
+    }
+
+    @Test
+    fun `verify event is not thrown when status not has been changed`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val targetTemperature = TargetTemperature(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+        targetTemperature.adjustValue("10.0")
+        Assertions.assertThat(eventAccessoryId).isNull()
+        Assertions.assertThat(eventCharacteristicsId).isNull()
+        Assertions.assertThat(eventValue).isNull()
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
-        val targetTemperature = TargetTemperature(3, 1)
+        val targetTemperature = TargetTemperature(3, 1, { _, _, _ -> })
         targetTemperature.adjustValue("9.9")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
-        val targetTemperature = TargetTemperature(3, 1)
+        val targetTemperature = TargetTemperature(3, 1, { _, _, _ -> })
         targetTemperature.adjustValue("38.1")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value is no double value`() {
-        val targetTemperature = TargetTemperature(3, 1)
+        val targetTemperature = TargetTemperature(3, 1, { _, _, _ -> })
         targetTemperature.adjustValue("no-double")
     }
 }

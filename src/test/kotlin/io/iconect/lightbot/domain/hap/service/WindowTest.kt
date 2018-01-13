@@ -10,7 +10,7 @@ class WindowTest {
 
     @Test
     fun `verify predefined values`() {
-        val window = Window(1, 2, 3, 4, 5)
+        val window = Window(1, 2, 3, 4, 5, { _, _, _ -> })
 
         assertThat(window.instanceId).isEqualTo(1)
         assertThat(window.accessoryInstanceId).isEqualTo(2)

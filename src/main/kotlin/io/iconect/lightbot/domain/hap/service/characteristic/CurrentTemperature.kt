@@ -1,7 +1,9 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 148
-data class CurrentTemperature(override val instanceId: Int, override val accessoryInstanceId: Int) : Characteristic {
+data class CurrentTemperature(override val instanceId: Int,
+                              override val accessoryInstanceId: Int,
+                              private val eventPublisher: (accessoryInstanceId: Int, characteristicInstanceId: Int, value: String) -> kotlin.Unit) : Characteristic {
 
     override val uuid = "00000011-0000-1000-8000-0026BB765291"
     override var value: String = "0.0"
@@ -22,6 +24,14 @@ data class CurrentTemperature(override val instanceId: Int, override val accesso
         if (degree < minimumValue || degree > maximumValue) {
             throw IllegalArgumentException("Celcius value $degree must be in range between $minimumValue and $maximumValue")
         }
-        value = degree.toString()
+
+        val newValue = degree.toString()
+
+        if (value != newValue) {
+            eventPublisher(accessoryInstanceId, instanceId, newValue)
+        }
+
+
+        value = newValue
     }
 }

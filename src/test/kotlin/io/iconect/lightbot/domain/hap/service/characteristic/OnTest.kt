@@ -7,7 +7,7 @@ class OnTest {
 
     @Test
     fun `verify predefined values`() {
-        val on = On(1, 2)
+        val on = On(1, 2, { _, _, _ -> })
 
         assertThat(on.instanceId).isEqualTo(1)
         assertThat(on.accessoryInstanceId).isEqualTo(2)
@@ -27,7 +27,7 @@ class OnTest {
 
     @Test
     fun `adjust value`() {
-        val on = On(3, 1)
+        val on = On(3, 1, { _, _, _ -> })
         on.adjustValue("on")
 
         assertThat(on.instanceId).isEqualTo(3)
@@ -37,10 +37,54 @@ class OnTest {
         assertThat(on.value).isEqualTo("off")
     }
 
+    @Test
+    fun `adjust value and check event is thrown`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val on = On(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+        on.adjustValue("on")
+        assertThat(eventAccessoryId).isEqualTo(1)
+        assertThat(eventCharacteristicsId).isEqualTo(3)
+        assertThat(eventValue).isEqualTo("on")
+
+        on.adjustValue("off")
+        assertThat(eventAccessoryId).isEqualTo(1)
+        assertThat(eventCharacteristicsId).isEqualTo(3)
+        assertThat(eventValue).isEqualTo("off")
+    }
+
+    @Test
+    fun `verify event is not thrown when status not has been changed`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val on = On(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+
+        on.adjustValue("off")
+        assertThat(eventAccessoryId).isNull()
+        assertThat(eventCharacteristicsId).isNull()
+        assertThat(eventValue).isNull()
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value is no on or off value`() {
-        val on = On(3, 1)
+        val on = On(3, 1, { _, _, _ -> })
         on.adjustValue("no-double")
     }
-    
+
 }

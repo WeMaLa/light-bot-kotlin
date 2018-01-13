@@ -9,22 +9,22 @@ class LightBulbTest {
 
     @Test
     fun `verify predefined values`() {
-        val lightbulb = LightBulb(1, 2, 3, 4)
+        val lightBulb = LightBulb(1, 2, 3, 4, { _, _, _ -> })
 
-        assertThat(lightbulb.instanceId).isEqualTo(1)
-        assertThat(lightbulb.accessoryInstanceId).isEqualTo(2)
-        assertThat(lightbulb.uuid).isEqualTo("00000043-0000-1000-8000-0026BB765291")
-        assertThat(lightbulb.type).isEqualTo("public.hap.service.lightbulb")
-        assertThat(lightbulb.hidden).isFalse()
-        assertThat(lightbulb.primaryService).isTrue()
-        assertThat(lightbulb.linkedServices).isEmpty()
-        assertThat(lightbulb.characteristics.filter { c -> c is On }.size).isEqualTo(1)
-        assertThat(lightbulb.characteristics.filter { c -> c is Name }.size).isEqualTo(1)
+        assertThat(lightBulb.instanceId).isEqualTo(1)
+        assertThat(lightBulb.accessoryInstanceId).isEqualTo(2)
+        assertThat(lightBulb.uuid).isEqualTo("00000043-0000-1000-8000-0026BB765291")
+        assertThat(lightBulb.type).isEqualTo("public.hap.service.lightbulb")
+        assertThat(lightBulb.hidden).isFalse()
+        assertThat(lightBulb.primaryService).isTrue()
+        assertThat(lightBulb.linkedServices).isEmpty()
+        assertThat(lightBulb.characteristics.filter { c -> c is On }.size).isEqualTo(1)
+        assertThat(lightBulb.characteristics.filter { c -> c is Name }.size).isEqualTo(1)
 
-        val on = lightbulb.characteristics.first { c -> c is On } as On
+        val on = lightBulb.characteristics.first { c -> c is On } as On
         assertThat(on.instanceId).isEqualTo(3)
 
-        val name = lightbulb.characteristics.first { c -> c is Name } as Name
+        val name = lightBulb.characteristics.first { c -> c is Name } as Name
         assertThat(name.instanceId).isEqualTo(4)
     }
 

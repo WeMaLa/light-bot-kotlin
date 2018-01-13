@@ -8,7 +8,7 @@ class AccessoryTest {
 
     @Test
     fun `find characteristic by iid`() {
-        val kitchenThermostat = Thermostat(2, 1, 21, 22, 23)
+        val kitchenThermostat = Thermostat(2, 1, 21, 22, 23, { _, _, _ -> })
         val accessory = Accessory(1, listOf(kitchenThermostat))
 
         assertThat(accessory.findCharacteristic(21)).isNotNull()

@@ -7,7 +7,7 @@ class TargetPositionTest {
 
     @Test
     fun `verify predefined values`() {
-        val targetPosition = TargetPosition(1, 2)
+        val targetPosition = TargetPosition(1, 2, { _, _, _ -> })
 
         assertThat(targetPosition.instanceId).isEqualTo(1)
         assertThat(targetPosition.accessoryInstanceId).isEqualTo(2)
@@ -27,7 +27,7 @@ class TargetPositionTest {
 
     @Test
     fun `adjust value`() {
-        val targetPosition = TargetPosition(3, 1)
+        val targetPosition = TargetPosition(3, 1, { _, _, _ -> })
         targetPosition.adjustValue("23")
 
         assertThat(targetPosition.instanceId).isEqualTo(3)
@@ -40,21 +40,59 @@ class TargetPositionTest {
         assertThat(targetPosition.value).isEqualTo("100")
     }
 
+    @Test
+    fun `adjust value and check event is thrown`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val targetPosition = TargetPosition(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+        targetPosition.adjustValue("50")
+        assertThat(eventAccessoryId).isEqualTo(1)
+        assertThat(eventCharacteristicsId).isEqualTo(3)
+        assertThat(eventValue).isEqualTo("50")
+    }
+
+    @Test
+    fun `verify event is not thrown when status not has been changed`() {
+        var eventAccessoryId: Int? = null
+        var eventCharacteristicsId: Int? = null
+        var eventValue: String? = null
+
+        val targetPosition = TargetPosition(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+            run {
+                eventAccessoryId = accessoryInstanceId
+                eventCharacteristicsId = characteristicInstanceId
+                eventValue = value
+            }
+        })
+        targetPosition.adjustValue("0")
+        assertThat(eventAccessoryId).isNull()
+        assertThat(eventCharacteristicsId).isNull()
+        assertThat(eventValue).isNull()
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to low`() {
-        val targetPosition = TargetPosition(3, 1)
+        val targetPosition = TargetPosition(3, 1, { _, _, _ -> })
         targetPosition.adjustValue("-1")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value to high`() {
-        val targetPosition = TargetPosition(3, 1)
+        val targetPosition = TargetPosition(3, 1, { _, _, _ -> })
         targetPosition.adjustValue("101")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `adjust value is no int value`() {
-        val targetPosition = TargetPosition(3, 1)
+        val targetPosition = TargetPosition(3, 1, { _, _, _ -> })
         targetPosition.adjustValue("no-double")
     }
 }

@@ -1,7 +1,9 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 170
-data class CurrentPosition(override val instanceId: Int, override val accessoryInstanceId: Int) : Characteristic {
+data class CurrentPosition(override val instanceId: Int,
+                           override val accessoryInstanceId: Int,
+                           private val eventPublisher: (accessoryInstanceId: Int, characteristicInstanceId: Int, value: String) -> kotlin.Unit) : Characteristic {
 
     override val uuid = "0000006D-0000-1000-8000-0026BB765291"
     override var value: String = "0"
@@ -21,6 +23,12 @@ data class CurrentPosition(override val instanceId: Int, override val accessoryI
         if (percentage < minimumValue.toInt() || percentage > maximumValue.toInt()) {
             throw IllegalArgumentException("Percentage value $percentage must be in range between $minimumValue and $maximumValue")
         }
-        value = percentage.toString()
+
+        val newValue = percentage.toString()
+        if (value != newValue) {
+            this.eventPublisher(accessoryInstanceId, instanceId, newValue)
+        }
+
+        value = newValue
     }
 }

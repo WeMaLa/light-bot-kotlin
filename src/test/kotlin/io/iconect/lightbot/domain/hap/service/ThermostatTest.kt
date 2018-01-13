@@ -10,7 +10,7 @@ class ThermostatTest {
 
     @Test
     fun `verify predefined values`() {
-        val thermostat = Thermostat(1, 2, 3, 4, 5)
+        val thermostat = Thermostat(1, 2, 3, 4, 5, { _, _, _ -> })
 
         assertThat(thermostat.instanceId).isEqualTo(1)
         assertThat(thermostat.accessoryInstanceId).isEqualTo(2)

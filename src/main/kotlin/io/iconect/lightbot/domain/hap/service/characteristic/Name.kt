@@ -1,7 +1,9 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 157
-data class Name(override val instanceId: Int, override val accessoryInstanceId: Int) : Characteristic {
+data class Name(override val instanceId: Int,
+                override val accessoryInstanceId: Int,
+                private val eventPublisher: (accessoryInstanceId: Int, characteristicInstanceId: Int, value: String) -> kotlin.Unit) : Characteristic {
 
     override val uuid = "00000023-0000-1000-8000-0026BB765291"
     override var value: String? = null
@@ -20,6 +22,11 @@ data class Name(override val instanceId: Int, override val accessoryInstanceId: 
         if (name.length > maximumLength) {
             throw IllegalArgumentException("Name value $name length must be lower than $maximumLength.")
         }
+
+        if (value != name) {
+            eventPublisher(accessoryInstanceId, instanceId, name)
+        }
+
         value = name
     }
 }

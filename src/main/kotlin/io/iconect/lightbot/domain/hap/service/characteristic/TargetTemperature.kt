@@ -1,7 +1,9 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 162
-data class TargetTemperature(override val instanceId: Int, override val accessoryInstanceId: Int) : WritableCharacteristic {
+data class TargetTemperature(override val instanceId: Int,
+                             override val accessoryInstanceId: Int,
+                             private val eventPublisher: (accessoryInstanceId: Int, characteristicInstanceId: Int, value: String) -> kotlin.Unit) : WritableCharacteristic {
 
     override val uuid = "00000035-0000-1000-8000-0026BB765291"
     override var value: String = "10.0" // TODO use a generic in interface?
@@ -23,6 +25,11 @@ data class TargetTemperature(override val instanceId: Int, override val accessor
             if (degree < minimumValue || degree > maximumValue) {
                 throw IllegalArgumentException("Celcius value $value must be in range between $minimumValue and $maximumValue")
             }
+
+            if (this.value != value) {
+                eventPublisher(accessoryInstanceId, instanceId, value)
+            }
+
             this.value = value
         } catch (e: NumberFormatException) {
             throw IllegalArgumentException("Celcius value $value must be of type $format")

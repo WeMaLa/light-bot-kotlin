@@ -14,7 +14,7 @@ class AccessoryFactory {
                                  onInstanceId: Int,
                                  nameInstanceId: Int,
                                  name: String): Accessory {
-        val lightBulb = LightBulb(instanceId, accessoryInstanceId, onInstanceId, nameInstanceId)
+        val lightBulb = LightBulb(instanceId, accessoryInstanceId, onInstanceId, nameInstanceId, { _, _, _ -> })
         (lightBulb.characteristics.first { c -> c is Name } as Name).updateName(name)
         return Accessory(accessoryInstanceId, listOf(lightBulb))
     }
@@ -25,7 +25,7 @@ class AccessoryFactory {
                                   currentTemperatureInstanceId: Int,
                                   nameInstanceId: Int,
                                   name: String): Accessory {
-        val thermostat = Thermostat(instanceId, accessoryInstanceId, targetTemperatureInstanceId, currentTemperatureInstanceId, nameInstanceId)
+        val thermostat = Thermostat(instanceId, accessoryInstanceId, targetTemperatureInstanceId, currentTemperatureInstanceId, nameInstanceId, { _, _, _ -> })
         (thermostat.characteristics.first { c -> c is Name } as Name).updateName(name)
         return Accessory(accessoryInstanceId, listOf(thermostat))
     }
@@ -36,7 +36,7 @@ class AccessoryFactory {
                               currentPositionInstanceId: Int,
                               nameInstanceId: Int,
                               name: String): Accessory {
-        val window = Window(instanceId, accessoryInstanceId, targetPositionInstanceId, currentPositionInstanceId, nameInstanceId)
+        val window = Window(instanceId, accessoryInstanceId, targetPositionInstanceId, currentPositionInstanceId, nameInstanceId, { _, _, _ -> })
         (window.characteristics.first { c -> c is Name } as Name).updateName(name)
         return Accessory(accessoryInstanceId, listOf(window))
     }
