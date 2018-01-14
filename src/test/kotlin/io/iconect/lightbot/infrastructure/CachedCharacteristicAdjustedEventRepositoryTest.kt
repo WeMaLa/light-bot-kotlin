@@ -4,19 +4,10 @@ import io.iconect.lightbot.domain.hap.CharacteristicAdjustedEvent
 import io.iconect.lightbot.domain.hap.CharacteristicAdjustedEventRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringRunner
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
-@ActiveProfiles("unittest")
 class CachedCharacteristicAdjustedEventRepositoryTest {
 
-    @Autowired
-    private lateinit var repository: CharacteristicAdjustedEventRepository
+    private val repository: CharacteristicAdjustedEventRepository = CachedCharacteristicAdjustedEventRepository()
 
     @Test
     fun `pop not existing event`() {
