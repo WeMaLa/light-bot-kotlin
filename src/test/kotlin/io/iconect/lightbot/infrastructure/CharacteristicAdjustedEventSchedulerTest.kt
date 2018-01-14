@@ -1,5 +1,6 @@
 package io.iconect.lightbot.infrastructure
 
+import io.iconect.lightbot.application.hap.HapEventHandler
 import io.iconect.lightbot.domain.hap.CharacteristicAdjustedEvent
 import io.iconect.lightbot.domain.hap.CharacteristicAdjustedEventRepository
 import org.junit.Before
@@ -25,19 +26,24 @@ class CharacteristicAdjustedEventSchedulerTest {
     @MockBean
     private lateinit var messagingTemplateMock: SimpMessagingTemplate
 
+    @MockBean
+    private lateinit var hapEventHandlerMock: HapEventHandler
+
     @Before
     fun setUp() {
         characteristicAdjustedEventRepository = CachedCharacteristicAdjustedEventRepository()
-        scheduler = CharacteristicAdjustedEventScheduler(messagingTemplateMock, characteristicAdjustedEventRepository)
+        scheduler = CharacteristicAdjustedEventScheduler(messagingTemplateMock, characteristicAdjustedEventRepository, hapEventHandlerMock)
     }
 
     @Test
     fun `verify web socket event is thrown when event exists`() {
-        characteristicAdjustedEventRepository.pushEvent(CharacteristicAdjustedEvent(1, 2, "unit-test-event"))
+        val event = CharacteristicAdjustedEvent(1, 2, "unit-test-event")
+        characteristicAdjustedEventRepository.pushEvent(event)
 
         scheduler.scheduleEvents()
 
         verify(messagingTemplateMock).convertAndSend("/topic/event", "{\"accessoryId\":1,\"characteristicId\":2,\"value\":\"unit-test-event\"}")
+        verify(hapEventHandlerMock).handleEvent(event)
     }
 
     @Test
@@ -45,5 +51,6 @@ class CharacteristicAdjustedEventSchedulerTest {
         scheduler.scheduleEvents()
 
         verifyNoMoreInteractions(messagingTemplateMock)
+        verifyNoMoreInteractions(hapEventHandlerMock)
     }
 }
