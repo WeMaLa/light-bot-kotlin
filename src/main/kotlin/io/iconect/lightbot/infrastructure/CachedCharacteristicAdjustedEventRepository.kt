@@ -22,4 +22,8 @@ class CachedCharacteristicAdjustedEventRepository : CharacteristicAdjustedEventR
     override fun pushEvent(event: CharacteristicAdjustedEvent) {
         events.add(event)
     }
+
+    override fun clear() {
+        events.clear()
+    }
 }

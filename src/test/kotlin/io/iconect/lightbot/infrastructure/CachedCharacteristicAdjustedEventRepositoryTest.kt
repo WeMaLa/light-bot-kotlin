@@ -45,4 +45,13 @@ class CachedCharacteristicAdjustedEventRepositoryTest {
         assertThat(repository.popNextEvent()).isEqualTo(event3)
         assertThat(repository.popNextEvent()).isNull()
     }
+
+    @Test
+    fun `clear`() {
+        val event = CharacteristicAdjustedEvent(1, 2, "unit-test-event-value")
+        repository.pushEvent(event)
+        repository.clear()
+
+        assertThat(repository.popNextEvent()).isNull()
+    }
 }
