@@ -21,7 +21,6 @@ class HapEventHandler @Autowired constructor(private val accessoryRepository: Ac
             val eventValue = event.value.toDouble()
 
             while (abs(eventValue - currentTemperature.value.toDouble()) > 1) {
-                Thread.sleep(100)
                 val nextValue = if (eventValue < currentTemperature.value.toDouble()) currentTemperature.value.toDouble() - 1 else currentTemperature.value.toDouble() + 1
                 currentTemperature.adjustValue(nextValue.toInt().toDouble())
             }
@@ -33,7 +32,6 @@ class HapEventHandler @Autowired constructor(private val accessoryRepository: Ac
             val eventValue = event.value.toInt()
 
             while (eventValue != currentPosition.value.toInt()) {
-                Thread.sleep(100)
                 val nextValue = if (eventValue < currentPosition.value.toInt()) currentPosition.value.toInt() - 1 else currentPosition.value.toInt() + 1
                 currentPosition.adjustValue(nextValue)
             }

@@ -14,7 +14,7 @@ class CharacteristicAdjustedEventScheduler @Autowired constructor(
         private val characteristicAdjustedEventRepository: CharacteristicAdjustedEventRepository,
         private val hapEventHandler: HapEventHandler) {
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 60)
     fun scheduleEvents() {
         val event = characteristicAdjustedEventRepository.popNextEvent()
 
