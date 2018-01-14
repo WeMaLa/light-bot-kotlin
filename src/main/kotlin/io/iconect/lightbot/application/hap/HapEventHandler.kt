@@ -8,6 +8,7 @@ import io.iconect.lightbot.domain.hap.service.characteristic.TargetPosition
 import io.iconect.lightbot.domain.hap.service.characteristic.TargetTemperature
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import kotlin.math.abs
 
 @Component
 class HapEventHandler @Autowired constructor(private val accessoryRepository: AccessoryRepository) {
@@ -17,11 +18,25 @@ class HapEventHandler @Autowired constructor(private val accessoryRepository: Ac
 
         if (characteristic is TargetTemperature) {
             val currentTemperature = getCurrentTemperatureForTargetTemperature(characteristic, event.accessoryId)
+            val eventValue = event.value.toDouble()
+
+            while (abs(eventValue - currentTemperature.value.toDouble()) > 1) {
+                Thread.sleep(100)
+                val nextValue = if (eventValue < currentTemperature.value.toDouble()) currentTemperature.value.toDouble() - 1 else currentTemperature.value.toDouble() + 1
+                currentTemperature.adjustValue(nextValue.toInt().toDouble())
+            }
+
             currentTemperature.adjustValue(event.value.toDouble())
         }
         if (characteristic is TargetPosition) {
-            val currentTemperature = getCurrentPositionForTargetPosition(characteristic, event.accessoryId)
-            currentTemperature.adjustValue(event.value.toInt())
+            val currentPosition = getCurrentPositionForTargetPosition(characteristic, event.accessoryId)
+            val eventValue = event.value.toInt()
+
+            while (eventValue != currentPosition.value.toInt()) {
+                Thread.sleep(100)
+                val nextValue = if (eventValue < currentPosition.value.toInt()) currentPosition.value.toInt() - 1 else currentPosition.value.toInt() + 1
+                currentPosition.adjustValue(nextValue)
+            }
         }
     }
 
