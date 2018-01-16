@@ -109,7 +109,7 @@ class AccessoryController @Autowired constructor(private val accessoryRepository
         return ResponseEntity(ErrorMessageDto("Accessory $aid not found."), HttpStatus.NOT_FOUND)
     }
 
-    @ApiOperation(value = "Loads all characteristics of a services of an accessory for a specific aid and iid")
+    @ApiOperation(value = "Loads a characteristic of a services of an accessory for a specific aid, siid and iid")
     @ApiResponses(value = [
         (ApiResponse(code = 200, message = "Success")),
         (ApiResponse(code = 405, message = "Accessory not found", response = DefaultSpringErrorDto::class)),
