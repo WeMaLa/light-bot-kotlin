@@ -15,6 +15,7 @@ function onReady() {
         });
     connectWebSocket('/topic/status', updateMessageStatus);
     connectWebSocket('/topic/event', eventReceived);
+    initServiceOverlays();
 }
 
 function updateMessageStatus(status) {
@@ -23,20 +24,12 @@ function updateMessageStatus(status) {
 
 function eventReceived(json) {
     var event = JSON.parse(json);
-    var accessoryIdAttribute = document.createAttribute('data-accessory-id');
-    accessoryIdAttribute.value = event.accessoryId;
-    var characteristicIdAttribute = document.createAttribute('data-characteristic-id');
-    characteristicIdAttribute.value = event.characteristicId;
-    var valueAttribute = document.createAttribute('data-value');
-    valueAttribute.value = event.value;
-
-    var textnode = document.createTextNode(json);
 
     var div = document.createElement("div");
-    div.setAttributeNode(accessoryIdAttribute);
-    div.setAttributeNode(characteristicIdAttribute);
-    div.setAttributeNode(valueAttribute);
-    div.appendChild(textnode);
+    div.setAttribute('data-accessory-id', event.accessoryId);
+    div.setAttribute('data-characteristic-id', event.characteristicId);
+    div.setAttribute('data-value', event.value);
+    div.appendChild(document.createTextNode(json));
     document.getElementById('events').appendChild(div);
 }
 
@@ -54,6 +47,23 @@ function connectWebSocket(topic, callback) {
         setTimeout(connectWebSocket(topic, callback), 10000);
         console.log('STOMP: Reconnecting in 10 seconds');
     });
+}
+
+function initServiceOverlays() {
+    document.getElementById('services').appendChild(createWindow('kitchen-window', 11000, 11100, 11101, 11102, 11103));
+}
+
+function createWindow(id, accessoryId, serviceId, targetPositionCharacteristicId, currentPositionCharacteristicId, nameCharacteristicId) {
+    var div = document.createElement("div");
+    div.setAttribute("id", id)
+    div.setAttribute('data-type', 'window');
+    div.setAttribute('data-accessory-id', accessoryId);
+    div.setAttribute('data-service-id', serviceId);
+    div.setAttribute('data-current-position-characteristic-id', currentPositionCharacteristicId);
+    div.setAttribute('data-target-position-characteristic-id', targetPositionCharacteristicId);
+    div.setAttribute('data-name-characteristic-id', nameCharacteristicId);
+    div.appendChild(document.createTextNode(id));
+    return div;
 }
 
 if (document.readyState === 'complete' || document.readyState !== 'loading') {
