@@ -86,7 +86,6 @@ class AccessoryController @Autowired constructor(private val accessoryRepository
         return ResponseEntity(ErrorMessageDto("Accessory $aid not found."), HttpStatus.NOT_FOUND)
     }
 
-
     @ApiOperation(value = "Loads all characteristics of a services of an accessory for a specific aid and iid")
     @ApiResponses(value = [
         (ApiResponse(code = 200, message = "Success")),
@@ -105,6 +104,35 @@ class AccessoryController @Autowired constructor(private val accessoryRepository
             }
 
             return ResponseEntity(ErrorMessageDto("Service $iid of accessory $aid not found."), HttpStatus.NOT_FOUND)
+        }
+
+        return ResponseEntity(ErrorMessageDto("Accessory $aid not found."), HttpStatus.NOT_FOUND)
+    }
+
+    @ApiOperation(value = "Loads all characteristics of a services of an accessory for a specific aid and iid")
+    @ApiResponses(value = [
+        (ApiResponse(code = 200, message = "Success")),
+        (ApiResponse(code = 405, message = "Accessory not found", response = DefaultSpringErrorDto::class)),
+        (ApiResponse(code = 405, message = "Wrong method type", response = DefaultSpringErrorDto::class)),
+        (ApiResponse(code = 500, message = "Internal server error", response = DefaultSpringErrorDto::class))])
+    @RequestMapping(value = ["/api/accessories/{aid}/services/{siid}/characteristics/{iid}"], method = [(RequestMethod.GET)], produces = ["application/hap+json"])
+    fun findAccessoryServiceCharacteristic(@PathVariable aid: Int, @PathVariable siid: Int, @PathVariable iid: Int): ResponseEntity<Any> {
+        val accessory = accessoryRepository.findByInstanceId(aid)
+
+        if (accessory != null) {
+            val service = accessory.services.find { it.instanceId == siid }
+
+            if (service != null) {
+                val characteristic = service.characteristics.find { it.instanceId == iid }
+
+                if (characteristic != null) {
+                    return ResponseEntity.ok(CharacteristicDto.from(characteristic))
+                }
+
+                return ResponseEntity(ErrorMessageDto("Characteristic $iid of service $siid of accessory $aid not found."), HttpStatus.NOT_FOUND)
+            }
+
+            return ResponseEntity(ErrorMessageDto("Service $siid of accessory $aid not found."), HttpStatus.NOT_FOUND)
         }
 
         return ResponseEntity(ErrorMessageDto("Accessory $aid not found."), HttpStatus.NOT_FOUND)
