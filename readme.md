@@ -18,7 +18,7 @@ mvn clean package
 mvn spring-boot:run
 ```
 
-and open ```http://localhost:8085/api/rooms```
+and open ```http://localhost:8085```
 
 For health check open ```http://localhost:8080/system/health/```
 and for metrics open ```http://localhost:8080/system/metrics/```

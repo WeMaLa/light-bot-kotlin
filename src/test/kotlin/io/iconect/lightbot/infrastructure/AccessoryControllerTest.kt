@@ -4,14 +4,15 @@ import io.iconect.lightbot.domain.hap.Accessory
 import io.iconect.lightbot.domain.hap.AccessoryFactory
 import io.iconect.lightbot.domain.hap.AccessoryRepository
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
+import io.iconect.lightbot.infrastructure.model.AccessoryDto
+import io.iconect.lightbot.infrastructure.model.ErrorMessageDto
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
@@ -30,12 +31,17 @@ class AccessoryControllerTest {
     @Autowired
     private lateinit var accessoryFactory: AccessoryFactory
 
-    @MockBean
+    @Autowired
     private lateinit var accessoryRepository: AccessoryRepository
+
+    @Before
+    fun setUp() {
+        accessoryRepository.clear()
+    }
 
     @Test
     fun `find all accessories and map to dto`() {
-        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(Accessory(1, emptyList())))
+        accessoryRepository.store(Accessory(1, emptyList()))
 
         val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, AccessoriesDto::class.java)
 
@@ -50,7 +56,7 @@ class AccessoryControllerTest {
     @Test
     fun `find all accessories and map to string`() {
         val accessory = accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy")
-        Mockito.`when`(accessoryRepository.findAll()).thenReturn(listOf(accessory))
+        accessoryRepository.store(accessory)
 
         val exchange = testRestTemplate.exchange("/api/accessories", HttpMethod.GET, HttpEntity.EMPTY, String::class.java)
 
@@ -69,6 +75,74 @@ class AccessoryControllerTest {
                 "]}" +
                 "]" +
                 "}")
+    }
+
+    @Test
+    fun `find a specific accessory and map to dto`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+        accessoryRepository.store(Accessory(2, emptyList()))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1", HttpMethod.GET, HttpEntity.EMPTY, AccessoryDto::class.java)
+
+        val accessory = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(accessory.aid).isEqualTo(1)
+        assertThat(accessory.services.size).isEqualTo(1)
+        assertThat(accessory.services[0].characteristics.size).isEqualTo(3)
+        assertThat(accessory.services[0].characteristics)
+                .extracting("iid", "type")
+                .containsOnly(
+                        tuple(2, "35"),
+                        tuple(3, "11"),
+                        tuple(4, "23")
+                )
+    }
+
+    @Test
+    fun `find a specific accessory and map to string`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+        accessoryRepository.store(Accessory(2, emptyList()))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1", HttpMethod.GET, HttpEntity.EMPTY, String::class.java)
+
+        val accessory = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(accessory).isEqualTo("{\"aid\":1,\"services\":[" +
+                "{\"iid\":1,\"type\":\"4A\",\"characteristics\":[" +
+                "{\"iid\":2,\"type\":\"35\",\"value\":\"10.0\",\"format\":\"float\",\"perms\":[\"pr\",\"pw\",\"Notify\"]}," +
+                "{\"iid\":3,\"type\":\"11\",\"value\":\"0.0\",\"format\":\"float\",\"perms\":[\"pr\",\"Notify\"]}," +
+                "{\"iid\":4,\"type\":\"23\",\"value\":\"dummy\",\"format\":\"string\",\"perms\":[\"pr\"]}" +
+                "]}" +
+                "]}")
+    }
+
+    @Test
+    fun `find not existing accessory`() {
+        val exchange = testRestTemplate.exchange("/api/accessories/1", HttpMethod.GET, HttpEntity.EMPTY, ErrorMessageDto::class.java)
+
+        val error = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(error.message).isEqualTo("Accessory 1 not found.")
+    }
+
+    @Test
+    fun `find all services of a specific accessory and map to string`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1/services", HttpMethod.GET, HttpEntity.EMPTY, String::class.java)
+
+        val accessory = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(accessory).isEqualTo("[" +
+                "{\"iid\":1,\"type\":\"4A\",\"characteristics\":[" +
+                "{\"iid\":2,\"type\":\"35\",\"value\":\"10.0\",\"format\":\"float\",\"perms\":[\"pr\",\"pw\",\"Notify\"]}," +
+                "{\"iid\":3,\"type\":\"11\",\"value\":\"0.0\",\"format\":\"float\",\"perms\":[\"pr\",\"Notify\"]}," +
+                "{\"iid\":4,\"type\":\"23\",\"value\":\"dummy\",\"format\":\"string\",\"perms\":[\"pr\"]}" +
+                "]}]")
     }
 
 }
