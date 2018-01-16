@@ -6,6 +6,7 @@ import io.iconect.lightbot.domain.hap.AccessoryRepository
 import io.iconect.lightbot.infrastructure.model.AccessoriesDto
 import io.iconect.lightbot.infrastructure.model.AccessoryDto
 import io.iconect.lightbot.infrastructure.model.ErrorMessageDto
+import io.iconect.lightbot.infrastructure.model.ServiceDto
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
 import org.junit.Before
@@ -143,6 +144,106 @@ class AccessoryControllerTest {
                 "{\"iid\":3,\"type\":\"11\",\"value\":\"0.0\",\"format\":\"float\",\"perms\":[\"pr\",\"Notify\"]}," +
                 "{\"iid\":4,\"type\":\"23\",\"value\":\"dummy\",\"format\":\"string\",\"perms\":[\"pr\"]}" +
                 "]}]")
+    }
+
+    @Test
+    fun `find a specific service of a specific accessory and map to dto`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1/services/1", HttpMethod.GET, HttpEntity.EMPTY, ServiceDto::class.java)
+
+        val service = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(service.iid).isEqualTo(1)
+        assertThat(service.type).isEqualTo("4A")
+        assertThat(service.characteristics)
+                .extracting("iid", "type")
+                .containsOnly(
+                        tuple(2, "35"),
+                        tuple(3, "11"),
+                        tuple(4, "23")
+                )
+    }
+
+    @Test
+    fun `find a specific service of a specific accessory and map to string`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1/services/1", HttpMethod.GET, HttpEntity.EMPTY, String::class.java)
+
+        val service = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(service).isEqualTo("{\"iid\":1,\"type\":\"4A\",\"characteristics\":[" +
+                "{\"iid\":2,\"type\":\"35\",\"value\":\"10.0\",\"format\":\"float\",\"perms\":[\"pr\",\"pw\",\"Notify\"]}," +
+                "{\"iid\":3,\"type\":\"11\",\"value\":\"0.0\",\"format\":\"float\",\"perms\":[\"pr\",\"Notify\"]}," +
+                "{\"iid\":4,\"type\":\"23\",\"value\":\"dummy\",\"format\":\"string\",\"perms\":[\"pr\"]}" +
+                "]}")
+    }
+
+    @Test
+    fun `find a not existing service of a specific accessory`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1/services/15", HttpMethod.GET, HttpEntity.EMPTY, ErrorMessageDto::class.java)
+
+        val error = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(error.message).isEqualTo("Service 15 of accessory 1 not found.")
+    }
+
+    @Test
+    fun `find a specific service of a not existing accessory`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/15/services/1", HttpMethod.GET, HttpEntity.EMPTY, ErrorMessageDto::class.java)
+
+        val error = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(error.message).isEqualTo("Accessory 15 not found.")
+    }
+
+    @Test
+    fun `find all characteristics of a specific service of a specific accessory and map to string`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1/services/1/characteristics", HttpMethod.GET, HttpEntity.EMPTY, String::class.java)
+
+        val service = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(service).isEqualTo("[" +
+                "{\"iid\":2,\"type\":\"35\",\"value\":\"10.0\",\"format\":\"float\",\"perms\":[\"pr\",\"pw\",\"Notify\"]}," +
+                "{\"iid\":3,\"type\":\"11\",\"value\":\"0.0\",\"format\":\"float\",\"perms\":[\"pr\",\"Notify\"]}," +
+                "{\"iid\":4,\"type\":\"23\",\"value\":\"dummy\",\"format\":\"string\",\"perms\":[\"pr\"]}" +
+                "]")
+    }
+
+    @Test
+    fun `find all characteristics of a not existing service of a specific accessory`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/1/services/15/characteristics", HttpMethod.GET, HttpEntity.EMPTY, ErrorMessageDto::class.java)
+
+        val error = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(error.message).isEqualTo("Service 15 of accessory 1 not found.")
+    }
+
+    @Test
+    fun `find all characteristics of a specific service of a not existing accessory`() {
+        accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
+
+        val exchange = testRestTemplate.exchange("/api/accessories/15/services/1/characteristics", HttpMethod.GET, HttpEntity.EMPTY, ErrorMessageDto::class.java)
+
+        val error = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(error.message).isEqualTo("Accessory 15 not found.")
     }
 
 }

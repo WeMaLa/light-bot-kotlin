@@ -18,7 +18,7 @@ mvn clean package
 mvn spring-boot:run
 ```
 
-and open ```http://localhost:8085```
+and open ```http://localhost:8085/swagger-ui.html```
 
 For health check open ```http://localhost:8080/system/health/```
 and for metrics open ```http://localhost:8080/system/metrics/```
