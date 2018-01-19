@@ -24,6 +24,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <kotlin.version>1.2.20</kotlin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <!-- BUG: see https://youtrack.jetbrains.com/issue/KT-22380 and https://youtrack.jetbrains.com/issue/KT-21581 -->
         <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
     </properties>
@@ -101,6 +102,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
+                <configuration>
+                    <!-- see https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven -->
+                    <mavenExecutorId>forked-path</mavenExecutorId>
+                    <!--releaseProfiles>frontend-install-node-and-npm,frontend-build,generate-docs</releaseProfiles-->
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <arguments>-DskipTests -DpushImage</arguments>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
