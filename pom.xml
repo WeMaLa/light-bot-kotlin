@@ -23,7 +23,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <kotlin.version>1.2.10</kotlin.version>
+        <kotlin.version>1.2.20</kotlin.version>
+        <!-- BUG: see https://youtrack.jetbrains.com/issue/KT-22380 and https://youtrack.jetbrains.com/issue/KT-21581 -->
+        <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
     </properties>
 
     <dependencies>
