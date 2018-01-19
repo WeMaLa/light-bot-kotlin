@@ -163,13 +163,13 @@ class ServerMessageExchangeServiceTest {
     fun `send message`() {
         `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
-        val messageContent = "unit-test-message-content"
+        val messageContent = "unit-test-message-text"
         val channelIdentifier = "unit-test-channel-identifier"
 
         server.expect(requestTo("http://server.unit.test/api/message"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
                 .andExpect(header("Authorization", "unit-test-auth-token"))
-                .andExpect(jsonPath("content", `is`(messageContent)))
+                .andExpect(jsonPath("text", `is`(messageContent)))
                 .andExpect(jsonPath("channelIdentifier", `is`(channelIdentifier)))
                 .andRespond(withStatus(HttpStatus.OK))
 
@@ -182,7 +182,7 @@ class ServerMessageExchangeServiceTest {
     fun `send message when authentication fails`() {
         `when`(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
 
-        serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "unit-test-message-content")
+        serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "unit-test-message-text")
 
         server.verify() // no server call
     }
@@ -191,7 +191,7 @@ class ServerMessageExchangeServiceTest {
     fun `send message with channel identifier is empty`() {
         `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
-        serverMessageExchangeService.sendMessage("", "unit-test-message-content")
+        serverMessageExchangeService.sendMessage("", "unit-test-message-text")
 
         server.verify() // no server call
     }
@@ -210,7 +210,7 @@ class ServerMessageExchangeServiceTest {
                 "  \"content\": [\n" +
                 "    {\n" +
                 "      \"identifier\": \"AWA6_vR3A1S3ubG7cRd1\",\n" +
-                "      \"content\": \"message2\",\n" +
+                "      \"text\": \"message2\",\n" +
                 "      \"createDate\": \"2017-12-09 11:17:55\",\n" +
                 "      \"status\": \"RECEIVED\",\n" +
                 "      \"_links\": {\n" +
@@ -227,7 +227,7 @@ class ServerMessageExchangeServiceTest {
                 "    },\n" +
                 "    {\n" +
                 "      \"identifier\": \"AWA6_o33A1S3ubG7cRdz\",\n" +
-                "      \"content\": \"message1\",\n" +
+                "      \"text\": \"message1\",\n" +
                 "      \"createDate\": \"2017-12-09 11:17:29\",\n" +
                 "      \"status\": \"RECEIVED\",\n" +
                 "      \"_links\": {\n" +

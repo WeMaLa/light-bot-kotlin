@@ -34,7 +34,7 @@ class ServerMessageExchangeService @Autowired constructor(
 
             messages.forEach { m -> markAsRead(m.identifier, httpEntity) }
 
-            return messages.map { m -> serverMessageFactory.createServerMessage(m.content, m._links.channel.href.replace("/api/channel/", "")) }
+            return messages.map { m -> serverMessageFactory.createServerMessage(m.text, m._links.channel.href.replace("/api/channel/", "")) }
         } else {
             emptyList()
         }
@@ -106,7 +106,7 @@ class ServerMessageExchangeService @Autowired constructor(
 
     class Message {
         var identifier: String = ""
-        var content: String = ""
+        var text: String = ""
         var _links: Links = Links()
 
         class Links {
@@ -118,5 +118,5 @@ class ServerMessageExchangeService @Autowired constructor(
         }
     }
 
-    data class SendMessageRequestBody(val content: String, val channelIdentifier: String)
+    data class SendMessageRequestBody(val text: String, val channelIdentifier: String)
 }
