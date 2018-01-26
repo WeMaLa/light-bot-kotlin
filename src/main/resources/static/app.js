@@ -72,12 +72,17 @@ function createWindow(htmlId, accessoryId, serviceId, targetPositionCharacterist
 }
 
 function updateWindowState(htmlId, accessoryId, serviceId, targetPositionCharacteristicId, currentPositionCharacteristicId, nameCharacteristicId) {
-    var targetPositionCharacteristic = fetchCharacteristic(accessoryId, serviceId, targetPositionCharacteristicId);
-    console.log(targetPositionCharacteristic);
-    var currentPositionCharacteristic = fetchCharacteristic(accessoryId, serviceId, currentPositionCharacteristicId);
-    console.log(currentPositionCharacteristic);
-    var nameCharacteristic = fetchCharacteristic(accessoryId, serviceId, nameCharacteristicId);
-    console.log(nameCharacteristic);
+    fetchCharacteristic(accessoryId, serviceId, targetPositionCharacteristicId)
+        .then(function (json) {
+            console.log(json)
+        });
+    fetchCharacteristic(accessoryId, serviceId, currentPositionCharacteristicId)
+        .then(function (json) {
+            console.log(json)
+        });
+    fetchCharacteristic(accessoryId, serviceId, nameCharacteristicId).then(function (json) {
+        console.log(json)
+    });
 }
 
 function createLightBulb(htmlId, accessoryId, serviceId, onCharacteristicId, nameCharacteristicId) {
@@ -102,12 +107,12 @@ function updateLightBulbState(htmlId, accessoryId, serviceId, onCharacteristicId
 }
 
 function fetchCharacteristic(accessoryId, serviceId, characteristicId) {
-    fetch('/api/accessories/' + accessoryId + '/services/' + serviceId + '/characteristics/' + characteristicId)
+    return fetch('/api/accessories/' + accessoryId + '/services/' + serviceId + '/characteristics/' + characteristicId)
         .then(function (response) {
             return response.json();
         })
         .then(function (json) {
-            console.log('parsed characteristic json', json);
+            //console.log('parsed characteristic json', json);
             return json;
         })
         .catch(function (ex) {
