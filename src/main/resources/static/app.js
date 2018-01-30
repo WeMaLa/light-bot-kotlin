@@ -1,4 +1,5 @@
-var stompClient = null;
+var stompClientForStatus = null;
+var stompClientForEvents = null;
 
 function onReady() {
     fetch('/actuator/health')
@@ -13,8 +14,8 @@ function onReady() {
         .catch(function (ex) {
             console.log('parsing failed', ex)
         });
-    connectWebSocket('/topic/status', updateMessageStatus);
-    connectWebSocket('/topic/event', eventReceived);
+    connectWebSocket(stompClientForStatus, '/topic/status', updateMessageStatus);
+    connectWebSocket(stompClientForEvents, '/topic/event', eventReceived);
     initServiceOverlays();
 }
 
@@ -31,20 +32,26 @@ function eventReceived(json) {
     div.setAttribute('data-value', event.value);
     div.appendChild(document.createTextNode(json));
     document.getElementById('events').appendChild(div);
+
+    // TODO update state
+    // document.querySelector('div[data-accessory-id="11000"]').getAttribute("data-type")
 }
 
-function connectWebSocket(topic, callback) {
+function connectWebSocket(stompClient, topic, callback) {
     var socket = new SockJS('/vhab-websocket');
     stompClient = Stomp.over(socket);
+    stompClient.debug = null;
     stompClient.connect({}, function (frame) {
-        console.log('STOMP: connected to ' + frame);
+        console.log('STOMP (' + topic + '): connected to ' + frame);
         stompClient.subscribe(topic, function (status) {
-            console.log('STOMP: receive content ' + status.body + ' on topic ' + topic);
+            //console.log('STOMP: receive content ' + status.body + ' on topic ' + topic);
             callback(status.body);
         });
     }, function (error) {
         console.log('STOMP: ' + error);
-        setTimeout(connectWebSocket(topic, callback), 10000);
+        setTimeout(function () {
+            connectWebSocket(stompClient, topic, callback)
+        }, 10000);
         console.log('STOMP: Reconnecting in 10 seconds');
     });
 }
@@ -66,22 +73,27 @@ function createWindow(htmlId, accessoryId, serviceId, targetPositionCharacterist
     div.setAttribute('data-target-position-characteristic-id', targetPositionCharacteristicId);
     div.setAttribute('data-name-characteristic-id', nameCharacteristicId);
     div.setAttribute('class', 'vhab-window-state');
-    div.setAttribute('style', 'display:none');
     div.appendChild(document.createTextNode(htmlId));
     return div;
 }
 
 function updateWindowState(htmlId, accessoryId, serviceId, targetPositionCharacteristicId, currentPositionCharacteristicId, nameCharacteristicId) {
-    fetchCharacteristic(accessoryId, serviceId, targetPositionCharacteristicId)
-        .then(function (json) {
-            console.log(json)
-        });
-    fetchCharacteristic(accessoryId, serviceId, currentPositionCharacteristicId)
-        .then(function (json) {
-            console.log(json)
-        });
+    var accessoryDiv = document.querySelector('div[data-accessory-id="' + accessoryId + '"]');
+
+    if (accessoryDiv == null) {
+        console.error("Could not find html accessory element with id '" + accessoryId + "'");
+        return;
+    }
+
+    fetchCharacteristic(accessoryId, serviceId, targetPositionCharacteristicId).then(function (json) {
+        accessoryDiv.innerText = json.value;
+        console.log(json);
+    });
+    fetchCharacteristic(accessoryId, serviceId, currentPositionCharacteristicId).then(function (json) {
+        console.log(json);
+    });
     fetchCharacteristic(accessoryId, serviceId, nameCharacteristicId).then(function (json) {
-        console.log(json)
+        console.log(json);
     });
 }
 
@@ -100,10 +112,12 @@ function createLightBulb(htmlId, accessoryId, serviceId, onCharacteristicId, nam
 }
 
 function updateLightBulbState(htmlId, accessoryId, serviceId, onCharacteristicId, nameCharacteristicId) {
-    var onCharacteristic = fetchCharacteristic(accessoryId, serviceId, onCharacteristicId);
-    console.log(onCharacteristic);
-    var nameCharacteristic = fetchCharacteristic(accessoryId, serviceId, nameCharacteristicId);
-    console.log(nameCharacteristic);
+    fetchCharacteristic(accessoryId, serviceId, onCharacteristicId).then(function (json) {
+        console.log(json);
+    });
+    fetchCharacteristic(accessoryId, serviceId, nameCharacteristicId).then(function (json) {
+        console.log(json);
+    });
 }
 
 function fetchCharacteristic(accessoryId, serviceId, characteristicId) {
