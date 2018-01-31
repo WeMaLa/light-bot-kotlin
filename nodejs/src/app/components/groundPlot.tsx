@@ -11,6 +11,6 @@ export interface GroundPlotState {
 export class GroundPlot extends React.Component<GroundPlotProps, GroundPlotState> {
 
     render() {
-        return <img className="ground-plot" src="../images/groundplot.png"/>
+        return <img className="ground-plot-image" src="../images/groundplot.png" />
     }
 }

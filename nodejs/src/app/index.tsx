@@ -14,10 +14,16 @@ import * as ReactDOM from "react-dom";
 
 import "./index.scss";
 import {GroundPlot} from "./components/groundPlot";
+import {Window} from "./components/window";
 
 ReactDOM.render(
     <div className="info">
         <GroundPlot/>
+        <Window accessoryId={11000}
+                serviceId={11100}
+                currentPositionCharacteristicId={11102}
+                targetPositionCharacteristicId={11101}
+                nameCharacteristicId={11103}/>
     </div>,
     document.getElementById("info")
 );
