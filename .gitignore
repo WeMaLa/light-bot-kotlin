@@ -23,3 +23,13 @@ dist/
 nbdist/
 .nb-gradle/
 /logs/
+
+# node js
+nodejs/etc
+nodejs/package-lock.json
+nodejs/node
+nodejs/node_modules
+nodejs/dist
+nodejs/lint-reports
+
+/src/main/resources/static/app/
