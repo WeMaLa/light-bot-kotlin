@@ -27,7 +27,7 @@ class LightBotApplication {
     @Bean
     fun restTemplate(): RestTemplate {
         return RestTemplateBuilder()
-                .requestFactory(HttpComponentsClientHttpRequestFactory()) // apply HTTP PATCH support
+                .requestFactory(HttpComponentsClientHttpRequestFactory::class.java) // apply HTTP PATCH support
                 .build()
     }
 
