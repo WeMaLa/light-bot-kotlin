@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import './window.scss'
+import {WebSocket} from "../websocket/webSocket";
 
 export interface WindowProps {
     accessoryId: number;
@@ -8,6 +9,7 @@ export interface WindowProps {
     currentPositionCharacteristicId: number;
     targetPositionCharacteristicId: number;
     nameCharacteristicId: number;
+    webSocket: WebSocket;
 }
 
 export interface WindowState {
@@ -32,6 +34,28 @@ export class Window extends React.Component<WindowProps, WindowState> {
             positionTop: 0,
             positionLeft: 0,
         };
+    }
+
+    componentWillMount(): void {
+        this.props.webSocket.onEvent.subscribe("accessory", (sender, event) => {
+            if (event.accessoryId === this.props.accessoryId) {
+                console.log('Found accessory');
+
+                if (event.characteristicId === this.props.currentPositionCharacteristicId) {
+                    this.setState({
+                        currentPosition: +event.value
+                    });
+                } else if (event.characteristicId === this.props.targetPositionCharacteristicId) {
+                    this.setState({
+                        targetPosition: +event.value
+                    });
+                }
+            }
+        });
+    }
+
+    componentWillUnmount(): void {
+        this.props.webSocket.onEvent.unsubscribe("accessory");
     }
 
     componentDidMount(): void {
@@ -83,15 +107,15 @@ export class Window extends React.Component<WindowProps, WindowState> {
     }
 
     updateDimensions() {
-        console.log('update dimensions');
+        // console.log('update dimensions');
         let image = document.querySelector('.ground-plot-image') as HTMLElement;
         let imageWidth = image.offsetWidth;
         let imageHeight = image.offsetHeight;
         let offset = this.offset(image);
-        console.log('Offset left: ' + offset.left);
-        console.log('Offset top: ' + offset.top);
-        console.log('Width: ' + imageWidth);
-        console.log('Height: ' + imageHeight);
+        // console.log('Offset left: ' + offset.left);
+        // console.log('Offset top: ' + offset.top);
+        // console.log('Width: ' + imageWidth);
+        // console.log('Height: ' + imageHeight);
 
         this.setState({
             positionTop: offset.top + (imageHeight * 0.05),
@@ -100,7 +124,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
     }
 
     offset(el) {
-        var rect = el.getBoundingClientRect(),
+        let rect = el.getBoundingClientRect(),
             scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
             scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         return {top: rect.top + scrollTop, left: rect.left + scrollLeft}

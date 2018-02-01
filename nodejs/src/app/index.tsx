@@ -15,11 +15,15 @@ import * as ReactDOM from "react-dom";
 import "./index.scss";
 import {GroundPlot} from "./components/groundPlot";
 import {Window} from "./components/window";
+import {WebSocket} from "./websocket/webSocket";
+
+const webSocket: WebSocket = new WebSocket();
 
 ReactDOM.render(
     <div className="info">
         <GroundPlot/>
-        <Window accessoryId={11000}
+        <Window webSocket={webSocket}
+                accessoryId={11000}
                 serviceId={11100}
                 currentPositionCharacteristicId={11102}
                 targetPositionCharacteristicId={11101}
@@ -27,3 +31,9 @@ ReactDOM.render(
     </div>,
     document.getElementById("info")
 );
+
+if (document.readyState === 'complete' || document.readyState !== 'loading') {
+    webSocket.start();
+} else {
+    document.addEventListener('DOMContentLoaded', webSocket.start());
+}

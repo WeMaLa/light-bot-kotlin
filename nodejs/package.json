@@ -19,7 +19,9 @@
     "react": "16.2.0",
     "@types/react": "16.0.25",
     "react-dom": "16.2.0",
-    "@types/react-dom": "16.0.3"
+    "@types/react-dom": "16.0.3",
+    "sockjs-client": "1.1.4",
+    "@stomp/stompjs": "4.0.1"
   },
   "devDependencies": {
     "typescript": "2.6.2",
