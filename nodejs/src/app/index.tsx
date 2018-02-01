@@ -14,20 +14,15 @@ import * as ReactDOM from "react-dom";
 
 import "./index.scss";
 import {GroundPlot} from "./components/groundPlot";
-import {Window} from "./components/window";
 import {WebSocket} from "./websocket/webSocket";
+import {Kitchen} from "./components/room/kitchen";
 
 const webSocket: WebSocket = new WebSocket();
 
 ReactDOM.render(
     <div className="info">
         <GroundPlot/>
-        <Window webSocket={webSocket}
-                accessoryId={11000}
-                serviceId={11100}
-                currentPositionCharacteristicId={11102}
-                targetPositionCharacteristicId={11101}
-                nameCharacteristicId={11103}/>
+        <Kitchen webSocket={webSocket}/>
     </div>,
     document.getElementById("info")
 );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import './window.scss'
-import {WebSocket} from "../websocket/webSocket";
+import './accessory.scss'
+import {WebSocket} from "../../websocket/webSocket";
 
 export interface WindowProps {
     accessoryId: number;
@@ -10,6 +10,8 @@ export interface WindowProps {
     targetPositionCharacteristicId: number;
     nameCharacteristicId: number;
     webSocket: WebSocket;
+    offsetXInPercent: number;
+    offsetYInPercent: number;
 }
 
 export interface WindowState {
@@ -118,8 +120,8 @@ export class Window extends React.Component<WindowProps, WindowState> {
         // console.log('Height: ' + imageHeight);
 
         this.setState({
-            positionTop: offset.top + (imageHeight * 0.05),
-            positionLeft: offset.left + (imageWidth * 0.4),
+            positionTop: offset.top + (imageHeight * this.props.offsetYInPercent),
+            positionLeft: offset.left + (imageWidth * this.props.offsetXInPercent),
         });
     }
 
