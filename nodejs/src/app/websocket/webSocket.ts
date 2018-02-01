@@ -26,6 +26,7 @@ export class WebSocket {
 
     connectWebSocket(stompClient, topic: string, callback: (message: string) => void) {
         let socket = new SockJS('/vhab-websocket');
+        let that = this;
         stompClient = Stomp.over(socket);
         stompClient.debug = null;
         stompClient.connect({}, function (frame) {
@@ -37,7 +38,7 @@ export class WebSocket {
         }, function (error) {
             console.log('STOMP: ' + error);
             setTimeout(function () {
-                this.connectWebSocket(stompClient, topic, callback);
+                that.connectWebSocket(stompClient, topic, callback);
             }, 10000);
             console.log('STOMP: Reconnecting in 10 seconds');
         });
