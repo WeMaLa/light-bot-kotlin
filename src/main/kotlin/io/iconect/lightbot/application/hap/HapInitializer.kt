@@ -14,15 +14,24 @@ class HapInitializer @Autowired constructor(private val accessoryRepository: Acc
     }
 
     private fun initializeKitchen() {
-        val kitchenWindow = accessoryFactory.createWindowAccessory(11000, 11100, 11101, 11102, 11103, "Kitchen window")
-        accessoryRepository.store(kitchenWindow)
+        val window = accessoryFactory.createWindowAccessory(11000, 11100, 11101, 11102, 11103, "Fenster")
+        accessoryRepository.store(window)
 
-        val kitchenLightBulb = accessoryFactory.createLightBulbAccessory(12000, 12100, 12101, 12102, "Kitchen light bulb")
-        accessoryRepository.store(kitchenLightBulb)
+        val lightBulb = accessoryFactory.createLightBulbAccessory(12000, 12100, 12101, 12102, "Lampe")
+        accessoryRepository.store(lightBulb)
     }
 
     private fun initializeDiner() {
-        val dinerThermostat = accessoryFactory.createThermostatAccessory(21000, 21100, 21101, 21102, 21103, "Diner thermostat heater")
-        accessoryRepository.store(dinerThermostat)
+        val thermostat = accessoryFactory.createThermostatAccessory(21000, 21100, 21101, 21102, 21103, "Heizung")
+        accessoryRepository.store(thermostat)
+
+        val window = accessoryFactory.createWindowAccessory(22000, 22100, 22101, 22102, 22103, "Fenster")
+        accessoryRepository.store(window)
+
+        val lightBulb1 = accessoryFactory.createLightBulbAccessory(23000, 23100, 23101, 23102, "Lampe")
+        accessoryRepository.store(lightBulb1)
+
+        val lightBulb2 = accessoryFactory.createLightBulbAccessory(24000, 24100, 24101, 24102, "Lampe")
+        accessoryRepository.store(lightBulb2)
     }
 }
