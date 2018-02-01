@@ -25,35 +25,6 @@ class HapInitializerTest {
     private lateinit var hapInitializer: HapInitializer
 
     @Test
-    fun `verify kitchen heater initialization`() {
-        hapInitializer.initialize()
-
-        val accessory = accessoryRepository.findByInstanceId(10000)!!
-
-        assertThat(accessory).isNotNull()
-        assertThat(accessory.instanceId).isEqualTo(10000)
-        assertThat(accessory.services.filter { s -> s is Thermostat }.size).isEqualTo(1)
-
-        val thermostat = accessory.services.first { s -> s is Thermostat } as Thermostat
-        assertThat(thermostat.instanceId).isEqualTo(10100)
-
-        val targetTemperature = thermostat.characteristics.first { c -> c is TargetTemperature } as TargetTemperature
-        assertThat(targetTemperature.instanceId).isEqualTo(10101)
-        assertThat(targetTemperature.accessoryInstanceId).isEqualTo(10000)
-        assertThat(targetTemperature.value).isEqualTo("10.0")
-
-        val currentTemperature = thermostat.characteristics.first { c -> c is CurrentTemperature } as CurrentTemperature
-        assertThat(currentTemperature.instanceId).isEqualTo(10102)
-        assertThat(currentTemperature.accessoryInstanceId).isEqualTo(10000)
-        assertThat(currentTemperature.value).isEqualTo("0.0")
-
-        val name = thermostat.characteristics.first { c -> c is Name } as Name
-        assertThat(name.instanceId).isEqualTo(10103)
-        assertThat(name.accessoryInstanceId).isEqualTo(10000)
-        assertThat(name.value).isEqualTo("Kitchen thermostat heater")
-    }
-
-    @Test
     fun `verify kitchen window initialization`() {
         hapInitializer.initialize()
 
@@ -105,5 +76,34 @@ class HapInitializerTest {
         assertThat(name.instanceId).isEqualTo(12102)
         assertThat(name.accessoryInstanceId).isEqualTo(12000)
         assertThat(name.value).isEqualTo("Kitchen light bulb")
+    }
+
+    @Test
+    fun `verify diner heater initialization`() {
+        hapInitializer.initialize()
+
+        val accessory = accessoryRepository.findByInstanceId(21000)!!
+
+        assertThat(accessory).isNotNull()
+        assertThat(accessory.instanceId).isEqualTo(21000)
+        assertThat(accessory.services.filter { s -> s is Thermostat }.size).isEqualTo(1)
+
+        val thermostat = accessory.services.first { s -> s is Thermostat } as Thermostat
+        assertThat(thermostat.instanceId).isEqualTo(21100)
+
+        val targetTemperature = thermostat.characteristics.first { c -> c is TargetTemperature } as TargetTemperature
+        assertThat(targetTemperature.instanceId).isEqualTo(21101)
+        assertThat(targetTemperature.accessoryInstanceId).isEqualTo(21000)
+        assertThat(targetTemperature.value).isEqualTo("10.0")
+
+        val currentTemperature = thermostat.characteristics.first { c -> c is CurrentTemperature } as CurrentTemperature
+        assertThat(currentTemperature.instanceId).isEqualTo(21102)
+        assertThat(currentTemperature.accessoryInstanceId).isEqualTo(21000)
+        assertThat(currentTemperature.value).isEqualTo("0.0")
+
+        val name = thermostat.characteristics.first { c -> c is Name } as Name
+        assertThat(name.instanceId).isEqualTo(21103)
+        assertThat(name.accessoryInstanceId).isEqualTo(21000)
+        assertThat(name.value).isEqualTo("Diner thermostat heater")
     }
 }

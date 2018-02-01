@@ -16,6 +16,7 @@ import "./index.scss";
 import {GroundPlot} from "./components/groundPlot";
 import {WebSocket} from "./websocket/webSocket";
 import {Kitchen} from "./components/room/kitchen";
+import {Diner} from "./components/room/diner";
 
 const webSocket: WebSocket = new WebSocket();
 
@@ -23,6 +24,7 @@ ReactDOM.render(
     <div className="info">
         <GroundPlot/>
         <Kitchen webSocket={webSocket}/>
+        <Diner webSocket={webSocket}/>
     </div>,
     document.getElementById("info")
 );
