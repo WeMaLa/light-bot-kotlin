@@ -12,6 +12,10 @@ class HapInitializer @Autowired constructor(private val accessoryRepository: Acc
         initializeKitchen()
         initializeDiner()
         initializeLiving()
+        initializeStore()
+        initializeRestSmall()
+        initializeRestBig()
+        initializeEntrance()
     }
 
     private fun initializeKitchen() {
@@ -54,5 +58,28 @@ class HapInitializer @Autowired constructor(private val accessoryRepository: Acc
 
         val lightBulb4 = accessoryFactory.createLightBulbAccessory(36000, 36100, 36101, 36102, "living lamp 4")
         accessoryRepository.store(lightBulb4)
+    }
+
+    private fun initializeStore() {
+        val lightBulb = accessoryFactory.createLightBulbAccessory(41000, 41100, 41101, 41102, "store lamp")
+        accessoryRepository.store(lightBulb)
+    }
+
+    private fun initializeRestSmall() {
+        val lightBulb = accessoryFactory.createLightBulbAccessory(51000, 51100, 51101, 51102, "rest (small) lamp")
+        accessoryRepository.store(lightBulb)
+    }
+
+    private fun initializeRestBig() {
+        val lightBulb = accessoryFactory.createLightBulbAccessory(61000, 61100, 61101, 61102, "rest (big) lamp")
+        accessoryRepository.store(lightBulb)
+    }
+
+    private fun initializeEntrance() {
+        val lightBulb1 = accessoryFactory.createLightBulbAccessory(71000, 71100, 71101, 71102, "entrance lamp 1")
+        accessoryRepository.store(lightBulb1)
+
+        val lightBulb2 = accessoryFactory.createLightBulbAccessory(72000, 72100, 72101, 72102, "entrance lamp 2")
+        accessoryRepository.store(lightBulb2)
     }
 }

@@ -54,6 +54,35 @@ class HapInitializerTest {
         verifyLightBulb(36000, 36100, 36101, 36102, "living lamp 4")
     }
 
+    @Test
+    fun `verify store initialization`() {
+        hapInitializer.initialize()
+
+        verifyLightBulb(41000, 41100, 41101, 41102, "store lamp")
+    }
+
+    @Test
+    fun `verify rest 1 initialization`() {
+        hapInitializer.initialize()
+
+        verifyLightBulb(51000, 51100, 51101, 51102, "rest (small) lamp")
+    }
+
+    @Test
+    fun `verify rest 2 initialization`() {
+        hapInitializer.initialize()
+
+        verifyLightBulb(61000, 61100, 61101, 61102, "rest (big) lamp")
+    }
+
+    @Test
+    fun `verify entrance initialization`() {
+        hapInitializer.initialize()
+
+        verifyLightBulb(71000, 71100, 71101, 71102, "entrance lamp 1")
+        verifyLightBulb(72000, 72100, 72101, 72102, "entrance lamp 2")
+    }
+
     private fun verifyHeater(accessoryId: Int, serviceId: Int, targetTemperatureId: Int, currentTemperatureId: Int, nameId: Int, nameValue: String) {
         val accessory = accessoryRepository.findByInstanceId(accessoryId)!!
 
