@@ -111,7 +111,7 @@
                 <configuration>
                     <!-- see https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven -->
                     <mavenExecutorId>forked-path</mavenExecutorId>
-                    <!--releaseProfiles>frontend-install-node-and-npm,frontend-build,generate-docs</releaseProfiles-->
+                    <releaseProfiles>frontend-install-node-and-npm,frontend-build</releaseProfiles>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <arguments>-DskipTests -DpushImage</arguments>
                 </configuration>
