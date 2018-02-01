@@ -11,27 +11,48 @@ class HapInitializer @Autowired constructor(private val accessoryRepository: Acc
     fun initialize() {
         initializeKitchen()
         initializeDiner()
+        initializeLiving()
     }
 
     private fun initializeKitchen() {
-        val window = accessoryFactory.createWindowAccessory(11000, 11100, 11101, 11102, 11103, "Fenster")
+        val window = accessoryFactory.createWindowAccessory(11000, 11100, 11101, 11102, 11103, "kitchen window")
         accessoryRepository.store(window)
 
-        val lightBulb = accessoryFactory.createLightBulbAccessory(12000, 12100, 12101, 12102, "Lampe")
+        val lightBulb = accessoryFactory.createLightBulbAccessory(12000, 12100, 12101, 12102, "kitchen lamp")
         accessoryRepository.store(lightBulb)
     }
 
     private fun initializeDiner() {
-        val thermostat = accessoryFactory.createThermostatAccessory(21000, 21100, 21101, 21102, 21103, "Heizung")
+        val thermostat = accessoryFactory.createThermostatAccessory(21000, 21100, 21101, 21102, 21103, "diner heater")
         accessoryRepository.store(thermostat)
 
-        val window = accessoryFactory.createWindowAccessory(22000, 22100, 22101, 22102, 22103, "Fenster")
+        val window = accessoryFactory.createWindowAccessory(22000, 22100, 22101, 22102, 22103, "diner window")
         accessoryRepository.store(window)
 
-        val lightBulb1 = accessoryFactory.createLightBulbAccessory(23000, 23100, 23101, 23102, "Lampe")
+        val lightBulb1 = accessoryFactory.createLightBulbAccessory(23000, 23100, 23101, 23102, "diner lamp 1")
         accessoryRepository.store(lightBulb1)
 
-        val lightBulb2 = accessoryFactory.createLightBulbAccessory(24000, 24100, 24101, 24102, "Lampe")
+        val lightBulb2 = accessoryFactory.createLightBulbAccessory(24000, 24100, 24101, 24102, "diner lamp 2")
         accessoryRepository.store(lightBulb2)
+    }
+
+    private fun initializeLiving() {
+        val thermostat = accessoryFactory.createThermostatAccessory(31000, 31100, 31101, 31102, 31103, "living heater")
+        accessoryRepository.store(thermostat)
+
+        val window = accessoryFactory.createWindowAccessory(32000, 32100, 32101, 32102, 32103, "living window")
+        accessoryRepository.store(window)
+
+        val lightBulb1 = accessoryFactory.createLightBulbAccessory(33000, 33100, 33101, 33102, "living lamp 1")
+        accessoryRepository.store(lightBulb1)
+
+        val lightBulb2 = accessoryFactory.createLightBulbAccessory(34000, 34100, 34101, 34102, "living lamp 2")
+        accessoryRepository.store(lightBulb2)
+
+        val lightBulb3 = accessoryFactory.createLightBulbAccessory(35000, 35100, 35101, 35102, "living lamp 3")
+        accessoryRepository.store(lightBulb3)
+
+        val lightBulb4 = accessoryFactory.createLightBulbAccessory(36000, 36100, 36101, 36102, "living lamp 4")
+        accessoryRepository.store(lightBulb4)
     }
 }

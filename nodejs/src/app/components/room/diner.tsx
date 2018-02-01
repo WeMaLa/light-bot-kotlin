@@ -14,7 +14,7 @@ export interface DinerState {
 export class Diner extends React.Component<DinerProps, DinerState> {
 
     render() {
-        return <div className='room kitchen'>
+        return <div className='room diner'>
             <Heater webSocket={this.props.webSocket}
                     offsetXInPercent={0.55}
                     offsetYInPercent={0.06}

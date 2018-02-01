@@ -17,6 +17,7 @@ import {GroundPlot} from "./components/groundPlot";
 import {WebSocket} from "./websocket/webSocket";
 import {Kitchen} from "./components/room/kitchen";
 import {Diner} from "./components/room/diner";
+import {Living} from "./components/room/living";
 
 const webSocket: WebSocket = new WebSocket();
 
@@ -25,6 +26,7 @@ ReactDOM.render(
         <GroundPlot/>
         <Kitchen webSocket={webSocket}/>
         <Diner webSocket={webSocket}/>
+        <Living webSocket={webSocket}/>
     </div>,
     document.getElementById("info")
 );
