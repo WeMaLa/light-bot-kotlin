@@ -6,7 +6,9 @@
     z-index: 2;
 
     .info {
-      display: flex;
+      visibility: visible;
+      opacity: 1;
+      transition: visibility 0s, opacity 0.5s linear;
     }
   }
 
@@ -17,14 +19,14 @@
     .icon {
       z-index: 2;
       cursor: pointer;
-      svg {
-        position: relative;
-        z-index: 1;
-      }
     }
 
     .info {
-      display: none;
+      display: flex;
+      flex-direction: column;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s linear;
       margin-left: 2px;
       padding: 6px;
       border: 1px solid #DDD;
