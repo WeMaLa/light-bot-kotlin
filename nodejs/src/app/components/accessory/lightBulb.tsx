@@ -135,7 +135,9 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
             {!this.state.loaded ?
                 <div className='loading'>Loading</div> :
                 <div className='window'>
-                    <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x' className='icon'/>
+                    <div className='icon'>
+                        <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x'/>
+                    </div>
                     <div className='info'>
                         <div className='name'>{this.state.name}</div>
                         <div className='on'>On: {this.state.on + ''}</div>

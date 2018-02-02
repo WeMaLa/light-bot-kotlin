@@ -142,7 +142,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
             accessoryIcon: this.state.currentPosition == 0 ? faSquareSolid
                 : this.state.currentPosition == 100 ? faSquareRegular
                     : this.state.currentPosition > 50 ? faSquareQuarter
-                            : faSquareThreeQuarter
+                        : faSquareThreeQuarter
         });
     }
 
@@ -163,7 +163,9 @@ export class Window extends React.Component<WindowProps, WindowState> {
             {!this.state.loaded ?
                 <div className='loading'>Loading</div> :
                 <div className='window'>
-                    <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x' className='icon'/>
+                    <div className='icon'>
+                        <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x'/>
+                    </div>
                     <div className='info'>
                         <div className='name'>{this.state.name}</div>
                         <div className='target-position'>Target position: {this.state.targetPosition}</div>

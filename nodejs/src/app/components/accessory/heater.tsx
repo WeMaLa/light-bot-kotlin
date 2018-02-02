@@ -62,6 +62,7 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                     this.setState({
                         currentTemperature: +event.value
                     });
+                    this.updateAccessoryIcon();
                 } else if (event.characteristicId === this.props.targetTemperatureCharacteristicId) {
                     this.setState({
                         targetTemperature: +event.value
@@ -163,7 +164,9 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
             {!this.state.loaded ?
                 <div className='loading'>Loading</div> :
                 <div className='heater'>
-                    <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x' className='icon'/>
+                    <div className='icon'>
+                        <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x'/>
+                    </div>
                     <div className='info'>
                         <div className='name'>{this.state.name}</div>
                         <div className='target-temperature'>Target temperature: {this.state.targetTemperature}</div>

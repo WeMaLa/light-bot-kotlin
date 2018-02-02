@@ -15,16 +15,16 @@ export class Kitchen extends React.Component<KitchenProps, KitchenState> {
     render() {
         return <div className='room kitchen'>
             <Window webSocket={this.props.webSocket}
-                    offsetXInPercent={0.4}
-                    offsetYInPercent={0.05}
+                    offsetXInPercent={0.42}
+                    offsetYInPercent={0.02}
                     accessoryId={11000}
                     serviceId={11100}
                     currentPositionCharacteristicId={11102}
                     targetPositionCharacteristicId={11101}
                     nameCharacteristicId={11103}/>
             <LightBulb webSocket={this.props.webSocket}
-                       offsetXInPercent={0.42}
-                       offsetYInPercent={0.2}
+                       offsetXInPercent={0.41}
+                       offsetYInPercent={0.18}
                        accessoryId={12000}
                        serviceId={12100}
                        onCharacteristicId={12101}

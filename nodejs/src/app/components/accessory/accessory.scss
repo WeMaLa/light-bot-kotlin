@@ -1,7 +1,35 @@
 .accessory {
   position: fixed;
-  background: #eee;
-  border: 1px solid #DDD;
-  background: linear-gradient(0, #eee, #fff);
-  box-shadow: 1px 2px 4px rgba(0,0,0, .2);
+  z-index: 1;
+
+  &:hover {
+    z-index: 2;
+
+    .info {
+      display: flex;
+    }
+  }
+
+  > div {
+    display: flex;
+    align-items: flex-start;
+
+    .icon {
+      z-index: 2;
+      cursor: pointer;
+      svg {
+        position: relative;
+        z-index: 1;
+      }
+    }
+
+    .info {
+      display: none;
+      margin-left: 2px;
+      padding: 6px;
+      border: 1px solid #DDD;
+      border-radius: 4px;
+      background-color: white;
+    }
+  }
 }

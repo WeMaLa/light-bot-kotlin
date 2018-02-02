@@ -24,8 +24,8 @@ export class Diner extends React.Component<DinerProps, DinerState> {
                     targetTemperatureCharacteristicId={21101}
                     nameCharacteristicId={21103}/>
             <Window webSocket={this.props.webSocket}
-                    offsetXInPercent={0.65}
-                    offsetYInPercent={0.05}
+                    offsetXInPercent={0.62}
+                    offsetYInPercent={0.02}
                     accessoryId={22000}
                     serviceId={22100}
                     currentPositionCharacteristicId={22102}
