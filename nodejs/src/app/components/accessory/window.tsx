@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import './accessory.scss'
 import {WebSocket} from "../../websocket/webSocket";
+import {Uuid} from "./uuid";
 
 export interface WindowProps {
     accessoryId: number;
@@ -25,8 +26,12 @@ export interface WindowState {
 
 export class Window extends React.Component<WindowProps, WindowState> {
 
+    private _uuid: string;
+
     constructor(props: WindowProps, context: any) {
         super(props, context);
+
+        this._uuid = Uuid.uuid();
 
         this.state = {
             loaded: false,
@@ -39,7 +44,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
     }
 
     componentWillMount(): void {
-        this.props.webSocket.onEvent.subscribe("accessory", (sender, event) => {
+        this.props.webSocket.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
             if (event.accessoryId === this.props.accessoryId) {
                 console.log('Found accessory');
 
@@ -57,7 +62,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
     }
 
     componentWillUnmount(): void {
-        this.props.webSocket.onEvent.unsubscribe("accessory");
+        this.props.webSocket.onEvent.unsubscribe("accessory_" + this._uuid);
     }
 
     componentDidMount(): void {

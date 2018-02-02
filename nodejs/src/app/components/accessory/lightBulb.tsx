@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import './accessory.scss'
 import {WebSocket} from "../../websocket/webSocket";
+import {Uuid} from "./uuid";
 
 export interface LightBulbProps {
     accessoryId: number;
@@ -23,8 +24,12 @@ export interface LightBulbState {
 
 export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
 
+    private _uuid: string;
+
     constructor(props: LightBulbProps, context: any) {
         super(props, context);
+
+        this._uuid = Uuid.uuid();
 
         this.state = {
             loaded: false,
@@ -36,7 +41,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
     }
 
     componentWillMount(): void {
-        this.props.webSocket.onEvent.subscribe("accessory", (sender, event) => {
+        this.props.webSocket.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
             if (event.accessoryId === this.props.accessoryId) {
                 console.log('Found accessory');
 
@@ -50,7 +55,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
     }
 
     componentWillUnmount(): void {
-        this.props.webSocket.onEvent.unsubscribe("accessory");
+        this.props.webSocket.onEvent.unsubscribe("accessory_" + this._uuid);
     }
 
     componentDidMount(): void {

@@ -21,6 +21,7 @@ export class WebSocket {
     handleEvent(message: string) {
         let event = JSON.parse(message);
         let webSocketEvent = new WebSocketEvent(event.accessoryId, event.characteristicId, event.value);
+        console.log(webSocketEvent);
         WebSocket._addWebSocketEvents.get("onEvent").dispatch(this, webSocketEvent);
     }
 
