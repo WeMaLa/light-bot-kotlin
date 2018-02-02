@@ -4,6 +4,14 @@ import './accessory.scss'
 import {WebSocket} from "../../websocket/webSocket";
 import {Uuid} from "./uuid";
 
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import {
+    faSquare as faSquareSolid,
+    faThLarge as faSquareThreeQuarter,
+    faTh as faSquareQuarter
+} from '@fortawesome/fontawesome-free-solid';
+import {faSquare as faSquareRegular} from '@fortawesome/fontawesome-free-regular';
+
 export interface WindowProps {
     accessoryId: number;
     serviceId: number;
@@ -22,6 +30,7 @@ export interface WindowState {
     loaded: boolean;
     positionTop: number;
     positionLeft: number;
+    accessoryIcon: any;
 }
 
 export class Window extends React.Component<WindowProps, WindowState> {
@@ -40,6 +49,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
             targetPosition: 0,
             positionTop: 0,
             positionLeft: 0,
+            accessoryIcon: faSquareSolid
         };
     }
 
@@ -52,6 +62,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
                     this.setState({
                         currentPosition: +event.value
                     });
+                    this.updateAccessoryIcon();
                 } else if (event.characteristicId === this.props.targetPositionCharacteristicId) {
                     this.setState({
                         targetPosition: +event.value
@@ -105,6 +116,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
                     currentPosition: json.value,
                 });
                 that.updateDimensions();
+                that.updateAccessoryIcon();
             })
             .catch(function (ex) {
                 console.log('parsing failed', ex)
@@ -114,19 +126,23 @@ export class Window extends React.Component<WindowProps, WindowState> {
     }
 
     updateDimensions() {
-        // console.log('update dimensions');
         let image = document.querySelector('.ground-plot-image') as HTMLElement;
         let imageWidth = image.offsetWidth;
         let imageHeight = image.offsetHeight;
         let offset = this.offset(image);
-        // console.log('Offset left: ' + offset.left);
-        // console.log('Offset top: ' + offset.top);
-        // console.log('Width: ' + imageWidth);
-        // console.log('Height: ' + imageHeight);
 
         this.setState({
             positionTop: offset.top + (imageHeight * this.props.offsetYInPercent),
             positionLeft: offset.left + (imageWidth * this.props.offsetXInPercent),
+        });
+    }
+
+    updateAccessoryIcon() {
+        this.setState({
+            accessoryIcon: this.state.currentPosition == 0 ? faSquareSolid
+                : this.state.currentPosition == 100 ? faSquareRegular
+                    : this.state.currentPosition > 50 ? faSquareQuarter
+                            : faSquareThreeQuarter
         });
     }
 
@@ -147,9 +163,12 @@ export class Window extends React.Component<WindowProps, WindowState> {
             {!this.state.loaded ?
                 <div className='loading'>Loading</div> :
                 <div className='window'>
-                    <div className='name'>{this.state.name}</div>
-                    <div className='target-position'>Target position: {this.state.targetPosition}</div>
-                    <div className='current-position'>Current position: {this.state.currentPosition}</div>
+                    <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x' className='icon'/>
+                    <div className='info'>
+                        <div className='name'>{this.state.name}</div>
+                        <div className='target-position'>Target position: {this.state.targetPosition}</div>
+                        <div className='current-position'>Current position: {this.state.currentPosition}</div>
+                    </div>
                 </div>
             }
         </div>

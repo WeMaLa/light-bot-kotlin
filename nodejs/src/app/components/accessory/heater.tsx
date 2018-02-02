@@ -4,6 +4,16 @@ import './accessory.scss'
 import {WebSocket} from "../../websocket/webSocket";
 import {Uuid} from "./uuid";
 
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import {
+    faThermometerEmpty,
+    faThermometerQuarter,
+    faThermometerHalf,
+    faThermometerThreeQuarters,
+    faThermometerFull
+} from '@fortawesome/fontawesome-free-solid';
+
+
 export interface HeaterProps {
     accessoryId: number;
     serviceId: number;
@@ -22,6 +32,7 @@ export interface HeaterState {
     loaded: boolean;
     positionTop: number;
     positionLeft: number;
+    accessoryIcon: any;
 }
 
 export class Heater extends React.Component<HeaterProps, HeaterState> {
@@ -40,14 +51,13 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
             targetTemperature: 0,
             positionTop: 0,
             positionLeft: 0,
+            accessoryIcon: faThermometerEmpty
         };
     }
 
     componentWillMount(): void {
         this.props.webSocket.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
             if (event.accessoryId === this.props.accessoryId) {
-                console.log('Found accessory');
-
                 if (event.characteristicId === this.props.currentTemperatureCharacteristicId) {
                     this.setState({
                         currentTemperature: +event.value
@@ -105,6 +115,7 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                     currentTemperature: json.value,
                 });
                 that.updateDimensions();
+                that.updateAccessoryIcon();
             })
             .catch(function (ex) {
                 console.log('parsing failed', ex)
@@ -114,19 +125,24 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
     }
 
     updateDimensions() {
-        // console.log('update dimensions');
         let image = document.querySelector('.ground-plot-image') as HTMLElement;
         let imageWidth = image.offsetWidth;
         let imageHeight = image.offsetHeight;
         let offset = this.offset(image);
-        // console.log('Offset left: ' + offset.left);
-        // console.log('Offset top: ' + offset.top);
-        // console.log('Width: ' + imageWidth);
-        // console.log('Height: ' + imageHeight);
 
         this.setState({
             positionTop: offset.top + (imageHeight * this.props.offsetYInPercent),
             positionLeft: offset.left + (imageWidth * this.props.offsetXInPercent),
+        });
+    }
+
+    updateAccessoryIcon() {
+        this.setState({
+            accessoryIcon: this.state.currentTemperature <= 10 ? faThermometerEmpty
+                : this.state.currentTemperature >= 38 ? faThermometerFull
+                    : this.state.currentTemperature > 20 ? faThermometerThreeQuarters
+                        : this.state.currentTemperature < 13 ? faThermometerQuarter
+                            : faThermometerHalf
         });
     }
 
@@ -146,10 +162,13 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
         return <div className='accessory' style={divStyle}>
             {!this.state.loaded ?
                 <div className='loading'>Loading</div> :
-                <div className='window'>
-                    <div className='name'>{this.state.name}</div>
-                    <div className='target-temperature'>Target temperature: {this.state.targetTemperature}</div>
-                    <div className='current-temperature'>Current temperature: {this.state.currentTemperature}</div>
+                <div className='heater'>
+                    <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x' className='icon'/>
+                    <div className='info'>
+                        <div className='name'>{this.state.name}</div>
+                        <div className='target-temperature'>Target temperature: {this.state.targetTemperature}</div>
+                        <div className='current-temperature'>Current temperature: {this.state.currentTemperature}</div>
+                    </div>
                 </div>
             }
         </div>

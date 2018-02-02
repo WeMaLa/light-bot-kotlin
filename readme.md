@@ -36,7 +36,13 @@ docker run -p 8085:8085 -t larmic/iconect-light-bot-kotlin
 
 and open ```http://localhost:8085```
 
-## Demo request
+## Demo requests
 
-send ``{ "characteristics" : [ { "aid" : 10000, "iid" : 10101, "value" : 23.3 } ]}``
-to iconect bot ``light-bot@iconect.io``
+For update diner window send ``{ "characteristics" : [ { "aid" : 22000, "iid" : 22101, "value" : 100 } ]}``
+to iconect bot ``light-bot@iconect.io``.
+
+For update diner heater send ``{ "characteristics" : [ { "aid" : 21000, "iid" : 21101, "value" : 19.8 } ]}``
+to iconect bot ``light-bot@iconect.io``.
+
+For update diner lamp 1 send ``{ "characteristics" : [ { "aid" : 23000, "iid" : 23101, "value" : "on" } ]}``
+to iconect bot ``light-bot@iconect.io``.
