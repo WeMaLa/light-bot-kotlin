@@ -170,6 +170,9 @@ export class Window extends React.Component<WindowProps, WindowState> {
                         <div className='name'>{this.state.name}</div>
                         <div className='target-position'>Target position: {this.state.targetPosition}</div>
                         <div className='current-position'>Current position: {this.state.currentPosition}</div>
+                        <div className='on'>Accessory: {this.props.accessoryId}</div>
+                        <div className='on'>Service: {this.props.serviceId}</div>
+                        <div className='on'>Characteristic: {this.props.targetPositionCharacteristicId}</div>
                     </div>
                 </div>
             }

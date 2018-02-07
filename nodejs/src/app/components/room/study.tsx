@@ -15,6 +15,7 @@ export class Study extends React.Component<StudyProps, StudyState> {
 
     render() {
         return <div className='room study'>
+            // north
             <Heater webSocket={this.props.webSocket}
                     offsetXInPercent={0.245}
                     offsetYInPercent={0.06}
@@ -23,14 +24,16 @@ export class Study extends React.Component<StudyProps, StudyState> {
                     currentTemperatureCharacteristicId={91102}
                     targetTemperatureCharacteristicId={91101}
                     nameCharacteristicId={91103}/>
+            // west
             <Heater webSocket={this.props.webSocket}
-                    offsetXInPercent={0.055}
-                    offsetYInPercent={0.1}
+                    offsetXInPercent={0.053}
+                    offsetYInPercent={0.215}
                     accessoryId={92000}
                     serviceId={92100}
                     currentTemperatureCharacteristicId={92102}
                     targetTemperatureCharacteristicId={92101}
                     nameCharacteristicId={92103}/>
+            // north
             <Window webSocket={this.props.webSocket}
                     offsetXInPercent={0.17}
                     offsetYInPercent={0.02}
@@ -39,9 +42,10 @@ export class Study extends React.Component<StudyProps, StudyState> {
                     currentPositionCharacteristicId={93102}
                     targetPositionCharacteristicId={93101}
                     nameCharacteristicId={93103}/>
+            // west
             <Window webSocket={this.props.webSocket}
-                    offsetXInPercent={0.025}
-                    offsetYInPercent={0.2}
+                    offsetXInPercent={0.018}
+                    offsetYInPercent={0.155}
                     accessoryId={94000}
                     serviceId={94100}
                     currentPositionCharacteristicId={94102}

@@ -16,16 +16,16 @@ export class Bed extends React.Component<BedProps, BedState> {
     render() {
         return <div className='room bed'>
             <Heater webSocket={this.props.webSocket}
-                    offsetXInPercent={0.055}
-                    offsetYInPercent={0.5}
+                    offsetXInPercent={0.053}
+                    offsetYInPercent={0.65}
                     accessoryId={81000}
                     serviceId={81100}
                     currentTemperatureCharacteristicId={81102}
                     targetTemperatureCharacteristicId={81101}
                     nameCharacteristicId={81103}/>
             <Window webSocket={this.props.webSocket}
-                    offsetXInPercent={0.025}
-                    offsetYInPercent={0.6}
+                    offsetXInPercent={0.018}
+                    offsetYInPercent={0.55}
                     accessoryId={82000}
                     serviceId={82100}
                     currentPositionCharacteristicId={82102}

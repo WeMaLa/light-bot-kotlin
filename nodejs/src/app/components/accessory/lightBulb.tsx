@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import './accessory.scss'
+import './lightBulb.scss'
 import {WebSocket} from "../../websocket/webSocket";
 import {Uuid} from "./uuid";
 
@@ -42,7 +43,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
             on: false,
             positionTop: 0,
             positionLeft: 0,
-            accessoryIcon: faLightbulbSolid
+            accessoryIcon: faLightbulbRegular
         };
     }
 
@@ -114,7 +115,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
 
     updateAccessoryIcon() {
         this.setState({
-            accessoryIcon: this.state.on ? faLightbulbRegular : faLightbulbSolid
+            accessoryIcon: this.state.on ? faLightbulbSolid : faLightbulbRegular
         });
     }
 
@@ -134,13 +135,16 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
         return <div className='accessory' style={divStyle}>
             {!this.state.loaded ?
                 <div className='loading'>Loading</div> :
-                <div className='window'>
+                <div className='lightBulb' data-state={this.state.on ? "on" : "off"}>
                     <div className='icon'>
                         <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x'/>
                     </div>
                     <div className='info'>
                         <div className='name'>{this.state.name}</div>
                         <div className='on'>On: {this.state.on + ''}</div>
+                        <div className='on'>Accessory: {this.props.accessoryId}</div>
+                        <div className='on'>Service: {this.props.serviceId}</div>
+                        <div className='on'>Characteristic: {this.props.onCharacteristicId}</div>
                     </div>
                 </div>
             }

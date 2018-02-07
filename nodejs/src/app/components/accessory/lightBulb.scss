@@ -1,0 +1,18 @@
+.accessory {
+  .lightBulb {
+    &[data-state="on"] {
+      svg {
+        path {
+          fill: #ff9900;
+        }
+      }
+    }
+    &[data-state="off"] {
+      svg {
+        path {
+          fill: #000000;
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import './accessory.scss'
+import './heater.scss'
 import {WebSocket} from "../../websocket/webSocket";
 import {Uuid} from "./uuid";
 
@@ -171,6 +172,9 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                         <div className='name'>{this.state.name}</div>
                         <div className='target-temperature'>Target temperature: {this.state.targetTemperature}</div>
                         <div className='current-temperature'>Current temperature: {this.state.currentTemperature}</div>
+                        <div className='on'>Accessory: {this.props.accessoryId}</div>
+                        <div className='on'>Service: {this.props.serviceId}</div>
+                        <div className='on'>Characteristic: {this.props.targetTemperatureCharacteristicId}</div>
                     </div>
                 </div>
             }

@@ -1,0 +1,29 @@
+.accessory {
+  .heater {
+    [data-icon="thermometer-empty"] {
+      path {
+        fill: #000000;
+      }
+    }
+    [data-icon="thermometer-quarter"] {
+      path {
+        fill: #4d0000;
+      }
+    }
+    [data-icon="thermometer-half"] {
+      path {
+        fill: #990000;
+      }
+    }
+    [data-icon="thermometer-three-quarters"] {
+      path {
+        fill: #cc0000;
+      }
+    }
+    [data-icon="thermometer-full"] {
+      path {
+        fill: #ff0000;
+      }
+    }
+  }
+}
