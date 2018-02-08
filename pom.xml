@@ -276,6 +276,7 @@
                 </plugins>
             </build>
         </profile>
+
         <profile>
             <id>frontend-build</id>
             <activation>
