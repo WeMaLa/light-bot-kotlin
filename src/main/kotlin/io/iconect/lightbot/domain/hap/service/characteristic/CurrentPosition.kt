@@ -1,7 +1,7 @@
 package io.iconect.lightbot.domain.hap.service.characteristic
 
 // page 170
-data class CurrentPosition(override val instanceId: Int,
+data class CurrentPoition(override val instanceId: Int,
                            override val accessoryInstanceId: Int,
                            private val eventPublisher: (accessoryInstanceId: Int, characteristicInstanceId: Int, value: String) -> kotlin.Unit) : Characteristic {
 
