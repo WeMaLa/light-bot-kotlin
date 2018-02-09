@@ -13,6 +13,7 @@ import {
     faThermometerThreeQuarters,
     faThermometerFull
 } from '@fortawesome/fontawesome-free-solid';
+import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 
 export interface HeaterProps {
@@ -21,7 +22,7 @@ export interface HeaterProps {
     currentTemperatureCharacteristicId: number;
     targetTemperatureCharacteristicId: number;
     nameCharacteristicId: number;
-    webSocket: WebSocket;
+    webSocket: WebSocket<AccessoryWebSocketEvent>;
     offsetXInPercent: number;
     offsetYInPercent: number;
 }

@@ -3,9 +3,10 @@ import {Window} from "../accessory/window";
 import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
 import {Heater} from "../accessory/heater";
+import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface RestBigProps {
-    webSocket: WebSocket;
+    webSocket: WebSocket<AccessoryWebSocketEvent>;
 }
 
 export interface RestBigState {

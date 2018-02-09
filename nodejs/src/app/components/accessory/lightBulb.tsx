@@ -8,13 +8,14 @@ import {Uuid} from "./uuid";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import {faLightbulb as faLightbulbSolid} from '@fortawesome/fontawesome-free-solid';
 import {faLightbulb as faLightbulbRegular} from '@fortawesome/fontawesome-free-regular';
+import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface LightBulbProps {
     accessoryId: number;
     serviceId: number;
     onCharacteristicId: number;
     nameCharacteristicId: number;
-    webSocket: WebSocket;
+    webSocket: WebSocket<AccessoryWebSocketEvent>;
     offsetXInPercent: number;
     offsetYInPercent: number;
 }

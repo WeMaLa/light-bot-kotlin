@@ -2,9 +2,10 @@ import * as React from 'react';
 import {Window} from "../accessory/window";
 import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
+import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface KitchenProps {
-    webSocket: WebSocket;
+    webSocket: WebSocket<AccessoryWebSocketEvent>;
 }
 
 export interface KitchenState {

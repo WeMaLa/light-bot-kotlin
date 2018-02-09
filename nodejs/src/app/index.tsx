@@ -26,29 +26,33 @@ import {Bed} from "./components/room/bed";
 import {Study} from "./components/room/study";
 import {InfoBox} from "./components/infoBox";
 import {EventList} from "./components/eventList";
+import {AccessoryWebSocketEvent, StatusWebSocketEvent} from "./websocket/webSocketEvent";
 
-const webSocket: WebSocket = new WebSocket();
+const eventWebSocket: WebSocket<AccessoryWebSocketEvent> = new WebSocket<AccessoryWebSocketEvent>("/topic/event");
+const statusWebSocket: WebSocket<StatusWebSocketEvent> = new WebSocket<StatusWebSocketEvent>("/topic/status");
 
 ReactDOM.render(
     <div>
         <GroundPlot/>
-        <Kitchen webSocket={webSocket}/>
-        <Diner webSocket={webSocket}/>
-        <Living webSocket={webSocket}/>
-        <Store webSocket={webSocket}/>
-        <RestSmall webSocket={webSocket}/>
-        <RestBig webSocket={webSocket}/>
-        <Entrance webSocket={webSocket}/>
-        <Bed webSocket={webSocket}/>
-        <Study webSocket={webSocket}/>
-        <InfoBox/>
+        <Kitchen webSocket={eventWebSocket}/>
+        <Diner webSocket={eventWebSocket}/>
+        <Living webSocket={eventWebSocket}/>
+        <Store webSocket={eventWebSocket}/>
+        <RestSmall webSocket={eventWebSocket}/>
+        <RestBig webSocket={eventWebSocket}/>
+        <Entrance webSocket={eventWebSocket}/>
+        <Bed webSocket={eventWebSocket}/>
+        <Study webSocket={eventWebSocket}/>
+        <InfoBox webSocket={statusWebSocket}/>
         <EventList/>
     </div>,
     document.getElementById("info")
 );
 
 if (document.readyState === 'complete' || document.readyState !== 'loading') {
-    webSocket.start();
+    eventWebSocket.start();
+    statusWebSocket.start();
 } else {
-    document.addEventListener('DOMContentLoaded', webSocket.start());
+    document.addEventListener('DOMContentLoaded', eventWebSocket.start());
+    document.addEventListener('DOMContentLoaded', statusWebSocket.start());
 }

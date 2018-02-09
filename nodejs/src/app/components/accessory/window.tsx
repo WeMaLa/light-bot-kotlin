@@ -11,6 +11,7 @@ import {
     faTh as faSquareQuarter
 } from '@fortawesome/fontawesome-free-solid';
 import {faSquare as faSquareRegular} from '@fortawesome/fontawesome-free-regular';
+import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface WindowProps {
     accessoryId: number;
@@ -18,7 +19,7 @@ export interface WindowProps {
     currentPositionCharacteristicId: number;
     targetPositionCharacteristicId: number;
     nameCharacteristicId: number;
-    webSocket: WebSocket;
+    webSocket: WebSocket<AccessoryWebSocketEvent>;
     offsetXInPercent: number;
     offsetYInPercent: number;
 }
