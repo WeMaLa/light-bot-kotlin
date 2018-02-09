@@ -2,10 +2,11 @@ import * as React from 'react';
 
 import './infoBox.scss'
 import {WebSocket} from "../websocket/webSocket";
-import {StatusWebSocketEvent} from "../websocket/webSocketEvent";
+import {AccessoryWebSocketEvent, StatusWebSocketEvent} from "../websocket/webSocketEvent";
 
 export interface InfoBoxProps {
-    webSocket: WebSocket<StatusWebSocketEvent>;
+    vHABStateWebSocket: WebSocket<StatusWebSocketEvent>;
+    accessoryWebSocket: WebSocket<AccessoryWebSocketEvent>;
 }
 
 export interface InfoBoxState {
@@ -38,11 +39,14 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
                 console.log('parsing failed', ex)
             });
 
-        this.props.webSocket.onEvent.subscribe("infoBox", (sender, event) => {
+        this.props.vHABStateWebSocket.onEvent.subscribe("infoBoxState", (sender, event) => {
             //console.log('Receive status event: ' + event.status);
             that.setState({
                 state: event.status
             });
+        });
+        this.props.accessoryWebSocket.onEvent.subscribe("infoBoxAccessory", (sender, event) => {
+            console.log(event);
         });
 
         window.addEventListener("resize", this.updateDimensions.bind(this));

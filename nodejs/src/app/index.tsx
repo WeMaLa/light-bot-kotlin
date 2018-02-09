@@ -43,7 +43,7 @@ ReactDOM.render(
         <Entrance webSocket={eventWebSocket}/>
         <Bed webSocket={eventWebSocket}/>
         <Study webSocket={eventWebSocket}/>
-        <InfoBox webSocket={statusWebSocket}/>
+        <InfoBox vHABStateWebSocket={statusWebSocket} accessoryWebSocket={eventWebSocket}/>
         <EventList/>
     </div>,
     document.getElementById("info")
