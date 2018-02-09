@@ -24,11 +24,13 @@ import {RestBig} from "./components/room/restBig";
 import {Entrance} from "./components/room/entrance";
 import {Bed} from "./components/room/bed";
 import {Study} from "./components/room/study";
+import {InfoBox} from "./components/infoBox";
+import {EventList} from "./components/eventList";
 
 const webSocket: WebSocket = new WebSocket();
 
 ReactDOM.render(
-    <div className="info">
+    <div>
         <GroundPlot/>
         <Kitchen webSocket={webSocket}/>
         <Diner webSocket={webSocket}/>
@@ -39,6 +41,8 @@ ReactDOM.render(
         <Entrance webSocket={webSocket}/>
         <Bed webSocket={webSocket}/>
         <Study webSocket={webSocket}/>
+        <InfoBox/>
+        <EventList/>
     </div>,
     document.getElementById("info")
 );
