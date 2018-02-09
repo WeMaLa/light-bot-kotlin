@@ -16,8 +16,8 @@ export class Store extends React.Component<StoreProps, StoreState> {
     render() {
         return <div className='room store'>
             <LightBulb webSocket={this.props.webSocket}
-                       offsetXInPercent={0.655}
-                       offsetYInPercent={0.53}
+                       offsetXInPercent={0.625}
+                       offsetYInPercent={0.532}
                        accessoryId={41000}
                        serviceId={41100}
                        onCharacteristicId={41101}

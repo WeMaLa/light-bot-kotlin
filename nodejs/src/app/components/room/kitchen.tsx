@@ -23,7 +23,7 @@ export class Kitchen extends React.Component<KitchenProps, KitchenState> {
                     targetPositionCharacteristicId={11101}
                     nameCharacteristicId={11103}/>
             <LightBulb webSocket={this.props.webSocket}
-                       offsetXInPercent={0.41}
+                       offsetXInPercent={0.4}
                        offsetYInPercent={0.18}
                        accessoryId={12000}
                        serviceId={12100}

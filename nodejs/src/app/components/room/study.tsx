@@ -52,14 +52,14 @@ export class Study extends React.Component<StudyProps, StudyState> {
                     targetPositionCharacteristicId={94101}
                     nameCharacteristicId={94103}/>
             <LightBulb webSocket={this.props.webSocket}
-                       offsetXInPercent={0.13}
+                       offsetXInPercent={0.095}
                        offsetYInPercent={0.18}
                        accessoryId={95000}
                        serviceId={95100}
                        onCharacteristicId={95101}
                        nameCharacteristicId={95102}/>
             <LightBulb webSocket={this.props.webSocket}
-                       offsetXInPercent={0.265}
+                       offsetXInPercent={0.23}
                        offsetYInPercent={0.18}
                        accessoryId={96000}
                        serviceId={96100}
