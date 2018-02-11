@@ -144,6 +144,16 @@ class AccessoryControllerTest {
     }
 
     @Test
+    fun `find all services of a not existing accessory`() {
+        val exchange = testRestTemplate.exchange("/api/accessories/1/services", HttpMethod.GET, HttpEntity.EMPTY, ErrorMessageDto::class.java)
+
+        val errorMessageDto = exchange.body!!
+
+        assertThat(exchange.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(errorMessageDto.message).isEqualTo("Accessory 1 not found.")
+    }
+
+    @Test
     fun `find a specific service of a specific accessory and map to dto`() {
         accessoryRepository.store(accessoryFactory.createThermostatAccessory(1, 1, 2, 3, 4, "dummy"))
 
