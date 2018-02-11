@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import './accessory.scss'
-import './lightBulb.scss'
+import "./accessory.scss"
+import "./lightBulb.scss"
 import {WebSocket} from "../../websocket/webSocket";
 import {Uuid} from "./uuid";
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import {faLightbulb as faLightbulbSolid} from '@fortawesome/fontawesome-free-solid';
-import {faLightbulb as faLightbulbRegular} from '@fortawesome/fontawesome-free-regular';
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import {faLightbulb as faLightbulbSolid} from "@fortawesome/fontawesome-free-solid";
+import {faLightbulb as faLightbulbRegular} from "@fortawesome/fontawesome-free-regular";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface LightBulbProps {
@@ -40,7 +40,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
 
         this.state = {
             loaded: false,
-            name: '',
+            name: "",
             on: false,
             positionTop: 0,
             positionLeft: 0,
@@ -51,11 +51,11 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
     componentWillMount(): void {
         this.props.webSocket.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
             if (event.accessoryId === this.props.accessoryId) {
-                console.log('Found accessory');
+                console.log("Found accessory");
 
                 if (event.characteristicId === this.props.onCharacteristicId) {
                     this.setState({
-                        on: event.value === 'on' || event.value === 'On' || event.value === 'ON'
+                        on: event.value === "on" || event.value === "On" || event.value === "ON"
                     });
                     this.updateAccessoryIcon();
                 }
@@ -69,7 +69,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
 
     componentDidMount(): void {
         let that = this;
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.nameCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.nameCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
@@ -81,29 +81,29 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
                 that.updateDimensions();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.onCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.onCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
             .then(function (json) {
                 that.setState({
                     loaded: true,
-                    on: json.value === 'on' || json.value === 'On' || json.value === 'ON'
+                    on: json.value === "on" || json.value === "On" || json.value === "ON"
                 });
                 that.updateDimensions();
                 that.updateAccessoryIcon();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
 
         window.addEventListener("resize", this.updateDimensions.bind(this));
     }
 
     updateDimensions() {
-        let image = document.querySelector('.ground-plot-image') as HTMLElement;
+        let image = document.querySelector(".ground-plot-image") as HTMLElement;
         let imageWidth = image.offsetWidth;
         let imageHeight = image.offsetHeight;
         let offset = this.offset(image);
@@ -133,19 +133,19 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
             left: this.state.positionLeft
         };
 
-        return <div className='accessory' style={divStyle}>
+        return <div className="accessory" style={divStyle}>
             {!this.state.loaded ?
-                <div className='loading'>Loading</div> :
-                <div className='lightBulb' data-state={this.state.on ? "on" : "off"}>
-                    <div className='icon'>
-                        <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x'/>
+                <div className="loading">Loading</div> :
+                <div className="lightBulb" data-state={this.state.on ? "on" : "off"}>
+                    <div className="icon">
+                        <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>
                     </div>
-                    <div className='info'>
-                        <div className='name'>{this.state.name}</div>
-                        <div className='on'>On: {this.state.on + ''}</div>
-                        <div className='on'>Accessory: {this.props.accessoryId}</div>
-                        <div className='on'>Service: {this.props.serviceId}</div>
-                        <div className='on'>Characteristic: {this.props.onCharacteristicId}</div>
+                    <div className="info">
+                        <div className="name">{this.state.name}</div>
+                        <div className="on">On: {this.state.on + ""}</div>
+                        <div className="on">Accessory: {this.props.accessoryId}</div>
+                        <div className="on">Service: {this.props.serviceId}</div>
+                        <div className="on">Characteristic: {this.props.onCharacteristicId}</div>
                     </div>
                 </div>
             }

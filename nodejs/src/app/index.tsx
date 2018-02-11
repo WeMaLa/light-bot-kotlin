@@ -49,10 +49,10 @@ ReactDOM.render(
     document.getElementById("info")
 );
 
-if (document.readyState === 'complete' || document.readyState !== 'loading') {
+if (document.readyState === "complete" || document.readyState !== "loading") {
     eventWebSocket.start();
     statusWebSocket.start();
 } else {
-    document.addEventListener('DOMContentLoaded', eventWebSocket.start());
-    document.addEventListener('DOMContentLoaded', statusWebSocket.start());
+    document.addEventListener("DOMContentLoaded", eventWebSocket.start());
+    document.addEventListener("DOMContentLoaded", statusWebSocket.start());
 }

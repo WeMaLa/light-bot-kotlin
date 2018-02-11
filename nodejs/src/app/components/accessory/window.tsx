@@ -1,16 +1,16 @@
 import * as React from "react";
 
-import './accessory.scss'
+import "./accessory.scss"
 import {WebSocket} from "../../websocket/webSocket";
 import {Uuid} from "./uuid";
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import {
     faSquare as faSquareSolid,
     faThLarge as faSquareThreeQuarter,
     faTh as faSquareQuarter
-} from '@fortawesome/fontawesome-free-solid';
-import {faSquare as faSquareRegular} from '@fortawesome/fontawesome-free-regular';
+} from "@fortawesome/fontawesome-free-solid";
+import {faSquare as faSquareRegular} from "@fortawesome/fontawesome-free-regular";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface WindowProps {
@@ -45,7 +45,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
 
         this.state = {
             loaded: false,
-            name: '',
+            name: "",
             currentPosition: 0,
             targetPosition: 0,
             positionTop: 0,
@@ -57,7 +57,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
     componentWillMount(): void {
         this.props.webSocket.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
             if (event.accessoryId === this.props.accessoryId) {
-                console.log('Found accessory');
+                console.log("Found accessory");
 
                 if (event.characteristicId === this.props.currentPositionCharacteristicId) {
                     this.setState({
@@ -79,7 +79,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
 
     componentDidMount(): void {
         let that = this;
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.nameCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.nameCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
@@ -91,9 +91,9 @@ export class Window extends React.Component<WindowProps, WindowState> {
                 that.updateDimensions();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.targetPositionCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.targetPositionCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
@@ -105,9 +105,9 @@ export class Window extends React.Component<WindowProps, WindowState> {
                 that.updateDimensions();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.currentPositionCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.currentPositionCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
@@ -120,14 +120,14 @@ export class Window extends React.Component<WindowProps, WindowState> {
                 that.updateAccessoryIcon();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
 
         window.addEventListener("resize", this.updateDimensions.bind(this));
     }
 
     updateDimensions() {
-        let image = document.querySelector('.ground-plot-image') as HTMLElement;
+        let image = document.querySelector(".ground-plot-image") as HTMLElement;
         let imageWidth = image.offsetWidth;
         let imageHeight = image.offsetHeight;
         let offset = this.offset(image);
@@ -160,20 +160,20 @@ export class Window extends React.Component<WindowProps, WindowState> {
             left: this.state.positionLeft
         };
 
-        return <div className='accessory' style={divStyle}>
+        return <div className="accessory" style={divStyle}>
             {!this.state.loaded ?
-                <div className='loading'>Loading</div> :
-                <div className='window'>
-                    <div className='icon'>
-                        <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x'/>
+                <div className="loading">Loading</div> :
+                <div className="window">
+                    <div className="icon">
+                        <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>
                     </div>
-                    <div className='info'>
-                        <div className='name'>{this.state.name}</div>
-                        <div className='target-position'>Target position: {this.state.targetPosition}</div>
-                        <div className='current-position'>Current position: {this.state.currentPosition}</div>
-                        <div className='on'>Accessory: {this.props.accessoryId}</div>
-                        <div className='on'>Service: {this.props.serviceId}</div>
-                        <div className='on'>Characteristic: {this.props.targetPositionCharacteristicId}</div>
+                    <div className="info">
+                        <div className="name">{this.state.name}</div>
+                        <div className="target-position">Target position: {this.state.targetPosition}</div>
+                        <div className="current-position">Current position: {this.state.currentPosition}</div>
+                        <div className="on">Accessory: {this.props.accessoryId}</div>
+                        <div className="on">Service: {this.props.serviceId}</div>
+                        <div className="on">Characteristic: {this.props.targetPositionCharacteristicId}</div>
                     </div>
                 </div>
             }
