@@ -1,8 +1,6 @@
-import * as React from 'react';
-import {Window} from "../accessory/window";
+import * as React from "react";
 import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
-import {Heater} from "../accessory/heater";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface RestBigProps {
@@ -15,7 +13,7 @@ export interface RestBigState {
 export class RestBig extends React.Component<RestBigProps, RestBigState> {
 
     render() {
-        return <div className='room rest big'>
+        return <div className="room rest big">
             <LightBulb webSocket={this.props.webSocket}
                        offsetXInPercent={0.23}
                        offsetYInPercent={0.553}

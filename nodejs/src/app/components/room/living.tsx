@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {Window} from "../accessory/window";
 import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
@@ -15,7 +15,7 @@ export interface LivingState {
 export class Living extends React.Component<LivingProps, LivingState> {
 
     render() {
-        return <div className='room living'>
+        return <div className="room living">
             <Heater webSocket={this.props.webSocket}
                     offsetXInPercent={0.915}
                     offsetYInPercent={0.6}

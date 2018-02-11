@@ -1,8 +1,6 @@
-import * as React from 'react';
-import {Window} from "../accessory/window";
+import * as React from "react";
 import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
-import {Heater} from "../accessory/heater";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 export interface EntranceProps {
@@ -15,7 +13,7 @@ export interface EntranceState {
 export class Entrance extends React.Component<EntranceProps, EntranceState> {
 
     render() {
-        return <div className='room entrance'>
+        return <div className="room entrance">
             <LightBulb webSocket={this.props.webSocket}
                        offsetXInPercent={0.248}
                        offsetYInPercent={0.365}
