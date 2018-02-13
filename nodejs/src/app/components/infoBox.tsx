@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import './infoBox.scss'
 import {WebSocket} from "../websocket/webSocket";
@@ -34,6 +34,7 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
                 that.setState({
                     state: json.details.messageStatus.status
                 });
+                this.updateDimensions();
             })
             .catch(function (ex) {
                 console.log('parsing failed', ex)

@@ -14,7 +14,7 @@ data class CharacteristicDto(
 
     companion object {
         fun from(characteristic: Characteristic): CharacteristicDto {
-            return CharacteristicDto(characteristic.instanceId, UuidToTypeMapper.map(characteristic.uuid), characteristic.value, characteristic.format.json, characteristic.permissions.map { it.json })
+            return CharacteristicDto(characteristic.instanceId, reduceUuidToTheFirstPartAndRemoveLeadingZeros(characteristic.uuid), characteristic.value, characteristic.format.json, characteristic.permissions.map { it.json })
         }
     }
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {Window} from "../accessory/window";
 import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
@@ -14,7 +14,7 @@ export interface KitchenState {
 export class Kitchen extends React.Component<KitchenProps, KitchenState> {
 
     render() {
-        return <div className='room kitchen'>
+        return <div className="room kitchen">
             <Window webSocket={this.props.webSocket}
                     offsetXInPercent={0.42}
                     offsetYInPercent={0.02}

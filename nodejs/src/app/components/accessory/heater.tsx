@@ -1,18 +1,18 @@
-import * as React from 'react';
+import * as React from "react";
 
-import './accessory.scss'
-import './heater.scss'
+import "./accessory.scss"
+import "./heater.scss"
 import {WebSocket} from "../../websocket/webSocket";
 import {Uuid} from "./uuid";
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import {
     faThermometerEmpty,
     faThermometerQuarter,
     faThermometerHalf,
     faThermometerThreeQuarters,
     faThermometerFull
-} from '@fortawesome/fontawesome-free-solid';
+} from "@fortawesome/fontawesome-free-solid";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
 
 
@@ -48,7 +48,7 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
 
         this.state = {
             loaded: false,
-            name: '',
+            name: "",
             currentTemperature: 0,
             targetTemperature: 0,
             positionTop: 0,
@@ -80,7 +80,7 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
 
     componentDidMount(): void {
         let that = this;
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.nameCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.nameCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
@@ -92,9 +92,9 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                 that.updateDimensions();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.targetTemperatureCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.targetTemperatureCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
@@ -106,9 +106,9 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                 that.updateDimensions();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
-        fetch('/api/accessories/' + this.props.accessoryId + '/services/' + this.props.serviceId + '/characteristics/' + this.props.currentTemperatureCharacteristicId)
+        fetch("/api/accessories/" + this.props.accessoryId + "/services/" + this.props.serviceId + "/characteristics/" + this.props.currentTemperatureCharacteristicId)
             .then(function (response) {
                 return response.json();
             })
@@ -121,14 +121,14 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                 that.updateAccessoryIcon();
             })
             .catch(function (ex) {
-                console.log('parsing failed', ex)
+                console.log("parsing failed", ex)
             });
 
         window.addEventListener("resize", this.updateDimensions.bind(this));
     }
 
     updateDimensions() {
-        let image = document.querySelector('.ground-plot-image') as HTMLElement;
+        let image = document.querySelector(".ground-plot-image") as HTMLElement;
         let imageWidth = image.offsetWidth;
         let imageHeight = image.offsetHeight;
         let offset = this.offset(image);
@@ -162,20 +162,20 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
             left: this.state.positionLeft
         };
 
-        return <div className='accessory' style={divStyle}>
+        return <div className="accessory" style={divStyle}>
             {!this.state.loaded ?
-                <div className='loading'>Loading</div> :
-                <div className='heater'>
-                    <div className='icon'>
-                        <FontAwesomeIcon icon={this.state.accessoryIcon} size='2x'/>
+                <div className="loading">Loading</div> :
+                <div className="heater">
+                    <div className="icon">
+                        <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>
                     </div>
-                    <div className='info'>
-                        <div className='name'>{this.state.name}</div>
-                        <div className='target-temperature'>Target temperature: {this.state.targetTemperature}</div>
-                        <div className='current-temperature'>Current temperature: {this.state.currentTemperature}</div>
-                        <div className='on'>Accessory: {this.props.accessoryId}</div>
-                        <div className='on'>Service: {this.props.serviceId}</div>
-                        <div className='on'>Characteristic: {this.props.targetTemperatureCharacteristicId}</div>
+                    <div className="info">
+                        <div className="name">{this.state.name}</div>
+                        <div className="target-temperature">Target temperature: {this.state.targetTemperature}</div>
+                        <div className="current-temperature">Current temperature: {this.state.currentTemperature}</div>
+                        <div className="on">Accessory: {this.props.accessoryId}</div>
+                        <div className="on">Service: {this.props.serviceId}</div>
+                        <div className="on">Characteristic: {this.props.targetTemperatureCharacteristicId}</div>
                     </div>
                 </div>
             }

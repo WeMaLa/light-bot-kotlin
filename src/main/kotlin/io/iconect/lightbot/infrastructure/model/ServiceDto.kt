@@ -12,7 +12,7 @@ data class ServiceDto(
 
     companion object {
         fun from(service: Service): ServiceDto {
-            return ServiceDto(service.instanceId, UuidToTypeMapper.map(service.uuid), service.characteristics.map { CharacteristicDto.from(it) })
+            return ServiceDto(service.instanceId, reduceUuidToTheFirstPartAndRemoveLeadingZeros(service.uuid), service.characteristics.map { CharacteristicDto.from(it) })
         }
     }
 
