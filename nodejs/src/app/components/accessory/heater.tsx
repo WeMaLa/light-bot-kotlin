@@ -170,12 +170,16 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                         <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>
                     </div>
                     <div className="info">
-                        <div className="name">{this.state.name}</div>
-                        <div className="target-temperature">Target temperature: {this.state.targetTemperature}</div>
-                        <div className="current-temperature">Current temperature: {this.state.currentTemperature}</div>
-                        <div className="on">Accessory: {this.props.accessoryId}</div>
-                        <div className="on">Service: {this.props.serviceId}</div>
-                        <div className="on">Characteristic: {this.props.targetTemperatureCharacteristicId}</div>
+                        <div>Beispielrequest</div>
+                        <div className="code depth0">&#123;</div>
+                        <div className="code depth1"> "characteristics":[</div>
+                        <div className="code depth2">       &#123;</div>
+                        <div className="code depth3"> "aid" : {this.props.accessoryId},</div>
+                        <div className="code depth3"> "iid" : {this.props.targetTemperatureCharacteristicId},</div>
+                        <div className="code depth3"> "value" : "{38 - this.state.targetTemperature + 10}"</div>
+                        <div className="code depth2">       &#125;</div>
+                        <div className="code depth1"> ]</div>
+                        <div className="code depth0">&#125;</div>
                     </div>
                 </div>
             }

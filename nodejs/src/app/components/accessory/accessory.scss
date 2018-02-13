@@ -38,6 +38,7 @@
     }
 
     .icon:hover + .info {
+      display: flex;
       visibility: visible;
       opacity: 1;
       transition: visibility 0s, opacity 0.2s linear;
@@ -45,8 +46,23 @@
   }
 
   .info {
+    display: none;
     visibility: hidden;
     opacity: 0;
     margin-left: 2px;
+  }
+
+  .code {
+    font-family: "Courier New", Courier, monospace;
+
+    &.depth1 {
+      margin-left: 10px;
+    }
+    &.depth2 {
+      margin-left: 20px;
+    }
+    &.depth3 {
+      margin-left: 30px;
+    }
   }
 }

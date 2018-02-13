@@ -168,12 +168,16 @@ export class Window extends React.Component<WindowProps, WindowState> {
                         <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>
                     </div>
                     <div className="info">
-                        <div className="name">{this.state.name}</div>
-                        <div className="target-position">Target position: {this.state.targetPosition}</div>
-                        <div className="current-position">Current position: {this.state.currentPosition}</div>
-                        <div className="on">Accessory: {this.props.accessoryId}</div>
-                        <div className="on">Service: {this.props.serviceId}</div>
-                        <div className="on">Characteristic: {this.props.targetPositionCharacteristicId}</div>
+                        <div>Beispielrequest</div>
+                        <div className="code depth0">&#123;</div>
+                        <div className="code depth1"> "characteristics":[</div>
+                        <div className="code depth2">       &#123;</div>
+                        <div className="code depth3"> "aid" : {this.props.accessoryId},</div>
+                        <div className="code depth3"> "iid" : {this.props.targetPositionCharacteristicId},</div>
+                        <div className="code depth3"> "value" : "{100 - this.state.currentPosition}"</div>
+                        <div className="code depth2">       &#125;</div>
+                        <div className="code depth1"> ]</div>
+                        <div className="code depth0">&#125;</div>
                     </div>
                 </div>
             }
