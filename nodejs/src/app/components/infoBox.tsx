@@ -55,7 +55,7 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
     }
 
     updateDimensions() {
-        const image = document.querySelector('.ground-plot-image') as HTMLElement;
+        const image = document.querySelector(".ground-plot > .image") as HTMLElement;
         const imageHeight = image.offsetHeight;
         this.div.setAttribute("style", "left: 20px; top: " + (imageHeight - 130) + "px;");
     }

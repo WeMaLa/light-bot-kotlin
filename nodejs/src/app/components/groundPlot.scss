@@ -1,5 +1,29 @@
-.ground-plot-image {
-  max-width: 100%;
-  max-height: 100vh;
-  height: auto;
+.ground-plot {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  .image {
+    max-width: 100%;
+    max-height: 100vh;
+    height: auto;
+
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+
+  .spinner {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &.hidden {
+      display: none;
+    }
+  }
 }

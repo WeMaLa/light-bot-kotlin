@@ -127,7 +127,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
     }
 
     updateDimensions() {
-        let image = document.querySelector(".ground-plot-image") as HTMLElement;
+        let image = document.querySelector(".ground-plot > .image") as HTMLElement;
         let imageWidth = image.offsetWidth;
         let imageHeight = image.offsetHeight;
         let offset = this.offset(image);

@@ -18,7 +18,7 @@ export class EventList extends React.Component<EventListProps, EventListState> {
     }
 
     updateDimensions() {
-        const image = document.querySelector(".ground-plot-image") as HTMLElement;
+        const image = document.querySelector(".ground-plot > .image") as HTMLElement;
         let imageWidth = image.offsetWidth;
         const imageHeight = image.offsetHeight;
         this.div.setAttribute("style", "left: " + (imageWidth - 350) + "px; top: " + (imageHeight - 130) + "px;");
