@@ -3,23 +3,42 @@ import * as React from "react";
 import './infoBox.scss'
 import {WebSocket} from "../websocket/webSocket";
 import {AccessoryWebSocketEvent, StatusWebSocketEvent} from "../websocket/webSocketEvent";
+import {GroundPlotInitializer} from "./groundPlot";
 
 export interface InfoBoxProps {
     vHABStateWebSocket: WebSocket<StatusWebSocketEvent>;
     accessoryWebSocket: WebSocket<AccessoryWebSocketEvent>;
+    initializer: GroundPlotInitializer;
 }
 
 export interface InfoBoxState {
     state: string;
+    groundPlotInitialized: boolean;
 }
 
 export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
 
     private div: HTMLDivElement;
 
-    constructor(props: any){
+    constructor(props: any) {
         super(props);
-        this.state = { state: "pending..." };
+        this.state = {
+            state: "pending...",
+            groundPlotInitialized: false
+        };
+    }
+
+    componentWillMount(): void {
+        this.props.initializer.onEvent.subscribe("info-box", (sender, event) => {
+            this.setState({
+                groundPlotInitialized: true
+            });
+            this.updateDimensions();
+        });
+    }
+
+    componentWillUnmount(): void {
+        this.props.initializer.onEvent.unsubscribe("info-box");
     }
 
     componentDidMount(): void {
@@ -51,7 +70,6 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
         });
 
         window.addEventListener("resize", this.updateDimensions.bind(this));
-        this.updateDimensions();
     }
 
     updateDimensions() {
@@ -61,14 +79,16 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
     }
 
     render() {
-        return <div className="info info-box" ref={div => {
-            this.div = div;
-        }}>
-            STILL IN PROGRESS
-            <div className="title">vHAB - virtual home automation bot</div>
-            <div className="status">status: {this.state.state}</div>
-            <div className="version">version: TODO</div>
-            <div className="git revision">git revision: TODO</div>
+        return <div className="info info-box" ref={div => {this.div = div;}}>
+            {this.state.groundPlotInitialized &&
+            <div>
+                STILL IN PROGRESS
+                <div className="title">vHAB - virtual home automation bot</div>
+                <div className="status">status: {this.state.state}</div>
+                <div className="version">version: TODO</div>
+                <div className="git revision">git revision: TODO</div>
+            </div>
+            }
         </div>
     }
 }

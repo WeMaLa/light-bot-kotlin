@@ -13,7 +13,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import "./index.scss";
-import {GroundPlot} from "./components/groundPlot";
+import {GroundPlot, GroundPlotInitializer} from "./components/groundPlot";
 import {WebSocket} from "./websocket/webSocket";
 import {Kitchen} from "./components/room/kitchen";
 import {Diner} from "./components/room/diner";
@@ -30,21 +30,22 @@ import {AccessoryWebSocketEvent, StatusWebSocketEvent} from "./websocket/webSock
 
 const eventWebSocket: WebSocket<AccessoryWebSocketEvent> = new WebSocket<AccessoryWebSocketEvent>("/topic/event");
 const statusWebSocket: WebSocket<StatusWebSocketEvent> = new WebSocket<StatusWebSocketEvent>("/topic/status");
+const groupPlotInitializer : GroundPlotInitializer = new GroundPlotInitializer();
 
 ReactDOM.render(
     <div>
-        <GroundPlot/>
-        <Kitchen webSocket={eventWebSocket}/>
-        <Diner webSocket={eventWebSocket}/>
-        <Living webSocket={eventWebSocket}/>
-        <Store webSocket={eventWebSocket}/>
-        <RestSmall webSocket={eventWebSocket}/>
-        <RestBig webSocket={eventWebSocket}/>
-        <Entrance webSocket={eventWebSocket}/>
-        <Bed webSocket={eventWebSocket}/>
-        <Study webSocket={eventWebSocket}/>
-        <InfoBox vHABStateWebSocket={statusWebSocket} accessoryWebSocket={eventWebSocket}/>
-        <EventList/>
+        <GroundPlot initializer={groupPlotInitializer}/>
+        <Kitchen webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <Diner webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <Living webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <Store webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <RestSmall webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <RestBig webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <Entrance webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <Bed webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <Study webSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <InfoBox vHABStateWebSocket={statusWebSocket} accessoryWebSocket={eventWebSocket} initializer={groupPlotInitializer}/>
+        <EventList initializer={groupPlotInitializer}/>
     </div>,
     document.getElementById("info")
 );

@@ -3,9 +3,11 @@ import {Window} from "../accessory/window";
 import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
+import {GroundPlotInitializer} from "../groundPlot";
 
 export interface KitchenProps {
     webSocket: WebSocket<AccessoryWebSocketEvent>;
+    initializer: GroundPlotInitializer;
 }
 
 export interface KitchenState {
@@ -22,14 +24,16 @@ export class Kitchen extends React.Component<KitchenProps, KitchenState> {
                     serviceId={11100}
                     currentPositionCharacteristicId={11102}
                     targetPositionCharacteristicId={11101}
-                    nameCharacteristicId={11103}/>
+                    nameCharacteristicId={11103}
+                    initializer={this.props.initializer}/>
             <LightBulb webSocket={this.props.webSocket}
                        offsetXInPercent={0.4}
                        offsetYInPercent={0.18}
                        accessoryId={12000}
                        serviceId={12100}
                        onCharacteristicId={12101}
-                       nameCharacteristicId={12102}/>
+                       nameCharacteristicId={12102}
+                       initializer={this.props.initializer}/>
         </div>
     }
 }

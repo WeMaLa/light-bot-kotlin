@@ -9,6 +9,7 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import {faLightbulb as faLightbulbSolid} from "@fortawesome/fontawesome-free-solid";
 import {faLightbulb as faLightbulbRegular} from "@fortawesome/fontawesome-free-regular";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
+import {GroundPlotInitializer} from "../groundPlot";
 
 export interface LightBulbProps {
     accessoryId: number;
@@ -16,11 +17,13 @@ export interface LightBulbProps {
     onCharacteristicId: number;
     nameCharacteristicId: number;
     webSocket: WebSocket<AccessoryWebSocketEvent>;
+    initializer: GroundPlotInitializer;
     offsetXInPercent: number;
     offsetYInPercent: number;
 }
 
 export interface LightBulbState {
+    groundPlotInitialized: boolean;
     name: string;
     on: boolean;
     loaded: boolean;
@@ -39,6 +42,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
         this._uuid = Uuid.uuid();
 
         this.state = {
+            groundPlotInitialized: false,
             loaded: false,
             name: "",
             on: false,
@@ -61,10 +65,20 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
                 }
             }
         });
+        this.props.initializer.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
+            if (event.imageLoaded) {
+                this.setState({
+                    groundPlotInitialized: true
+                });
+                this.updateDimensions();
+            }
+        });
+
     }
 
     componentWillUnmount(): void {
         this.props.webSocket.onEvent.unsubscribe("accessory_" + this._uuid);
+        this.props.initializer.onEvent.unsubscribe("accessory_" + this._uuid);
     }
 
     componentDidMount(): void {
@@ -134,8 +148,7 @@ export class LightBulb extends React.Component<LightBulbProps, LightBulbState> {
         };
 
         return <div className="accessory" style={divStyle}>
-            {!this.state.loaded ?
-                <div className="loading">Loading</div> :
+            {this.state.loaded && this.state.groundPlotInitialized &&
                 <div className="lightBulb" data-state={this.state.on ? "on" : "off"}>
                     <div className="icon">
                         <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>

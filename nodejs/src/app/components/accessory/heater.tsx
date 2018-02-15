@@ -14,7 +14,7 @@ import {
     faThermometerFull
 } from "@fortawesome/fontawesome-free-solid";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
-
+import {GroundPlotInitializer} from "../groundPlot";
 
 export interface HeaterProps {
     accessoryId: number;
@@ -23,11 +23,13 @@ export interface HeaterProps {
     targetTemperatureCharacteristicId: number;
     nameCharacteristicId: number;
     webSocket: WebSocket<AccessoryWebSocketEvent>;
+    initializer: GroundPlotInitializer;
     offsetXInPercent: number;
     offsetYInPercent: number;
 }
 
 export interface HeaterState {
+    groundPlotInitialized: boolean;
     name: string;
     currentTemperature: number;
     targetTemperature: number;
@@ -47,6 +49,7 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
         this._uuid = Uuid.uuid();
 
         this.state = {
+            groundPlotInitialized: false,
             loaded: false,
             name: "",
             currentTemperature: 0,
@@ -72,10 +75,19 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
                 }
             }
         });
+        this.props.initializer.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
+            if (event.imageLoaded) {
+                this.setState({
+                    groundPlotInitialized: true
+                });
+                this.updateDimensions();
+            }
+        });
     }
 
     componentWillUnmount(): void {
         this.props.webSocket.onEvent.unsubscribe("accessory_" + this._uuid);
+        this.props.initializer.onEvent.unsubscribe("accessory_" + this._uuid);
     }
 
     componentDidMount(): void {
@@ -163,8 +175,7 @@ export class Heater extends React.Component<HeaterProps, HeaterState> {
         };
 
         return <div className="accessory" style={divStyle}>
-            {!this.state.loaded ?
-                <div className="loading">Loading</div> :
+            {this.state.loaded && this.state.groundPlotInitialized &&
                 <div className="heater">
                     <div className="icon">
                         <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>

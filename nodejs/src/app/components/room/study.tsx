@@ -4,9 +4,11 @@ import {WebSocket} from "../../websocket/webSocket";
 import {LightBulb} from "../accessory/lightBulb";
 import {Heater} from "../accessory/heater";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
+import {GroundPlotInitializer} from "../groundPlot";
 
 export interface StudyProps {
     webSocket: WebSocket<AccessoryWebSocketEvent>;
+    initializer: GroundPlotInitializer;
 }
 
 export interface StudyState {
@@ -23,7 +25,8 @@ export class Study extends React.Component<StudyProps, StudyState> {
                     serviceId={91100}
                     currentTemperatureCharacteristicId={91102}
                     targetTemperatureCharacteristicId={91101}
-                    nameCharacteristicId={91103}/>
+                    nameCharacteristicId={91103}
+                    initializer={this.props.initializer}/>
             <Heater webSocket={this.props.webSocket}
                     offsetXInPercent={0.053}
                     offsetYInPercent={0.215}
@@ -31,7 +34,8 @@ export class Study extends React.Component<StudyProps, StudyState> {
                     serviceId={92100}
                     currentTemperatureCharacteristicId={92102}
                     targetTemperatureCharacteristicId={92101}
-                    nameCharacteristicId={92103}/>
+                    nameCharacteristicId={92103}
+                    initializer={this.props.initializer}/>
             <Window webSocket={this.props.webSocket}
                     offsetXInPercent={0.17}
                     offsetYInPercent={0.02}
@@ -39,7 +43,8 @@ export class Study extends React.Component<StudyProps, StudyState> {
                     serviceId={93100}
                     currentPositionCharacteristicId={93102}
                     targetPositionCharacteristicId={93101}
-                    nameCharacteristicId={93103}/>
+                    nameCharacteristicId={93103}
+                    initializer={this.props.initializer}/>
             <Window webSocket={this.props.webSocket}
                     offsetXInPercent={0.018}
                     offsetYInPercent={0.155}
@@ -47,21 +52,24 @@ export class Study extends React.Component<StudyProps, StudyState> {
                     serviceId={94100}
                     currentPositionCharacteristicId={94102}
                     targetPositionCharacteristicId={94101}
-                    nameCharacteristicId={94103}/>
+                    nameCharacteristicId={94103}
+                    initializer={this.props.initializer}/>
             <LightBulb webSocket={this.props.webSocket}
                        offsetXInPercent={0.095}
                        offsetYInPercent={0.18}
                        accessoryId={95000}
                        serviceId={95100}
                        onCharacteristicId={95101}
-                       nameCharacteristicId={95102}/>
+                       nameCharacteristicId={95102}
+                       initializer={this.props.initializer}/>
             <LightBulb webSocket={this.props.webSocket}
                        offsetXInPercent={0.23}
                        offsetYInPercent={0.18}
                        accessoryId={96000}
                        serviceId={96100}
                        onCharacteristicId={96101}
-                       nameCharacteristicId={96102}/>
+                       nameCharacteristicId={96102}
+                       initializer={this.props.initializer}/>
         </div>
     }
 }

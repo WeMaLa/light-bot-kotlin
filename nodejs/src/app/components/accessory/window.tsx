@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/fontawesome-free-solid";
 import {faSquare as faSquareRegular} from "@fortawesome/fontawesome-free-regular";
 import {AccessoryWebSocketEvent} from "../../websocket/webSocketEvent";
+import {GroundPlotInitializer} from "../groundPlot";
 
 export interface WindowProps {
     accessoryId: number;
@@ -20,11 +21,13 @@ export interface WindowProps {
     targetPositionCharacteristicId: number;
     nameCharacteristicId: number;
     webSocket: WebSocket<AccessoryWebSocketEvent>;
+    initializer: GroundPlotInitializer;
     offsetXInPercent: number;
     offsetYInPercent: number;
 }
 
 export interface WindowState {
+    groundPlotInitialized: boolean;
     name: string;
     currentPosition: number;
     targetPosition: number;
@@ -44,6 +47,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
         this._uuid = Uuid.uuid();
 
         this.state = {
+            groundPlotInitialized: false,
             loaded: false,
             name: "",
             currentPosition: 0,
@@ -71,10 +75,19 @@ export class Window extends React.Component<WindowProps, WindowState> {
                 }
             }
         });
+        this.props.initializer.onEvent.subscribe("accessory_" + this._uuid, (sender, event) => {
+            if (event.imageLoaded) {
+                this.setState({
+                    groundPlotInitialized: true
+                });
+                this.updateDimensions();
+            }
+        });
     }
 
     componentWillUnmount(): void {
         this.props.webSocket.onEvent.unsubscribe("accessory_" + this._uuid);
+        this.props.initializer.onEvent.unsubscribe("accessory_" + this._uuid);
     }
 
     componentDidMount(): void {
@@ -161,8 +174,7 @@ export class Window extends React.Component<WindowProps, WindowState> {
         };
 
         return <div className="accessory" style={divStyle}>
-            {!this.state.loaded ?
-                <div className="loading">Loading</div> :
+            {this.state.loaded && this.state.groundPlotInitialized &&
                 <div className="window">
                     <div className="icon">
                         <FontAwesomeIcon icon={this.state.accessoryIcon} size="2x"/>
