@@ -35,6 +35,14 @@
         <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
     </properties>
 
+    <scm>
+        <url>https://github.com/WeMaLa/light-bot-kotlin</url>
+        <connection>scm:git:https://github.com/WeMaLa/light-bot-kotlin</connection>
+        <developerConnection>scm:git:https://github.com/WeMaLa/light-bot-kotlin</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -171,7 +179,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
