@@ -14,6 +14,12 @@ export interface InfoBoxProps {
 export interface InfoBoxState {
     state: string;
     groundPlotInitialized: boolean;
+    stage: string;
+    version: string;
+    groupId: string;
+    artifactId: string;
+    buildNumber: string;
+    timestamp: string;
 }
 
 export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
@@ -24,6 +30,12 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
         super(props);
         this.state = {
             state: "pending...",
+            stage: "pending...",
+            version: "pending...",
+            groupId: "pending...",
+            artifactId: "pending...",
+            buildNumber: "pending...",
+            timestamp: "pending...",
             groundPlotInitialized: false
         };
     }
@@ -58,6 +70,25 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
             .catch(function (ex) {
                 console.log('parsing failed', ex)
             });
+        fetch('/actuator/info')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                //console.log('parsed json', json);
+                //console.log('parsed json', json.details.messageStatus.status);
+                that.setState({
+                    stage: json.stage,
+                    version: json.version,
+                    groupId: json.groupId,
+                    artifactId: json.artifactId,
+                    buildNumber: json.buildNumber,
+                    timestamp: that.convertToReadableTimestamp(json.timestamp),
+                });
+            })
+            .catch(function (ex) {
+                console.log('parsing failed', ex)
+            });
 
         this.props.vHABStateWebSocket.onEvent.subscribe("infoBoxState", (sender, event) => {
             //console.log('Receive status event: ' + event.status);
@@ -72,21 +103,33 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
         window.addEventListener("resize", this.updateDimensions.bind(this));
     }
 
-    updateDimensions() {
+    private updateDimensions() {
         const image = document.querySelector(".ground-plot > .image") as HTMLElement;
         const imageHeight = image.offsetHeight;
-        this.div.setAttribute("style", "left: 20px; top: " + (imageHeight - 130) + "px;");
+        this.div.setAttribute("style", "left: 20px; top: " + (imageHeight - 150) + "px;");
     }
 
+    private convertToReadableTimestamp(timestamp: number) {
+        let newDate = new Date();
+        newDate.setTime(timestamp);
+        return newDate.toUTCString();
+    }
+
+
     render() {
-        return <div className="info info-box" ref={div => {this.div = div;}}>
+        return <div className="info info-box" ref={div => {
+            this.div = div;
+        }}>
             {this.state.groundPlotInitialized &&
             <div>
-                STILL IN PROGRESS
                 <div className="title">vHAB - virtual home automation bot</div>
                 <div className="status">status: {this.state.state}</div>
-                <div className="version">version: TODO</div>
-                <div className="git revision">git revision: TODO</div>
+                <div className="stage">stage: {this.state.stage}</div>
+                <div className="version">version: {this.state.version}</div>
+                <div className="groupId">groupId: {this.state.groupId}</div>
+                <div className="artifactId">artifactId: {this.state.artifactId}</div>
+                <div className="buildNumber">buildNumber: {this.state.buildNumber}</div>
+                <div className="timestamp">timestamp: {this.state.timestamp}</div>
             </div>
             }
         </div>
