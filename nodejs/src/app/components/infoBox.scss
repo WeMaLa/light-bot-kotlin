@@ -2,8 +2,38 @@
 
 .info-box {
   height: 120px;
-  width: 280px;
+  width: 300px;
   position: absolute;
   top: -10000;
   left: -10000;
+
+  .title {
+    font-weight: 600;
+  }
+
+  .system-information {
+    display: flex;
+    flex-direction: column;
+
+    .status {
+      &.ok {
+        .value {
+          color: green;
+        }
+      }
+      &.not-ok {
+        .value {
+          color: red;
+        }
+      }
+    }
+
+    > div {
+      display: flex;
+
+      label {
+        width: 100px;
+      }
+    }
+  }
 }

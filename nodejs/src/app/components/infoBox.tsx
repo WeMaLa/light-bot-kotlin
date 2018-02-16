@@ -123,13 +123,36 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
             {this.state.groundPlotInitialized &&
             <div>
                 <div className="title">vHAB - virtual home automation bot</div>
-                <div className="status">status: {this.state.state}</div>
-                <div className="stage">stage: {this.state.stage}</div>
-                <div className="version">version: {this.state.version}</div>
-                <div className="groupId">groupId: {this.state.groupId}</div>
-                <div className="artifactId">artifactId: {this.state.artifactId}</div>
-                <div className="buildNumber">buildNumber: {this.state.buildNumber}</div>
-                <div className="timestamp">timestamp: {this.state.timestamp}</div>
+                <div className="system-information">
+                    <div className={this.state.state === "OK" ? "status ok" : "status not-ok"}>
+                        <label>Status</label>
+                        <div className="value">{this.state.state}</div>
+                    </div>
+                    <div className="stage">
+                        <label>Stage</label>
+                        <div className="value">{this.state.stage}</div>
+                    </div>
+                    <div className="version">
+                        <label>Version</label>
+                        <div className="value">{this.state.version}</div>
+                    </div>
+                    <div className="groupId">
+                        <label>GroupId</label>
+                        <div className="value">{this.state.groupId}</div>
+                    </div>
+                    <div className="artifactId">
+                        <label>ArtifactId</label>
+                        <div className="value">{this.state.artifactId}</div>
+                    </div>
+                    <div className="buildNumber">
+                        <label>BuildNumber</label>
+                        <div className="value">{this.state.buildNumber}</div>
+                    </div>
+                    <div className="timestamp">
+                        <label>Timestamp</label>
+                        <div className="value">{this.state.timestamp}</div>
+                    </div>
+                </div>
             </div>
             }
         </div>
