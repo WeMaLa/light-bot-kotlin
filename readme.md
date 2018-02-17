@@ -39,10 +39,10 @@ and open ```http://localhost:8085```
 ## Demo requests
 
 For update diner window send ``{ "characteristics" : [ { "aid" : 22000, "iid" : 22101, "value" : 100 } ]}``
-to iconect bot ``light-bot@iconect.io``.
+to iconect bot ``vhab-bot@iconect.io``.
 
 For update diner heater send ``{ "characteristics" : [ { "aid" : 21000, "iid" : 21101, "value" : 19.8 } ]}``
-to iconect bot ``light-bot@iconect.io``.
+to iconect bot ``vhab-bot@iconect.io``.
 
 For update diner lamp 1 send ``{ "characteristics" : [ { "aid" : 23000, "iid" : 23101, "value" : "on" } ]}``
-to iconect bot ``light-bot@iconect.io``.
+to iconect bot ``vhab-bot@iconect.io``.

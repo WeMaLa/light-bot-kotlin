@@ -13,6 +13,7 @@ export interface InfoBoxProps {
 
 export interface InfoBoxState {
     state: string;
+    identifier: string;
     groundPlotInitialized: boolean;
     stage: string;
     version: string;
@@ -30,6 +31,7 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
         super(props);
         this.state = {
             state: "pending...",
+            identifier: "pending...",
             stage: "pending...",
             version: "pending...",
             groupId: "pending...",
@@ -79,6 +81,7 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
                 //console.log('parsed json', json.details.messageStatus.status);
                 that.setState({
                     stage: json.stage,
+                    identifier: json.identifier,
                     version: json.version,
                     groupId: json.groupId,
                     artifactId: json.artifactId,
@@ -106,7 +109,7 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
     private updateDimensions() {
         const image = document.querySelector(".ground-plot > .image") as HTMLElement;
         const imageHeight = image.offsetHeight;
-        this.div.setAttribute("style", "left: 20px; top: " + (imageHeight - 150) + "px;");
+        this.div.setAttribute("style", "left: 20px; top: " + (imageHeight - 170) + "px;");
     }
 
     private convertToReadableTimestamp(timestamp: number) {
@@ -128,6 +131,10 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
                         <label>Status</label>
                         <div className="value">{this.state.state}</div>
                     </div>
+                    <div className="identifier">
+                        <label>Identifier</label>
+                        <div className="value">{this.state.identifier}</div>
+                    </div>
                     <div className="stage">
                         <label>Stage</label>
                         <div className="value">{this.state.stage}</div>
@@ -145,11 +152,11 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
                         <div className="value">{this.state.artifactId}</div>
                     </div>
                     <div className="buildNumber">
-                        <label>BuildNumber</label>
+                        <label>Build number</label>
                         <div className="value"><a href={"https://github.com/WeMaLa/light-bot-kotlin/commit/" + this.state.buildNumber} target="_blank">{this.state.buildNumber}</a></div>
                     </div>
                     <div className="timestamp">
-                        <label>Timestamp</label>
+                        <label>Build time</label>
                         <div className="value">{this.state.timestamp}</div>
                     </div>
                 </div>

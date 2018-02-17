@@ -18,7 +18,7 @@ class ConfigurationStageDevTest {
 
     @Test
     fun `check configuration initializing on default stage`() {
-        Assertions.assertThat(configuration.bot?.identifier).isEqualTo("light-bot@iconect.io")
+        Assertions.assertThat(configuration.bot?.identifier).isEqualTo("vhab-bot@iconect.io")
         Assertions.assertThat(configuration.bot?.username).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.password).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.notificationUrl).isEqualTo("http://light-bot.iconect.larmic.de/api/notify")

@@ -16,7 +16,7 @@ class ConfigurationStageDefaultTest {
 
     @Test
     fun `check configuration initializing on default stage`() {
-        Assertions.assertThat(configuration.bot?.identifier).isEqualTo("light-bot@iconect.io")
+        Assertions.assertThat(configuration.bot?.identifier).isEqualTo("vhab-bot@iconect.io")
         Assertions.assertThat(configuration.bot?.username).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.password).isEqualTo("light-bot")
         Assertions.assertThat(configuration.bot?.notificationUrl).isEqualTo("http://localhost:8085/api/notify")
