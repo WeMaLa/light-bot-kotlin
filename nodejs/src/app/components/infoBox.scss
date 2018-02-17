@@ -32,7 +32,13 @@
       display: flex;
 
       label {
+        min-width: 100px;
         width: 100px;
+      }
+
+      .value {
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
   }

@@ -146,7 +146,7 @@ export class InfoBox extends React.Component<InfoBoxProps, InfoBoxState> {
                     </div>
                     <div className="buildNumber">
                         <label>BuildNumber</label>
-                        <div className="value">{this.state.buildNumber}</div>
+                        <div className="value"><a href={"https://github.com/WeMaLa/light-bot-kotlin/commit/" + this.state.buildNumber} target="_blank">{this.state.buildNumber}</a></div>
                     </div>
                     <div className="timestamp">
                         <label>Timestamp</label>
