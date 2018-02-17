@@ -36,9 +36,9 @@
     </properties>
 
     <scm>
-        <url>https://github.com/WeMaLa/light-bot-kotlin</url>
-        <connection>scm:git:https://github.com/WeMaLa/light-bot-kotlin</connection>
-        <developerConnection>scm:git:https://github.com/WeMaLa/light-bot-kotlin</developerConnection>
+        <url>https://github.com/WeMaLa/vhab-kotlin</url>
+        <connection>scm:git:https://github.com/WeMaLa/vhab-kotlin</connection>
+        <developerConnection>scm:git:https://github.com/WeMaLa/vhab-kotlin</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
