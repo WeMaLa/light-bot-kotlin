@@ -20,8 +20,8 @@ mvn spring-boot:run
 
 and open ```http://localhost:8085/swagger-ui.html```
 
-For health check open ```http://localhost:8080/system/health/```
-and for metrics open ```http://localhost:8080/system/metrics/```
+For health check open ```http://localhost:8080/actuator/health/```
+and for metrics open ```http://localhost:8080/actuator/metrics/```
 and for elastic open ```http://localhost:9200/```
 
 ## Pull and start docker image
