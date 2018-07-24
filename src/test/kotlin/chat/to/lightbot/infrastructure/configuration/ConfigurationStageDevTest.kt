@@ -21,7 +21,6 @@ class ConfigurationStageDevTest {
         assertThat(configuration.bot?.identifier).isEqualTo("vhab@to.chat")
         assertThat(configuration.bot?.username).isEqualTo("vhab")
         assertThat(configuration.bot?.password).isEqualTo("vhab-1234")
-        assertThat(configuration.bot?.notificationUrl).isEqualTo("http://vhab.larmic.de/api/notify")
         assertThat(configuration.server?.url).isEqualTo("http://dev.larmic.de")
     }
 }

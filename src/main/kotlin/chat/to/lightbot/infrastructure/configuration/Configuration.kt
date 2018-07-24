@@ -38,7 +38,4 @@ class Bot {
     @NotBlank
     lateinit var username: String
 
-    @NotBlank
-    lateinit var notificationUrl: String
-
 }

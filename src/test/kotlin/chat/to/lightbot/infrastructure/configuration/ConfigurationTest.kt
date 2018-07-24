@@ -1,6 +1,5 @@
 package chat.to.lightbot.infrastructure.configuration
 
-import chat.to.lightbot.infrastructure.configuration.Configuration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +21,6 @@ class ConfigurationTest {
         assertThat(configuration.bot?.identifier).isEqualTo("unit@test.bot")
         assertThat(configuration.bot?.username).isEqualTo("unit-test-bot-username")
         assertThat(configuration.bot?.password).isEqualTo("unit-test-bot-password")
-        assertThat(configuration.bot?.notificationUrl).isEqualTo("http://bot.unit.test/api/notify")
         assertThat(configuration.server?.url).isEqualTo("http://server.unit.test/")
     }
 }
