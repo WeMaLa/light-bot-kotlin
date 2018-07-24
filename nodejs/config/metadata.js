@@ -1,6 +1,6 @@
 const METADATA = {
-    title: 'IConect vHAB',
-    description: 'iConect Virtual Home Automation Bot',
+    title: 'WeMaLa vHAB',
+    description: 'WeMaLa Virtual Home Automation Bot',
     host: 'localhost',
     port: 3000
 };

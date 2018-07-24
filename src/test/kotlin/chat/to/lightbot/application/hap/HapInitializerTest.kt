@@ -5,7 +5,6 @@ import chat.to.lightbot.domain.hap.service.LightBulb
 import chat.to.lightbot.domain.hap.service.Thermostat
 import chat.to.lightbot.domain.hap.service.Window
 import chat.to.lightbot.domain.hap.service.characteristic.*
-import io.iconect.lightbot.domain.hap.service.characteristic.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -2,7 +2,6 @@ package chat.to.lightbot.infrastructure
 
 import chat.to.lightbot.domain.hap.AccessoryRepository
 import chat.to.lightbot.infrastructure.model.*
-import io.iconect.lightbot.infrastructure.model.*
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse

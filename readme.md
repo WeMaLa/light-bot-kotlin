@@ -1,4 +1,4 @@
-# iconect.io virtual home automation bot (vHab)
+# to.chat virtual home automation bot (vHab)
 
 This simple demonstration shows how home automation can be implemented with Kotlin.
 
@@ -26,7 +26,7 @@ and for elastic open ```http://localhost:9200/```
 
 ## Pull and start docker image
 
-You will need a docker hub account and need access to https://hub.docker.com/r/larmic/iconect-server/.
+You will need a docker hub account and need access to https://hub.docker.com/r/larmic/wemala-server/.
 
 ```ssh
 docker login --username=maryatdocker --email=mary@docker.com

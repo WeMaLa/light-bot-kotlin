@@ -20,7 +20,7 @@ class ServerRegistrationExchangeService @Autowired constructor(
     private val log = LoggerFactory.getLogger(ServerRegistrationExchangeService::class.java)
 
     fun registerBot(): Boolean {
-        log.info("Register new bot on iconect server")
+        log.info("Register new bot on wemala server")
         val httpEntity = HttpEntity<Any>(UserRegistrationRequest(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password, botConfiguration.bot!!.username))
 
         return try {
@@ -28,9 +28,9 @@ class ServerRegistrationExchangeService @Autowired constructor(
             true
         } catch (e: Exception) {
             if (e is HttpStatusCodeException) {
-                log.error("Register bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                log.error("Register bot on wemala server failed with code '${e.statusCode}' and message '${e.message}'")
             } else {
-                log.error("Register bot on iconect server failed with message '${e.message}'")
+                log.error("Register bot on wemala server failed with message '${e.message}'")
             }
             applicationEventPublisher.publishEvent(VHabStatus.REGISTRATION_FAILED)
             false

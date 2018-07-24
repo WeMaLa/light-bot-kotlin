@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Component
-@ConfigurationProperties("iconect")
+@ConfigurationProperties("wemala")
 @Validated
 class Configuration {
 

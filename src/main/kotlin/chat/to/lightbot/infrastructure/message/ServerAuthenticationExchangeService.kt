@@ -28,7 +28,7 @@ class ServerAuthenticationExchangeService @Autowired constructor(
             return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
         } catch (e: Exception) {
             if (e is HttpStatusCodeException) {
-                log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                log.error("Authenticaton bot on wemala server failed with code '${e.statusCode}' and message '${e.message}'")
 
                 if (e.statusCode == HttpStatus.UNAUTHORIZED) {
                     log.info("Received UNAUTHORIZED while authentication. Register a new bot")
@@ -36,18 +36,18 @@ class ServerAuthenticationExchangeService @Autowired constructor(
                         try {
                             return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
                         } catch (e: HttpClientErrorException) {
-                            log.error("Authenticaton bot on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                            log.error("Authenticaton bot on wemala server failed with code '${e.statusCode}' and message '${e.message}'")
                         }
                     }
                 }
             } else {
-                log.error("Authenticaton bot on iconect server failed with message '${e.message}'")
+                log.error("Authenticaton bot on wemala server failed with message '${e.message}'")
             }
 
             applicationEventPublisher.publishEvent(VHabStatus.AUTHENTICATION_FAILED)
             null
         } catch (e: ResourceAccessException) {
-            log.error("Authenticaton bot on iconect server failed with message '${e.message}'")
+            log.error("Authenticaton bot on wemala server failed with message '${e.message}'")
 
             applicationEventPublisher.publishEvent(VHabStatus.AUTHENTICATION_FAILED)
             null

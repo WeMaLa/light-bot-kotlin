@@ -69,9 +69,9 @@ class ServerMessageExchangeService @Autowired constructor(
             applicationEventPublisher.publishEvent(VHabStatus.OK)
         } catch (e: Exception) {
             if (e is HttpStatusCodeException) {
-                log.error("Mark message '$messageIdentifier' as read on iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                log.error("Mark message '$messageIdentifier' as read on wemala server failed with code '${e.statusCode}' and message '${e.message}'")
             } else {
-                log.error("Mark message '$messageIdentifier' as read on iconect server failed with message '${e.message}'")
+                log.error("Mark message '$messageIdentifier' as read on wemala server failed with message '${e.message}'")
             }
             applicationEventPublisher.publishEvent(VHabStatus.MARK_MESSAGES_FAILED)
         }
@@ -85,9 +85,9 @@ class ServerMessageExchangeService @Autowired constructor(
             return messages
         } catch (e: Exception) {
             if (e is HttpStatusCodeException) {
-                log.error("Retrieve message from iconect server failed with code '${e.statusCode}' and message '${e.message}'")
+                log.error("Retrieve message from wemala server failed with code '${e.statusCode}' and message '${e.message}'")
             } else {
-                log.error("Retrieve message from iconect server failed with message '${e.message}'")
+                log.error("Retrieve message from wemala server failed with message '${e.message}'")
             }
             applicationEventPublisher.publishEvent(VHabStatus.RECEIVE_MESSAGES_FAILED)
             emptyList()
