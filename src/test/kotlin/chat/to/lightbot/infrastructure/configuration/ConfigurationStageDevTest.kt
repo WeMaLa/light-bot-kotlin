@@ -1,6 +1,6 @@
 package chat.to.lightbot.infrastructure.configuration
 
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,10 +18,10 @@ class ConfigurationStageDevTest {
 
     @Test
     fun `check configuration initializing on default stage`() {
-        Assertions.assertThat(configuration.bot?.identifier).isEqualTo("vhab@to.chat")
-        Assertions.assertThat(configuration.bot?.username).isEqualTo("vhab")
-        Assertions.assertThat(configuration.bot?.password).isEqualTo("vhab-1234")
-        Assertions.assertThat(configuration.bot?.notificationUrl).isEqualTo("http://vhab.iconect.larmic.de/api/notify")
-        Assertions.assertThat(configuration.server?.url).isEqualTo("http://dev.server.iconect.larmic.de")
+        assertThat(configuration.bot?.identifier).isEqualTo("vhab@to.chat")
+        assertThat(configuration.bot?.username).isEqualTo("vhab")
+        assertThat(configuration.bot?.password).isEqualTo("vhab-1234")
+        assertThat(configuration.bot?.notificationUrl).isEqualTo("http://vhab.larmic.de/api/notify")
+        assertThat(configuration.server?.url).isEqualTo("http://dev.larmic.de")
     }
 }
