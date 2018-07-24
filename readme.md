@@ -30,8 +30,8 @@ You will need a docker hub account and need access to https://hub.docker.com/r/l
 
 ```ssh
 docker login --username=maryatdocker --email=mary@docker.com
-docker pull larmic/iconect-light-bot-kotlin
-docker run -p 8085:8085 -t larmic/iconect-light-bot-kotlin
+docker pull larmic/wemala-vhab
+docker run -p 8085:8085 -t larmic/wemala-vhab
 ```
 
 and open ```http://localhost:8085```
@@ -39,10 +39,10 @@ and open ```http://localhost:8085```
 ## Demo requests
 
 For update diner window send ``{ "characteristics" : [ { "aid" : 22000, "iid" : 22101, "value" : 100 } ]}``
-to iconect bot ``vhab@iconect.io``.
+to vhab bot ``vhab@to.chat``.
 
 For update diner heater send ``{ "characteristics" : [ { "aid" : 21000, "iid" : 21101, "value" : 19.8 } ]}``
-to iconect bot ``vhab@iconect.io``.
+to vhab bot ``vhab@to.chat``.
 
 For update diner lamp 1 send ``{ "characteristics" : [ { "aid" : 23000, "iid" : 23101, "value" : "on" } ]}``
-to iconect bot ``vhab@iconect.io``.
+to vhab bot ``vhab@to.chat``.

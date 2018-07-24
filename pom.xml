@@ -182,7 +182,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <imageName>larmic/iconect-${project.artifactId}</imageName>
+                    <imageName>larmic/wemala-vhab</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <serverId>docker-hub</serverId>
                     <imageTags>
