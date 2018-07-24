@@ -1,10 +1,8 @@
 package chat.to.lightbot.infrastructure.message
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import chat.to.lightbot.domain.hap.VHabStatus
 import chat.to.lightbot.domain.hap.VHabStatusRepository
-import chat.to.lightbot.infrastructure.message.ServerAuthenticationExchangeService
-import chat.to.lightbot.infrastructure.message.ServerRegistrationExchangeService
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.core.IsEqual
 import org.junit.Before
@@ -51,7 +49,7 @@ class ServerAuthenticationExchangeServiceTest {
     }
 
     @Test
-    fun `authenticate light bot on iconect server`() {
+    fun `authenticate light bot on wemala server`() {
         val response = ServerAuthenticationExchangeService.JwtAuthenticationResponse()
         response.token = "unit-test-auth-token"
         server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/auth/login"))
@@ -67,7 +65,7 @@ class ServerAuthenticationExchangeServiceTest {
     }
 
     @Test
-    fun `authenticate light bot on iconect server and servers first time responds unauthorized`() {
+    fun `authenticate light bot on wemala server and servers first time responds unauthorized`() {
         val response = ServerAuthenticationExchangeService.JwtAuthenticationResponse()
         response.token = "unit-test-auth-token"
         `when`(serverRegistrationExchangeService.registerBot()).thenReturn(true)
@@ -93,7 +91,7 @@ class ServerAuthenticationExchangeServiceTest {
     }
 
     @Test
-    fun `authenticate light bot on iconect server and servers responds unauthorized and registration failed too`() {
+    fun `authenticate light bot on wemala server and servers responds unauthorized and registration failed too`() {
         val response = ServerAuthenticationExchangeService.JwtAuthenticationResponse()
         response.token = "unit-test-auth-token"
         `when`(serverRegistrationExchangeService.registerBot()).thenReturn(false)
@@ -112,7 +110,7 @@ class ServerAuthenticationExchangeServiceTest {
     }
 
     @Test
-    fun `authenticate light bot on iconect server and servers responds bad request`() {
+    fun `authenticate light bot on wemala server and servers responds bad request`() {
         server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/auth/login"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("identifier", IsEqual.equalTo<String>("unit@test.bot")))
@@ -126,7 +124,7 @@ class ServerAuthenticationExchangeServiceTest {
     }
 
     @Test
-    fun `authenticate light bot on iconect server and servers responds conflict`() {
+    fun `authenticate light bot on wemala server and servers responds conflict`() {
         server.expect(MockRestRequestMatchers.requestTo("http://server.unit.test/api/auth/login"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
                 .andExpect(MockRestRequestMatchers.jsonPath<String>("identifier", IsEqual.equalTo<String>("unit@test.bot")))

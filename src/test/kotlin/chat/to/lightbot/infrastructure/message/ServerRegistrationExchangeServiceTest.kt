@@ -2,7 +2,6 @@ package chat.to.lightbot.infrastructure.message
 
 import chat.to.lightbot.domain.hap.VHabStatus
 import chat.to.lightbot.domain.hap.VHabStatusRepository
-import chat.to.lightbot.infrastructure.message.ServerRegistrationExchangeService
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Before
@@ -42,7 +41,7 @@ class ServerRegistrationExchangeServiceTest {
     }
 
     @Test
-    fun `register light bot on iconect server`() {
+    fun `register light bot on wemala server`() {
         server.expect(requestTo("http://server.unit.test/api/user"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(jsonPath<String>("email", equalTo<String>("unit@test.bot")))
@@ -57,7 +56,7 @@ class ServerRegistrationExchangeServiceTest {
     }
 
     @Test
-    fun `register light bot on iconect server and server responds bad request`() {
+    fun `register light bot on wemala server and server responds bad request`() {
         server.expect(requestTo("http://server.unit.test/api/user"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(jsonPath<String>("email", equalTo<String>("unit@test.bot")))
@@ -72,7 +71,7 @@ class ServerRegistrationExchangeServiceTest {
     }
 
     @Test
-    fun `register light bot on iconect server and server responds conflict`() {
+    fun `register light bot on wemala server and server responds conflict`() {
         server.expect(requestTo("http://server.unit.test/api/user"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(jsonPath<String>("email", equalTo<String>("unit@test.bot")))
