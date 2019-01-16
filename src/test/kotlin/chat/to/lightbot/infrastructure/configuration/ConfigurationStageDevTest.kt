@@ -2,11 +2,9 @@ package chat.to.lightbot.infrastructure.configuration
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringRunner
 
 
 @SpringBootTest
@@ -21,6 +19,6 @@ class ConfigurationStageDevTest {
         assertThat(configuration.bot?.identifier).isEqualTo("vhab@to.chat")
         assertThat(configuration.bot?.username).isEqualTo("vhab")
         assertThat(configuration.bot?.password).isEqualTo("vhab-1234")
-        assertThat(configuration.server?.url).isEqualTo("http://dev.larmic.de")
+        assertThat(configuration.server?.url).isEqualTo("http://dev.to.chat")
     }
 }
