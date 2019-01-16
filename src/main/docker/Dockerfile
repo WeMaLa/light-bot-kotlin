@@ -4,9 +4,9 @@
 # with memory settings are using container limits
 # https://developers.redhat.com/blog/2017/03/14/java-inside-docker/
 
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11.0.1-jre-slim
 VOLUME /tmp
 ADD vhab-kotlin.jar app.jar
 RUN sh -c 'touch /app.jar'
-ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions"
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar ${JAVA_PROPERTIES}" ]
