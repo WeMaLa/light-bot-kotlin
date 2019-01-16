@@ -4,7 +4,7 @@ import chat.to.lightbot.domain.hap.service.characteristic.CurrentTemperature
 import chat.to.lightbot.domain.hap.service.characteristic.Name
 import chat.to.lightbot.domain.hap.service.characteristic.TargetTemperature
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class ThermostatTest {
 

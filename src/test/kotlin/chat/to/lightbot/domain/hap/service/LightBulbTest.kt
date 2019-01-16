@@ -3,7 +3,7 @@ package chat.to.lightbot.domain.hap.service
 import chat.to.lightbot.domain.hap.service.characteristic.Name
 import chat.to.lightbot.domain.hap.service.characteristic.On
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class LightBulbTest {
 

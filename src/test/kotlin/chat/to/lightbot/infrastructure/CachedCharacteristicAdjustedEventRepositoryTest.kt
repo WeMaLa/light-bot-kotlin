@@ -4,7 +4,7 @@ import chat.to.lightbot.domain.hap.CharacteristicAdjustedEvent
 import chat.to.lightbot.domain.hap.CharacteristicAdjustedEventRepository
 import chat.to.lightbot.infrastructure.CachedCharacteristicAdjustedEventRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class CachedCharacteristicAdjustedEventRepositoryTest {
 

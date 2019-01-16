@@ -4,8 +4,8 @@ import chat.to.lightbot.domain.hap.VHabStatus
 import chat.to.lightbot.domain.hap.VHabStatusRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.core.IsEqual.equalTo
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,7 +18,7 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.*
 import org.springframework.test.web.client.response.MockRestResponseCreators.*
 import org.springframework.web.client.RestTemplate
 
-@RunWith(SpringRunner::class)
+
 @SpringBootTest
 @ActiveProfiles("unittest")
 class ServerRegistrationExchangeServiceTest {
@@ -34,7 +34,7 @@ class ServerRegistrationExchangeServiceTest {
 
     lateinit var server: MockRestServiceServer
 
-    @Before
+    @BeforeEach
     fun setUp() {
         server = MockRestServiceServer.bindTo(restTemplate).build()
         vHabStatusRepository.clear()

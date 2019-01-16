@@ -2,7 +2,7 @@ package chat.to.lightbot.domain.hap
 
 import chat.to.lightbot.domain.hap.service.Thermostat
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class AccessoryTest {
 

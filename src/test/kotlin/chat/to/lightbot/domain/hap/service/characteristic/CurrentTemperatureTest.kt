@@ -2,7 +2,8 @@ package chat.to.lightbot.domain.hap.service.characteristic
 
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class CurrentTemperatureTest {
 
@@ -79,15 +80,15 @@ class CurrentTemperatureTest {
         Assertions.assertThat(eventValue).isNull()
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `adjust value to low`() {
         val targetTemperature = CurrentTemperature(3, 1, { _, _, _ -> })
-        targetTemperature.adjustValue(-0.1)
+        assertThrows<IllegalArgumentException> { targetTemperature.adjustValue(-0.1) }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `adjust value to high`() {
         val targetTemperature = CurrentTemperature(3, 1, { _, _, _ -> })
-        targetTemperature.adjustValue(100.1)
+        assertThrows<IllegalArgumentException> { targetTemperature.adjustValue(100.1) }
     }
 }

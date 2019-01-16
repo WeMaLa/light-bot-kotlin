@@ -3,18 +3,15 @@ package chat.to.lightbot.infrastructure.message
 import chat.to.lightbot.application.message.ServerMessageHandler
 import chat.to.lightbot.domain.message.ServerMessageFactory
 import chat.to.lightbot.domain.message.ServerMessageRepository
-import chat.to.lightbot.infrastructure.message.ServerMessageScheduler
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringRunner
 
-@RunWith(SpringRunner::class)
+
 @SpringBootTest
 @ActiveProfiles("unittest")
 class ServerMessageSchedulerTest {
@@ -35,7 +32,7 @@ class ServerMessageSchedulerTest {
     fun `verify each message is handled`() {
         val serverMessage1 = serverMessageFactory.createServerMessage("unit-test-message-1", "unit-test-channel")
         val serverMessage2 = serverMessageFactory.createServerMessage("unit-test-message-2", "unit-test-channel")
-        `when`(serverMessageRepository.retrieveMessages()).thenReturn(listOf(serverMessage1, serverMessage2))
+        whenever(serverMessageRepository.retrieveMessages()).thenReturn(listOf(serverMessage1, serverMessage2))
 
         serverMessageScheduler.scheduleUnreadMessages()
 

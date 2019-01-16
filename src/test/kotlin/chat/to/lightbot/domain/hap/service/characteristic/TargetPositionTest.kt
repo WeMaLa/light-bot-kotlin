@@ -1,7 +1,8 @@
 package chat.to.lightbot.domain.hap.service.characteristic
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class TargetPositionTest {
 
@@ -78,21 +79,21 @@ class TargetPositionTest {
         assertThat(eventValue).isNull()
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `adjust value to low`() {
         val targetPosition = TargetPosition(3, 1, { _, _, _ -> })
-        targetPosition.adjustValue("-1")
+        assertThrows<IllegalArgumentException> { targetPosition.adjustValue("-1") }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `adjust value to high`() {
         val targetPosition = TargetPosition(3, 1, { _, _, _ -> })
-        targetPosition.adjustValue("101")
+        assertThrows<IllegalArgumentException> { targetPosition.adjustValue("101") }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `adjust value is no int value`() {
         val targetPosition = TargetPosition(3, 1, { _, _, _ -> })
-        targetPosition.adjustValue("no-double")
+        assertThrows<IllegalArgumentException> { targetPosition.adjustValue("no-double") }
     }
 }

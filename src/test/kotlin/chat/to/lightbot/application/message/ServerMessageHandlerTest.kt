@@ -7,17 +7,17 @@ import chat.to.lightbot.domain.hap.service.characteristic.Name
 import chat.to.lightbot.domain.message.ServerMessageFactory
 import chat.to.lightbot.domain.message.ServerMessageRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.verify
+import com.nhaarman.mockitokotlin2.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
-@RunWith(SpringRunner::class)
+
 @SpringBootTest
 @ActiveProfiles("unittest")
 class ServerMessageHandlerTest {
@@ -34,7 +34,7 @@ class ServerMessageHandlerTest {
     @MockBean
     private lateinit var serverMessageRepositoryMock: ServerMessageRepository
 
-    @Before
+    @BeforeEach
     fun setUp() {
         val kitchenThermostat = Thermostat(12, 120, 121, 122, 123, { _, _, _ -> })
         (kitchenThermostat.characteristics.first { c -> c is Name } as Name).updateName("Kitchen thermostat heater")

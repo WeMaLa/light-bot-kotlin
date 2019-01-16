@@ -6,8 +6,8 @@ import chat.to.lightbot.domain.hap.AccessoryRepository
 import chat.to.lightbot.infrastructure.model.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
-@RunWith(SpringRunner::class)
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("unittest")
 class AccessoryControllerTest {
@@ -32,7 +32,7 @@ class AccessoryControllerTest {
     @Autowired
     private lateinit var accessoryRepository: AccessoryRepository
 
-    @Before
+    @BeforeEach
     fun setUp() {
         accessoryRepository.clear()
     }

@@ -5,18 +5,18 @@ import chat.to.lightbot.domain.hap.CharacteristicAdjustedEvent
 import chat.to.lightbot.domain.hap.CharacteristicAdjustedEventRepository
 import chat.to.lightbot.infrastructure.CachedCharacteristicAdjustedEventRepository
 import chat.to.lightbot.infrastructure.CharacteristicAdjustedEventScheduler
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyNoMoreInteractions
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
-@RunWith(SpringRunner::class)
+
 @SpringBootTest
 @ActiveProfiles("unittest")
 class CharacteristicAdjustedEventSchedulerTest {
@@ -31,7 +31,7 @@ class CharacteristicAdjustedEventSchedulerTest {
     @MockBean
     private lateinit var hapEventHandlerMock: HapEventHandler
 
-    @Before
+    @BeforeEach
     fun setUp() {
         characteristicAdjustedEventRepository = CachedCharacteristicAdjustedEventRepository()
         scheduler = CharacteristicAdjustedEventScheduler(messagingTemplateMock, characteristicAdjustedEventRepository, hapEventHandlerMock)

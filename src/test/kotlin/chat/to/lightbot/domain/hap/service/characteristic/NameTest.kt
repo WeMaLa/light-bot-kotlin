@@ -1,7 +1,8 @@
 package chat.to.lightbot.domain.hap.service.characteristic
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class NameTest {
 
@@ -46,13 +47,13 @@ class NameTest {
         var eventCharacteristicsId: Int? = null
         var eventValue: String? = null
 
-        val currentTemperature = Name(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+        val currentTemperature = Name(3, 1) { accessoryInstanceId, characteristicInstanceId, value ->
             run {
                 eventAccessoryId = accessoryInstanceId
                 eventCharacteristicsId = characteristicInstanceId
                 eventValue = value
             }
-        })
+        }
         currentTemperature.updateName("kitchen")
         assertThat(eventAccessoryId).isEqualTo(1)
         assertThat(eventCharacteristicsId).isEqualTo(3)
@@ -63,11 +64,11 @@ class NameTest {
     fun `verify event is not thrown when status not has been changed`() {
         var eventListenerCallTimes = 0
 
-        val currentTemperature = Name(3, 1, { accessoryInstanceId, characteristicInstanceId, value ->
+        val currentTemperature = Name(3, 1) { _, _, _ ->
             run {
                 eventListenerCallTimes++
             }
-        })
+        }
         currentTemperature.updateName("kitchen")
 
         currentTemperature.updateName("kitchen")
@@ -75,10 +76,10 @@ class NameTest {
         assertThat(eventListenerCallTimes).isEqualTo(1)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `update name with too many characters`() {
         val name = Name(4, 1, { _, _, _ -> })
-        name.updateName("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz1111111111112")
+        assertThrows<IllegalArgumentException> { name.updateName("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz1111111111112") }
     }
 
 }

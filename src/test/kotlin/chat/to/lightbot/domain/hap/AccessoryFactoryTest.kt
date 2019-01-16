@@ -3,7 +3,7 @@ package chat.to.lightbot.domain.hap
 import chat.to.lightbot.domain.hap.service.characteristic.*
 import chat.to.lightbot.infrastructure.CachedCharacteristicAdjustedEventRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class AccessoryFactoryTest {
 

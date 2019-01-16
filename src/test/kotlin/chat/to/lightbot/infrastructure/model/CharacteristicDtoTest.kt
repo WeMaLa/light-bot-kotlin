@@ -5,7 +5,7 @@ import chat.to.lightbot.domain.hap.service.characteristic.Name
 import chat.to.lightbot.domain.hap.service.characteristic.Permission
 import chat.to.lightbot.infrastructure.model.CharacteristicDto
 import org.assertj.core.api.Assertions
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class CharacteristicDtoTest {
 

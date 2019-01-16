@@ -3,7 +3,7 @@ package chat.to.lightbot.infrastructure.model
 import chat.to.lightbot.domain.hap.service.Thermostat
 import chat.to.lightbot.infrastructure.model.ServiceDto
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class ServiceDtoTest {
 

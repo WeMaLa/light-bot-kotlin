@@ -1,7 +1,8 @@
 package chat.to.lightbot.domain.hap.service.characteristic
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class OnTest {
 
@@ -81,10 +82,10 @@ class OnTest {
         assertThat(eventValue).isNull()
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `adjust value is no on or off value`() {
         val on = On(3, 1, { _, _, _ -> })
-        on.adjustValue("no-double")
+        assertThrows<IllegalArgumentException> { on.adjustValue("no-double") }
     }
 
 }

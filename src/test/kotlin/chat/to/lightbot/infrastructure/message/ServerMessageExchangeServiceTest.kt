@@ -2,15 +2,13 @@ package chat.to.lightbot.infrastructure.message
 
 import chat.to.lightbot.domain.hap.VHabStatus
 import chat.to.lightbot.domain.hap.VHabStatusRepository
-import chat.to.lightbot.infrastructure.message.ServerAuthenticationExchangeService
-import chat.to.lightbot.infrastructure.message.ServerMessageExchangeService
+import com.nhaarman.mockitokotlin2.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.tuple
 import org.hamcrest.core.Is.`is`
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -26,7 +24,6 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers.*
 import org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest
 import org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 import org.springframework.web.client.RestTemplate
-
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -47,7 +44,7 @@ class ServerMessageExchangeServiceTest {
 
     lateinit var server: MockRestServiceServer
 
-    @Before
+    @BeforeEach
     fun setUp() {
         server = MockRestServiceServer.bindTo(restTemplate).build()
         vHabStatusRepository.clear()
@@ -55,7 +52,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `retrieve messages`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         val httpHeaders = HttpHeaders()
         httpHeaders.set("content-type", "application/json;charset=UTF-8 ")
@@ -90,7 +87,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `retrieve messages and servers responds bad request`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         server.expect(requestTo("http://server.unit.test/api/messages?status=SEND&status=RECEIVED"))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
@@ -105,7 +102,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `retrieve messages and mark messages responds bad request`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         val response = withStatus(HttpStatus.OK).body("")
                 .body(createResponse())
@@ -135,14 +132,14 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `retrieve messages when authentication fails`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
 
         assertThat(serverMessageExchangeService.retrieveMessages()).isEmpty()
     }
 
     @Test
     fun `retrieve messages when messages are empty`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         val httpHeaders = HttpHeaders()
         httpHeaders.set("content-type", "application/json;charset=UTF-8 ")
@@ -163,7 +160,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `send message`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         val messageContent = "unit-test-message-text"
         val channelIdentifier = "unit-test-channel-identifier"
@@ -182,7 +179,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `send message when authentication fails`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn(null)
 
         serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "unit-test-message-text")
 
@@ -191,7 +188,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `send message with channel identifier is empty`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         serverMessageExchangeService.sendMessage("", "unit-test-message-text")
 
@@ -200,7 +197,7 @@ class ServerMessageExchangeServiceTest {
 
     @Test
     fun `send message with message content is empty`() {
-        `when`(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
+        whenever(serverAuthenticationExchangeService.authenticate()).thenReturn("unit-test-auth-token")
 
         serverMessageExchangeService.sendMessage("unit-test-channel-identifier", "")
 

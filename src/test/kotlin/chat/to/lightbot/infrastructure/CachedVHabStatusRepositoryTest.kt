@@ -3,11 +3,11 @@ package chat.to.lightbot.infrastructure
 import chat.to.lightbot.domain.hap.VHabStatus
 import chat.to.lightbot.domain.hap.VHabStatusRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import com.nhaarman.mockitokotlin2.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -16,7 +16,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 
-@RunWith(SpringRunner::class)
+
 @SpringBootTest
 @ActiveProfiles("unittest")
 class CachedVHabStatusRepositoryTest {
@@ -30,7 +30,7 @@ class CachedVHabStatusRepositoryTest {
     @MockBean
     lateinit var messagingTemplateMock: SimpMessagingTemplate
 
-    @Before
+    @BeforeEach
     fun setUp() {
         repository.clear()
     }
