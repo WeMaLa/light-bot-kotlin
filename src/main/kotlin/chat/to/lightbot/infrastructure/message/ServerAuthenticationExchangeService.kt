@@ -36,7 +36,7 @@ class ServerAuthenticationExchangeService @Autowired constructor(
                         try {
                             return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
                         } catch (e: HttpClientErrorException) {
-                            log.error("Authenticaton bot on wemala server failed with code '${e.statusCode}' and message '${e.message}'")
+                            log.error("Second authenticaton bot on wemala server failed with code '${e.statusCode}' and message '${e.message}'")
                         }
                     }
                 }
