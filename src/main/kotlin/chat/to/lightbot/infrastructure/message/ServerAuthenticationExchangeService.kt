@@ -28,7 +28,7 @@ class ServerAuthenticationExchangeService @Autowired constructor(
             return authenticate(botConfiguration.bot!!.identifier, botConfiguration.bot!!.password)
         } catch (e: Exception) {
             if (e is HttpStatusCodeException) {
-                log.error("Authenticaton bot on wemala server on ${botConfiguration.server!!.url}/api/auth/login failed with code '${e.statusCode}' and message '${e.message}'")
+                log.error("Authenticaton bot on wemala server '${botConfiguration.server!!.url}/api/auth/login' failed with code '${e.statusCode}' and message '${e.message}'")
 
                 if (e.statusCode == HttpStatus.UNAUTHORIZED) {
                     log.info("Received UNAUTHORIZED while authentication. Register a new bot")
