@@ -1,15 +1,15 @@
 # to.chat virtual home automation bot (vHab)
 
-This simple demonstration shows how home automation can be implemented with Kotlin.
+This simple demonstration shows how home automation can be docker to the server implemented with Kotlin.
 
-A simplified version of the Apple HomeKit Accessory Protocol Specification is implemented.
+A simplified version of the Apple HomeKit Accessory Protocol Specification is used.
 
 ## Requirements
 
 * Java 11
 * Kotlin 1.3.20 (comes as maven dependency)
 * Maven >= 3.2.1
-* Running WeMaLa server
+* Running WeMaLa server (or using cloud server dev.to.chat)
 
 ## Getting started with maven
 
@@ -32,7 +32,7 @@ You will need a docker hub account and need access to https://hub.docker.com/r/l
 ```ssh
 docker login --username=maryatdocker --email=mary@docker.com
 docker pull larmic/wemala-vhab
-docker run -p 8085:8085 -t larmic/wemala-vhab
+docker run --rm --name vhab -e "SPRING_PROFILES_ACTIVE=dev" -e JAVA_PROPERTIES="--wemala.bot.identifier=my-vhab@to.chat --wemala.bot.password=my-vhab-password" -p 8085:8085 -t larmic/wemala-vhab
 ```
 
 and open ```http://localhost:8085```
