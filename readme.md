@@ -7,7 +7,7 @@ A simplified version of the Apple HomeKit Accessory Protocol Specification is us
 ## Requirements
 
 * Java 11
-* Kotlin 1.3.20 (comes as maven dependency)
+* Kotlin 1.3.21 (comes as maven dependency)
 * Maven >= 3.2.1
 * Running WeMaLa server (or using cloud server dev.to.chat)
 
@@ -27,7 +27,7 @@ and for elastic open ```http://localhost:9200/```
 
 ## Pull and start docker image
 
-You will need a docker hub account and need access to https://hub.docker.com/r/larmic/wemala-server/.
+You will need a docker hub account and need access to https://hub.docker.com/r/larmic/wemala-vhab/.
 
 ```ssh
 docker login --username=maryatdocker --email=mary@docker.com
