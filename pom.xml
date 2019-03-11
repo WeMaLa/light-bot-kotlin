@@ -59,6 +59,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>chat.to</groupId>
+            <artifactId>spring-boot-server-bot</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- needed by passive adapter rest template calls -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

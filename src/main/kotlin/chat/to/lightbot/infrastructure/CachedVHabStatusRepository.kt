@@ -1,7 +1,7 @@
 package chat.to.lightbot.infrastructure
 
-import chat.to.lightbot.domain.hap.VHabStatus
 import chat.to.lightbot.domain.hap.VHabStatusRepository
+import chat.to.server.bot.message.event.BotStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class CachedVHabStatusRepository @Autowired constructor(private val messagingTemplate: SimpMessagingTemplate) : VHabStatusRepository {
 
-    private var vHabStatus: VHabStatus = VHabStatus.STARTING
+    private var vHabStatus: BotStatus = BotStatus.STARTING
 
-    override fun getStatus(): VHabStatus {
+    override fun getStatus(): BotStatus {
         return vHabStatus
     }
 
     @EventListener
-    override fun updateStatus(status: VHabStatus) {
+    override fun updateStatus(status: BotStatus) {
         if (status != vHabStatus) {
             messagingTemplate.convertAndSend("/topic/status", status.name)
         }
@@ -26,6 +26,6 @@ class CachedVHabStatusRepository @Autowired constructor(private val messagingTem
 
     // TODO only used in unit test. Find a better way
     override fun clear() {
-        vHabStatus = VHabStatus.STARTING
+        vHabStatus = BotStatus.STARTING
     }
 }
