@@ -359,4 +359,23 @@
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>wemala</id>
+            <url>http://nexus.to.chat/repository/wemala</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>wemala</id>
+            <url>http://nexus.to.chat/repository/wemala</url>
+        </repository>
+        <snapshotRepository>
+            <id>wemala-snapshots</id>
+            <url>http://nexus.to.chat/repository/wemala-snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
