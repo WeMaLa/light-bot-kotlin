@@ -35,14 +35,14 @@ class CachedBotStatusRepositoryTest {
 
     @Test
     fun `get initial vHab status`() {
-        assertThat(repository.getStatus()).isEqualTo(BotStatus.STARTING)
+        assertThat(repository.getStatus()).isEqualTo(BotStatus.OK)
     }
 
     @Test
     fun `update vHab status by direct call`() {
-        repository.updateStatus(BotStatus.OK)
-        assertThat(repository.getStatus()).isEqualTo(BotStatus.OK)
-        verify(messagingTemplateMock).convertAndSend("/topic/status", BotStatus.OK.name)
+        repository.updateStatus(BotStatus.REGISTRATION_FAILED)
+        assertThat(repository.getStatus()).isEqualTo(BotStatus.REGISTRATION_FAILED)
+        verify(messagingTemplateMock).convertAndSend("/topic/status", BotStatus.REGISTRATION_FAILED.name)
 
         repository.updateStatus(BotStatus.AUTHENTICATION_FAILED)
         assertThat(repository.getStatus()).isEqualTo(BotStatus.AUTHENTICATION_FAILED)
@@ -51,9 +51,9 @@ class CachedBotStatusRepositoryTest {
 
     @Test
     fun `update vHab status by event`() {
-        applicationEventPublisher.publishEvent(BotStatus.OK)
-        assertThat(repository.getStatus()).isEqualTo(BotStatus.OK)
-        verify(messagingTemplateMock).convertAndSend("/topic/status", BotStatus.OK.name)
+        applicationEventPublisher.publishEvent(BotStatus.REGISTRATION_FAILED)
+        assertThat(repository.getStatus()).isEqualTo(BotStatus.REGISTRATION_FAILED)
+        verify(messagingTemplateMock).convertAndSend("/topic/status", BotStatus.REGISTRATION_FAILED.name)
 
         applicationEventPublisher.publishEvent(BotStatus.AUTHENTICATION_FAILED)
         assertThat(repository.getStatus()).isEqualTo(BotStatus.AUTHENTICATION_FAILED)
@@ -62,12 +62,12 @@ class CachedBotStatusRepositoryTest {
 
     @Test
     fun `verify websocket is called only when state is changed`() {
-        applicationEventPublisher.publishEvent(BotStatus.OK)
-        assertThat(repository.getStatus()).isEqualTo(BotStatus.OK)
+        applicationEventPublisher.publishEvent(BotStatus.REGISTRATION_FAILED)
+        assertThat(repository.getStatus()).isEqualTo(BotStatus.REGISTRATION_FAILED)
 
-        applicationEventPublisher.publishEvent(BotStatus.OK)
-        assertThat(repository.getStatus()).isEqualTo(BotStatus.OK)
+        applicationEventPublisher.publishEvent(BotStatus.REGISTRATION_FAILED)
+        assertThat(repository.getStatus()).isEqualTo(BotStatus.REGISTRATION_FAILED)
 
-        verify(messagingTemplateMock, times(1)).convertAndSend("/topic/status", BotStatus.OK.name)
+        verify(messagingTemplateMock, times(1)).convertAndSend("/topic/status", BotStatus.REGISTRATION_FAILED.name)
     }
 }

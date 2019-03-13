@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class CachedVHabStatusRepository @Autowired constructor(private val messagingTemplate: SimpMessagingTemplate) : VHabStatusRepository {
 
-    private var vHabStatus: BotStatus = BotStatus.STARTING
+    private var vHabStatus: BotStatus = BotStatus.OK
 
     override fun getStatus(): BotStatus {
         return vHabStatus
@@ -26,6 +26,6 @@ class CachedVHabStatusRepository @Autowired constructor(private val messagingTem
 
     // TODO only used in unit test. Find a better way
     override fun clear() {
-        vHabStatus = BotStatus.STARTING
+        vHabStatus = BotStatus.OK
     }
 }
