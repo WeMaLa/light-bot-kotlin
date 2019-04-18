@@ -244,6 +244,7 @@
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
