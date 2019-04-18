@@ -216,13 +216,20 @@
                     <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
                     <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.10</version>
+                <configuration>
+                    <repository>larmic/wemala-vhab</repository>
+                    <tag>${project.version}</tag>
+                    <dockerfile>src/main/docker/Dockerfile</dockerfile>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -333,29 +340,6 @@
             </activation>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>com.spotify</groupId>
-                        <artifactId>dockerfile-maven-plugin</artifactId>
-                        <version>1.4.10</version>
-                        <executions>
-                            <execution>
-                                <id>default</id>
-                                <goals>
-                                    <goal>build</goal>
-                                    <goal>push</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <repository>larmic/wemala-vhab</repository>
-                            <tag>${project.version}</tag>
-                            <dockerfile>src/main/docker/Dockerfile</dockerfile>
-                            <buildArgs>
-                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                            </buildArgs>
-                            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-                        </configuration>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
