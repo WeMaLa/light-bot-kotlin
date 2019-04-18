@@ -11,6 +11,36 @@ A simplified version of the Apple HomeKit Accessory Protocol Specification is us
 * Maven >= 3.2.1
 * Running WeMaLa server (or using cloud server dev.to.chat)
 
+### Requirements for publishing an artifact
+
+We use official docker hub to publish docker images and nexus on premise.
+
+* Access to https://hub.docker.com/ (to publish a docker image)
+* Access to http://nexus.to.chat/ (to publish a jar)
+
+In maven settings.xml
+
+```
+<server>
+   <id>docker.io</id>
+   <username>my-docker-hub-username</username>
+   <password>my-docker-hub-password</password>
+   <configuration>
+     <email>my-docker-hub-email</email>
+   </configuration>
+</server>
+<server>
+   <id>wemala</id>
+   <username>my-nexus-username</username>
+   <password>my-nexus-password</password>
+</server>
+<server>
+   <id>wemala-snapshots</id>
+   <username>my-nexus-username</username>
+   <password>my-nexus-password</password>
+</server>
+```
+
 ## Getting started with maven
 
 ```ssh
