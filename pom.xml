@@ -349,7 +349,7 @@
                         <configuration>
                             <repository>larmic/wemala-vhab</repository>
                             <tag>${project.version}</tag>
-                            <dockerfile>src/main/docker</dockerfile>
+                            <dockerfile>src/main/docker/Dockerfile</dockerfile>
                             <buildArgs>
                                 <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                             </buildArgs>
