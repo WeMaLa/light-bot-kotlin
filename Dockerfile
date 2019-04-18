@@ -6,7 +6,8 @@
 
 FROM openjdk:11.0.1-jre-slim
 VOLUME /tmp
-ADD vhab-kotlin.jar app.jar
+ARG JAR_FILE
+ADD target/${JAR_FILE} app.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS="-XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions"
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar ${JAVA_PROPERTIES}" ]
