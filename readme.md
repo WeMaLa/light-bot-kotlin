@@ -7,7 +7,7 @@ A simplified version of the Apple HomeKit Accessory Protocol Specification is us
 ## Requirements
 
 * Java 11
-* Kotlin 1.3.30 (comes as maven dependency)
+* Kotlin 1.3.31 (comes as maven dependency)
 * Maven >= 3.2.1
 * Running WeMaLa server (or using cloud server dev.to.chat)
 
